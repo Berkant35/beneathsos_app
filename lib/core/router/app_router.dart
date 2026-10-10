@@ -1,36 +1,18 @@
-import 'package:beneathsos_app/features/field_test/presentation/screens/device_detail_screen.dart';
-import 'package:beneathsos_app/features/field_test/presentation/screens/field_test_screen.dart';
+import 'package:beneathsos_app/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_router.g.dart';
 
-/// Field test tool — the M1 entry point; becomes research mode later.
-@TypedGoRoute<FieldTestRoute>(
-  path: '/',
-  routes: [TypedGoRoute<DeviceDetailRoute>(path: 'device/:deviceKey')],
-)
-class FieldTestRoute extends GoRouteData with $FieldTestRoute {
-  /// Route to the device list.
-  const FieldTestRoute();
+/// Home — temporary until the entry flow (roadmap phase 4).
+@TypedGoRoute<HomeRoute>(path: '/')
+class HomeRoute extends GoRouteData with $HomeRoute {
+  /// Route to the home screen.
+  const HomeRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const FieldTestScreen();
-}
-
-/// Live RSSI of one advertiser.
-class DeviceDetailRoute extends GoRouteData with $DeviceDetailRoute {
-  /// Route to the detail of [deviceKey].
-  const DeviceDetailRoute({required this.deviceKey});
-
-  /// Platform identity of the advertiser.
-  final String deviceKey;
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      DeviceDetailScreen(deviceKey: deviceKey);
+  Widget build(BuildContext context, GoRouterState state) => const HomeScreen();
 }
 
 /// The app router. Only this file knows paths.

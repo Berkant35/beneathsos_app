@@ -6,51 +6,19 @@ part of 'app_router.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$fieldTestRoute];
+List<RouteBase> get $appRoutes => [$homeRoute];
 
-RouteBase get $fieldTestRoute => GoRouteData.$route(
+RouteBase get $homeRoute => GoRouteData.$route(
   path: '/',
   hasOverriddenOnExit: false,
-  factory: $FieldTestRoute._fromState,
-  routes: [
-    GoRouteData.$route(
-      path: 'device/:deviceKey',
-      hasOverriddenOnExit: false,
-      factory: $DeviceDetailRoute._fromState,
-    ),
-  ],
+  factory: $HomeRoute._fromState,
 );
 
-mixin $FieldTestRoute on GoRouteData {
-  static FieldTestRoute _fromState(GoRouterState state) =>
-      const FieldTestRoute();
+mixin $HomeRoute on GoRouteData {
+  static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
 
   @override
   String get location => GoRouteData.$location('/');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
-
-mixin $DeviceDetailRoute on GoRouteData {
-  static DeviceDetailRoute _fromState(GoRouterState state) =>
-      DeviceDetailRoute(deviceKey: state.pathParameters['deviceKey']!);
-
-  DeviceDetailRoute get _self => this as DeviceDetailRoute;
-
-  @override
-  String get location =>
-      GoRouteData.$location('/device/${Uri.encodeComponent(_self.deviceKey)}');
 
   @override
   void go(BuildContext context) => context.go(location);
