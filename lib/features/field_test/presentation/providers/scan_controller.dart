@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:beneathsos_app/core/logging/app_logger.dart';
+import 'package:beneathsos_app/core/services/app_lifecycle.dart';
 import 'package:beneathsos_app/core/services/ble_service.dart';
 import 'package:beneathsos_app/core/services/permission_service.dart';
 import 'package:beneathsos_app/core/services/wakelock_service.dart';
+import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'scan_controller.g.dart';
@@ -65,6 +67,9 @@ class ScanController extends _$ScanController {
     final service = ref.watch(bleServiceProvider);
     final errors = service.errors.listen((e) => state = ScanFailed(e));
     final availability = service.availabilityChanges.listen(_onAvailability);
+    ref.listen(appLifecycleProvider, (_, next) {
+      if (next.value == AppLifecycleState.resumed) _recheckIfBlocked();
+    });
     ref.onDispose(() {
       unawaited(errors.cancel());
       unawaited(availability.cancel());
@@ -142,8 +147,8 @@ class ScanController extends _$ScanController {
   Future<void> openSettings() =>
       ref.read(permissionServiceProvider).openSettings();
 
-  /// Re-checks only when blocked by permissions or Bluetooth (called on app resume).
-  void onAppResumed() {
+  /// After returning to the app (e.g. from Settings), retry only when blocked.
+  void _recheckIfBlocked() {
     if (state is ScanNeedsPermission || state is ScanBluetoothOff) {
       unawaited(start());
     }

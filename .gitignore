@@ -49,3 +49,6 @@ app.*.map.json
 
 # Local sibling-repo wiring (tools/link_local.sh)
 pubspec_overrides.yaml
+
+# Gradle output inside android/
+/android/build/

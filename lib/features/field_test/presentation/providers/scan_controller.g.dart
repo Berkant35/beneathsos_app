@@ -44,7 +44,7 @@ final class ScanControllerProvider
   }
 }
 
-String _$scanControllerHash() => r'f30c2e36a8fca8d4630b2be49529b6fcd13dce37';
+String _$scanControllerHash() => r'122b3dc91a4152d84658c9e464b74458e6f99aee';
 
 /// Starts/stops the scanner and guards permissions and adapter state.
 
