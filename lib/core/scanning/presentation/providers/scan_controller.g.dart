@@ -8,15 +8,18 @@ part of 'scan_controller.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Starts/stops the scanner and guards permissions and adapter state.
+/// Scanner state for the UI. Thin: calls use cases, maps results, wires streams.
+/// Rules live in `core/scanning/domain`.
 
 @ProviderFor(ScanController)
 final scanControllerProvider = ScanControllerProvider._();
 
-/// Starts/stops the scanner and guards permissions and adapter state.
+/// Scanner state for the UI. Thin: calls use cases, maps results, wires streams.
+/// Rules live in `core/scanning/domain`.
 final class ScanControllerProvider
     extends $NotifierProvider<ScanController, ScanState> {
-  /// Starts/stops the scanner and guards permissions and adapter state.
+  /// Scanner state for the UI. Thin: calls use cases, maps results, wires streams.
+  /// Rules live in `core/scanning/domain`.
   ScanControllerProvider._()
     : super(
         from: null,
@@ -44,9 +47,10 @@ final class ScanControllerProvider
   }
 }
 
-String _$scanControllerHash() => r'122b3dc91a4152d84658c9e464b74458e6f99aee';
+String _$scanControllerHash() => r'72b8caf30117fc55dec6d8a5d88f41627e200382';
 
-/// Starts/stops the scanner and guards permissions and adapter state.
+/// Scanner state for the UI. Thin: calls use cases, maps results, wires streams.
+/// Rules live in `core/scanning/domain`.
 
 abstract class _$ScanController extends $Notifier<ScanState> {
   ScanState build();
