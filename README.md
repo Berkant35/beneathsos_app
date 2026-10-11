@@ -16,4 +16,17 @@ Working on `ble_scanner` at the same time: clone the hub and run `tools/link_loc
 
 iOS signing uses the maintainer's team (`5W2U3NK284`); change `DEVELOPMENT_TEAM` to your own.
 
+## Release to TestFlight (maintainers)
+Bundle ID / application ID: `org.beneathsos.app`.
+
+1. Put your App Store Connect API key at `~/.private_keys/AuthKey_<KEY_ID>.p8` (never commit it).
+2. Commit your changes — the build number is the git commit count.
+3. Run:
+   ```bash
+   ASC_KEY_ID=<key id> ASC_ISSUER_ID=<issuer id> tools/testflight.sh
+   ```
+   Add `--build-only` to produce the signed IPA without uploading. Signing uses the API key
+   (Admin or App Manager role), so no Xcode account login is needed.
+4. After processing (10–30 min) the build appears under TestFlight in App Store Connect.
+
 Rules: see the hub's `CLAUDE.md`. Licence: Apache-2.0.
