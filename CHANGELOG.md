@@ -6,6 +6,11 @@ and appear only in TestFlight.
 
 ## [Unreleased]
 
+### Added
+
+- App icon (iOS light, dark and tinted; Android adaptive and themed) and launch screen in the
+  BeneathSOS brand.
+
 ## [0.1.0] - 2026-10-11
 
 Foundations release. The app shows a placeholder home screen; the rescuer and victim flows follow
