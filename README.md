@@ -1,5 +1,8 @@
 # BeneathSOS app
 
+[![CI](https://github.com/Berkant35/beneathsos_app/actions/workflows/ci.yml/badge.svg)](https://github.com/Berkant35/beneathsos_app/actions/workflows/ci.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+
 Flutter app of [BeneathSOS](https://github.com/Berkant35/beneathsos). Current milestone **M1**:
 field test tool — device list, target marking, live RSSI chart, identity (address rotation) log,
 CSV recording with markers.
