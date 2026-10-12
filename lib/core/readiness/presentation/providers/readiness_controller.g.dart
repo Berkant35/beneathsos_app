@@ -94,7 +94,7 @@ final class ReadinessControllerProvider
 }
 
 String _$readinessControllerHash() =>
-    r'eda41251e66b40656c03dc6380d4884e50e710a0';
+    r'4404088fd9b4ba4c738f9a57a31cb9c5edad29b0';
 
 /// Device readiness for the home banner. Thin: runs the use case, re-checks on Bluetooth changes
 /// and on resume when blocked. Asks for permission automatically once per session; never scans.

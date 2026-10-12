@@ -257,6 +257,40 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Bluetooth is on and ready.'), findsOneWidget);
   });
+
+  testWidgets('the headline is a heading for screen readers', (tester) async {
+    final handle = tester.ensureSemantics();
+    await pumpWith(tester);
+    expect(
+      tester.getSemantics(find.text('Search for a phone under rubble')),
+      isSemantics(label: 'Search for a phone under rubble', isHeader: true),
+    );
+    handle.dispose();
+  });
+
+  testWidgets('checking: hourglass and "Checking Bluetooth…"', (tester) async {
+    await pumpWith(tester, bluetooth: BluetoothAvailability.unknown);
+    expect(find.text('Checking Bluetooth…'), findsOneWidget);
+    expect(find.byIcon(Icons.hourglass_top_rounded), findsOneWidget);
+  });
+
+  testWidgets(
+    'longest Turkish blocked message at 200 % on a small phone: actions reachable',
+    (tester) async {
+      _smallPhone(tester);
+      await pumpRouterApp(
+        tester,
+        locale: const Locale('tr'),
+        textScale: 2,
+        scanner: FakeScanner()
+          ..availability = BluetoothAvailability.unsupported,
+      );
+      expect(tester.takeException(), isNull);
+      expect(find.textContaining('Bluetooth LE desteklemiyor'), findsOneWidget);
+      await _expectReachable(tester, 'Aramayı başlat');
+      await _expectReachable(tester, 'Enkaz altındayım');
+    },
+  );
 }
 
 /// Fails the first permission check like a platform error, then works.

@@ -2,6 +2,7 @@ import 'package:beneathsos_app/core/readiness/domain/device_readiness.dart';
 import 'package:beneathsos_app/core/scanning/domain/scan_ports.dart';
 import 'package:beneathsos_app/core/scanning/domain/scan_preconditions.dart';
 import 'package:beneathsos_app/core/scanning/domain/start_scan_result.dart';
+import 'package:meta/meta.dart';
 
 /// "Can this phone search right now?" — the same preconditions scanning uses (permission first,
 /// then Bluetooth), without starting a scan.
@@ -20,12 +21,14 @@ final class CheckReadiness {
     ];
     for (final precondition in preconditions) {
       final blocked = await precondition.check();
-      if (blocked != null) return _readiness(blocked);
+      if (blocked != null) return readinessFor(blocked);
     }
     return const ReadinessReady();
   }
 
-  static DeviceReadiness _readiness(
+  /// Readiness for the first blocking precondition result.
+  @visibleForTesting
+  static DeviceReadiness readinessFor(
     StartScanResult blocked,
   ) => switch (blocked) {
     PermissionMissing(permanent: false) => const ReadinessNeedsPermission(),
@@ -35,7 +38,7 @@ final class CheckReadiness {
       BluetoothUnavailableReason.unsupported => const ReadinessUnsupported(),
       BluetoothUnavailableReason.notReady => const ReadinessChecking(),
     },
-    // Preconditions only block with the two results above.
-    ScanStarted() || StartFailed() => const ReadinessReady(),
+    // Preconditions never block with these; if one ever does, never claim "ready".
+    ScanStarted() || StartFailed() => const ReadinessFailed(),
   };
 }

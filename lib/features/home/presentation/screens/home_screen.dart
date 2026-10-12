@@ -1,5 +1,4 @@
 import 'package:beneathsos_app/core/l10n_extension.dart';
-import 'package:beneathsos_app/core/widgets/app_scaffold.dart';
 import 'package:beneathsos_app/features/home/presentation/widgets/home_actions.dart';
 import 'package:beneathsos_app/features/home/presentation/widgets/home_footer.dart';
 import 'package:beneathsos_app/features/home/presentation/widgets/readiness_banner.dart';
@@ -15,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final text = Theme.of(context).textTheme;
-    return AppScaffold(
+    return BeneathScaffold(
       body: LayoutBuilder(
         builder: (context, constraints) => SingleChildScrollView(
           child: ConstrainedBox(
@@ -29,10 +28,13 @@ class HomeScreen extends StatelessWidget {
                     child: BeneathLogo.lockup(semanticLabel: l10n.logoLabel),
                   ),
                   const Spacer(),
-                  Text(
-                    l10n.homeHeadline,
-                    style: text.displaySmall,
-                    textAlign: TextAlign.center,
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      l10n.homeHeadline,
+                      style: text.displaySmall,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   const SizedBox(height: BeneathSpacing.m),
                   Text(

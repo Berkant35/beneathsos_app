@@ -1,6 +1,7 @@
 import 'package:beneathsos_app/core/readiness/domain/check_readiness.dart';
 import 'package:beneathsos_app/core/readiness/domain/device_readiness.dart';
 import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
+import 'package:beneathsos_app/core/scanning/domain/start_scan_result.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../scanning/fakes.dart';
@@ -74,5 +75,16 @@ void main() {
   test('Bluetooth still unknown (iOS permission prompt open) → checking, never ready', () async {
     scanner.availability = BluetoothAvailability.unknown;
     expect(await check(), isA<ReadinessChecking>());
+  });
+
+  test('results a precondition cannot produce never become "ready"', () {
+    expect(
+      CheckReadiness.readinessFor(const ScanStarted()),
+      isA<ReadinessFailed>(),
+    );
+    expect(
+      CheckReadiness.readinessFor(const StartFailed('x')),
+      isA<ReadinessFailed>(),
+    );
   });
 }

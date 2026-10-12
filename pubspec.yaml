@@ -23,6 +23,7 @@ dependencies:
   flutter_riverpod: ^3.4.3
   go_router: ^18.0.1
   intl: ^0.20.3
+  meta: ^1.17.0
   # Pinned: 13.x pulls permission_handler_android 14.x (compileSdk 37). AGP 9.1.0 looks for
   # platform 'android-37' but the SDK installs it as 'android-37.0'. See hub tasks/todo.md backlog.
   permission_handler: ^12.0.3
