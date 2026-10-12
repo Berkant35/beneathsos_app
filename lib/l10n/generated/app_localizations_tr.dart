@@ -39,10 +39,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get victimTitle => 'Enkaz altındayım';
 
   @override
-  String get victimPreparing =>
-      'Bu mod henüz hazır değil. Acil durumda 112\'yi arayın.';
-
-  @override
   String get readinessChecking => 'Bluetooth kontrol ediliyor…';
 
   @override
@@ -199,16 +195,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mapMeasure => 'Burada ölç';
 
   @override
-  String get victimSending => 'Telefonunuz yardım sinyali gönderiyor.';
+  String get victimSending => 'Telefonunuz kurtarıcılara sinyal gönderiyor.';
 
   @override
-  String get victimCalm => 'Sakin olun. Pilinizi koruyun.';
+  String get victimCalm =>
+      'Sakin olun. Bu ekranı açık tutun — pil için karanlık kalır.';
 
   @override
-  String get victimTap => 'Kurtarıcıları duyduğunuzda ekrana 3 kez dokunun.';
-
-  @override
-  String get victimBattery => 'Pil';
+  String get victimTap =>
+      'Arada bir ekrana dokunun: kurtarıcılar telefona dokunulduğunu görür.';
 
   @override
   String get victimSos => 'SOS sesi çal';
@@ -781,4 +776,64 @@ class AppLocalizationsTr extends AppLocalizations {
     );
     return '$_temp0: harita, çevresinde ölçülen noktalarla çalışır.';
   }
+
+  @override
+  String get victimStarting => 'Yardım sinyali başlatılıyor…';
+
+  @override
+  String victimSignalName(String name) {
+    return 'Sinyal adı: $name';
+  }
+
+  @override
+  String victimBatteryValue(int percent) {
+    return 'Pil: %$percent';
+  }
+
+  @override
+  String get victimNeedsPermission =>
+      'Kurtarıcıların bu telefonu bulabilmesi için Bluetooth\'a izin verin.';
+
+  @override
+  String get victimAllow => 'Bluetooth\'a izin ver';
+
+  @override
+  String get victimNeedsSettings =>
+      'BeneathSOS için Bluetooth erişimi kapalı. Ayarlar\'dan açın.';
+
+  @override
+  String get victimOpenSettings => 'Ayarlar\'ı aç';
+
+  @override
+  String get victimBluetoothOff =>
+      'Kurtarıcıların bu telefonu bulabilmesi için Bluetooth\'u açın.';
+
+  @override
+  String get victimUnsupported =>
+      'Bu telefon Bluetooth yardım sinyali gönderemiyor. SOS sesini kullanın.';
+
+  @override
+  String get victimFailed => 'Yardım sinyali durdu.';
+
+  @override
+  String get victimRetry => 'Tekrar dene';
+
+  @override
+  String get victim112 => 'Mobil şebeke varsa 112\'yi arayın.';
+
+  @override
+  String get victimSosStop => 'SOS sesini durdur';
+
+  @override
+  String get victimStopTitle => 'Sinyal durdurulsun mu?';
+
+  @override
+  String get victimStopBody =>
+      'Kurtarıcılar bu telefonu artık sinyalinden bulamaz.';
+
+  @override
+  String get victimKeep => 'Sinyale devam et';
+
+  @override
+  String get victimStop => 'Durdur';
 }

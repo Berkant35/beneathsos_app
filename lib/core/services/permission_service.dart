@@ -7,13 +7,19 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'permission_service.g.dart';
 
-/// Runtime permissions for scanning. On iOS the Bluetooth prompt is triggered by CoreBluetooth
+/// Runtime Bluetooth permissions: for scanning (default) or for victim mode's beacon
+/// ([PermissionService.advertising]). On iOS the Bluetooth prompt is triggered by CoreBluetooth
 /// itself, so this service only handles Android. Implements [ScanPermissionPort].
 class PermissionService implements ScanPermissionPort {
-  static const _android = [
-    Permission.bluetoothScan,
-    Permission.locationWhenInUse,
-  ];
+  /// Permissions for scanning.
+  const PermissionService()
+    : _android = const [Permission.bluetoothScan, Permission.locationWhenInUse];
+
+  /// Permissions for advertising the victim beacon.
+  const PermissionService.advertising()
+    : _android = const [Permission.bluetoothAdvertise];
+
+  final List<Permission> _android;
 
   @override
   Future<ScanPermission> check() async {
@@ -44,4 +50,9 @@ class PermissionService implements ScanPermissionPort {
 
 /// App-wide permission service.
 @Riverpod(keepAlive: true)
-PermissionService permissionService(Ref ref) => PermissionService();
+PermissionService permissionService(Ref ref) => const PermissionService();
+
+/// Permission to advertise the victim beacon.
+@Riverpod(keepAlive: true)
+ScanPermissionPort advertisePermission(Ref ref) =>
+    const PermissionService.advertising();

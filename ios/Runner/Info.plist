@@ -29,7 +29,11 @@
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>NSBluetoothAlwaysUsageDescription</key>
-		<string>BeneathSOS measures the Bluetooth signal strength of nearby phones to estimate where a trapped person may be.</string>
+		<string>BeneathSOS measures the Bluetooth signal strength of nearby phones to estimate where a trapped person may be, and in "I am trapped" mode sends a Bluetooth help signal rescuers can find.</string>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>bluetooth-peripheral</string>
+		</array>
 		<key>UIApplicationSceneManifest</key>
 		<dict>
 			<key>UIApplicationSupportsMultipleScenes</key>

@@ -97,3 +97,49 @@ final class BleSamplesProvider
 }
 
 String _$bleSamplesHash() => r'04898f273651fc9bae468c4c58964423ab817385';
+
+/// The victim beacon (the same plugin instance as scanning).
+
+@ProviderFor(beaconPort)
+final beaconPortProvider = BeaconPortProvider._();
+
+/// The victim beacon (the same plugin instance as scanning).
+
+final class BeaconPortProvider
+    extends $FunctionalProvider<BeaconPort, BeaconPort, BeaconPort>
+    with $Provider<BeaconPort> {
+  /// The victim beacon (the same plugin instance as scanning).
+  BeaconPortProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'beaconPortProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$beaconPortHash();
+
+  @$internal
+  @override
+  $ProviderElement<BeaconPort> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  BeaconPort create(Ref ref) {
+    return beaconPort(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BeaconPort value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BeaconPort>(value),
+    );
+  }
+}
+
+String _$beaconPortHash() => r'37ca951fab8c82d0cb35ce71a4d95e8b1b23912e';

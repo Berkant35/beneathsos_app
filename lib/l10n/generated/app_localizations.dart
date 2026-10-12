@@ -152,12 +152,6 @@ abstract class AppLocalizations {
   /// **'I am trapped'**
   String get victimTitle;
 
-  /// No description provided for @victimPreparing.
-  ///
-  /// In en, this message translates to:
-  /// **'This mode is not ready yet. In an emergency, call 112.'**
-  String get victimPreparing;
-
   /// No description provided for @readinessChecking.
   ///
   /// In en, this message translates to:
@@ -443,26 +437,20 @@ abstract class AppLocalizations {
   /// No description provided for @victimSending.
   ///
   /// In en, this message translates to:
-  /// **'Your phone is sending a help signal.'**
+  /// **'Your phone is calling out to rescuers.'**
   String get victimSending;
 
   /// No description provided for @victimCalm.
   ///
   /// In en, this message translates to:
-  /// **'Stay calm. Save your battery.'**
+  /// **'Stay calm. Keep this screen open — it stays dark to save battery.'**
   String get victimCalm;
 
   /// No description provided for @victimTap.
   ///
   /// In en, this message translates to:
-  /// **'When you hear rescuers, tap the screen 3 times.'**
+  /// **'Touch the screen now and then: rescuers can see that someone touched the phone.'**
   String get victimTap;
-
-  /// No description provided for @victimBattery.
-  ///
-  /// In en, this message translates to:
-  /// **'Battery'**
-  String get victimBattery;
 
   /// No description provided for @victimSos.
   ///
@@ -1363,6 +1351,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 point on the rubble is not used} other{{count} points on the rubble are not used}}: the map works from points around it.'**
   String probOnRubble(int count);
+
+  /// No description provided for @victimStarting.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting the help signal…'**
+  String get victimStarting;
+
+  /// No description provided for @victimSignalName.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal name: {name}'**
+  String victimSignalName(String name);
+
+  /// No description provided for @victimBatteryValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery: {percent} %'**
+  String victimBatteryValue(int percent);
+
+  /// No description provided for @victimNeedsPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Bluetooth so rescuers can find this phone.'**
+  String get victimNeedsPermission;
+
+  /// No description provided for @victimAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Bluetooth'**
+  String get victimAllow;
+
+  /// No description provided for @victimNeedsSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth access is off for BeneathSOS. Turn it on in Settings.'**
+  String get victimNeedsSettings;
+
+  /// No description provided for @victimOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get victimOpenSettings;
+
+  /// No description provided for @victimBluetoothOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on Bluetooth so rescuers can find this phone.'**
+  String get victimBluetoothOff;
+
+  /// No description provided for @victimUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone cannot send a Bluetooth help signal. Use the SOS sound.'**
+  String get victimUnsupported;
+
+  /// No description provided for @victimFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The help signal stopped.'**
+  String get victimFailed;
+
+  /// No description provided for @victimRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get victimRetry;
+
+  /// No description provided for @victim112.
+  ///
+  /// In en, this message translates to:
+  /// **'If you have mobile signal, call 112.'**
+  String get victim112;
+
+  /// No description provided for @victimSosStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop the SOS sound'**
+  String get victimSosStop;
+
+  /// No description provided for @victimStopTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop calling out?'**
+  String get victimStopTitle;
+
+  /// No description provided for @victimStopBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Rescuers will no longer find this phone by its signal.'**
+  String get victimStopBody;
+
+  /// No description provided for @victimKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep calling out'**
+  String get victimKeep;
+
+  /// No description provided for @victimStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get victimStop;
 }
 
 class _AppLocalizationsDelegate

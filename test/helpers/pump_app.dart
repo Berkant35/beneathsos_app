@@ -6,10 +6,15 @@ import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
 import 'package:beneathsos_app/core/scanning/presentation/providers/scanning_providers.dart';
 import 'package:beneathsos_app/core/sensors/domain/motion_port.dart';
 import 'package:beneathsos_app/core/services/app_lifecycle.dart';
+import 'package:beneathsos_app/core/services/battery_service.dart';
 import 'package:beneathsos_app/core/services/ble_service.dart';
+import 'package:beneathsos_app/core/services/clock.dart';
 import 'package:beneathsos_app/core/services/motion_service.dart';
+import 'package:beneathsos_app/core/services/permission_service.dart';
+import 'package:beneathsos_app/core/services/sos_sound_service.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/providers/map_providers.dart';
+import 'package:beneathsos_app/features/victim/presentation/providers/victim_providers.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:drift/drift.dart' show DatabaseConnection;
@@ -21,6 +26,7 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/beacon/fakes.dart';
 import '../core/scanning/fakes.dart';
 
 /// An in-memory database for widget tests. Streams close synchronously, so no drift timer is left
@@ -40,7 +46,9 @@ List<Override> fakePortOverrides({
   Stream<AppLifecycleState>? lifecycle,
   Stream<double>? motion,
   MapEngine? engine,
+  BeaconFakes? beacon,
 }) => [
+  ...beaconOverrides(beacon ?? BeaconFakes(), clock: beacon != null),
   mapEngineProvider.overrideWithValue(
     engine ?? (request) async => computeMap(request),
   ),
@@ -62,15 +70,26 @@ List<Override> fakePortOverrides({
   appLifecycleProvider.overrideWith((ref) => lifecycle ?? const Stream.empty()),
 ];
 
+/// Victim mode's ports bound to [fakes]; with [clock], also the wall clock (to move it in a test).
+List<Override> beaconOverrides(BeaconFakes fakes, {required bool clock}) => [
+  beaconPortProvider.overrideWithValue(fakes.beacon),
+  advertisePermissionProvider.overrideWithValue(fakes.permissions),
+  batteryProvider.overrideWithValue(fakes.battery),
+  sosSoundProvider.overrideWithValue(fakes.sound),
+  beaconIdSourceProvider.overrideWithValue(() => 0x1a2b),
+  if (clock) clockProvider.overrideWithValue(() => fakes.now),
+];
+
 /// Pumps [home] with the BeneathSOS light theme and localisations.
 Future<void> pumpLocalized(
   WidgetTester tester,
   Widget home, {
   Locale locale = const Locale('en'),
+  BeaconFakes? beacon,
 }) async {
   await tester.pumpWidget(
     ProviderScope(
-      overrides: fakePortOverrides(),
+      overrides: fakePortOverrides(beacon: beacon),
       child: MaterialApp(
         locale: locale,
         theme: BeneathTheme.light(),
@@ -89,6 +108,7 @@ Future<void> pumpLocalizedScaled(
   Widget home, {
   required double textScale,
   Locale locale = const Locale('en'),
+  BeaconFakes? beacon,
 }) => pumpLocalized(
   tester,
   Builder(
@@ -99,6 +119,7 @@ Future<void> pumpLocalizedScaled(
     ),
   ),
   locale: locale,
+  beacon: beacon,
 );
 
 /// Pumps the real routes at `/` with a given locale, text scale and theme.
@@ -114,6 +135,7 @@ Future<void> pumpRouterApp(
   Stream<AppLifecycleState>? lifecycle,
   Stream<double>? motion,
   MapEngine? engine,
+  BeaconFakes? beacon,
   List<Override> overrides = const [],
 }) async {
   final router = GoRouter(routes: $appRoutes);
@@ -129,6 +151,7 @@ Future<void> pumpRouterApp(
           lifecycle: lifecycle,
           motion: motion,
           engine: engine,
+          beacon: beacon,
         ),
         ...overrides,
       ],

@@ -9,7 +9,6 @@
   "homeIndependence": "BeneathSOS is an independent open-source project and is not affiliated with AFAD or any government agency.",
   "poweredBy": "Powered by Socrepho",
   "victimTitle": "I am trapped",
-  "victimPreparing": "This mode is not ready yet. In an emergency, call 112.",
   "readinessChecking": "Checking Bluetooth…",
   "readinessReady": "Bluetooth is on and ready.",
   "readinessNeedsPermission": "Bluetooth permission is needed. Tap to allow it.",
@@ -74,10 +73,9 @@
   "mapNoSignal": "no signal",
   "mapNext": "suggested next point",
   "mapMeasure": "Measure here",
-  "victimSending": "Your phone is sending a help signal.",
-  "victimCalm": "Stay calm. Save your battery.",
-  "victimTap": "When you hear rescuers, tap the screen 3 times.",
-  "victimBattery": "Battery",
+  "victimSending": "Your phone is calling out to rescuers.",
+  "victimCalm": "Stay calm. Keep this screen open — it stays dark to save battery.",
+  "victimTap": "Touch the screen now and then: rescuers can see that someone touched the phone.",
   "victimSos": "Play SOS sound",
   "practiceTitle": "Practice search",
   "lastSearchTitle": "Last search",
@@ -464,5 +462,36 @@
         "type": "int"
       }
     }
-  }
+  },
+  "victimStarting": "Starting the help signal…",
+  "victimSignalName": "Signal name: {name}",
+  "@victimSignalName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "victimBatteryValue": "Battery: {percent} %",
+  "@victimBatteryValue": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "victimNeedsPermission": "Allow Bluetooth so rescuers can find this phone.",
+  "victimAllow": "Allow Bluetooth",
+  "victimNeedsSettings": "Bluetooth access is off for BeneathSOS. Turn it on in Settings.",
+  "victimOpenSettings": "Open Settings",
+  "victimBluetoothOff": "Turn on Bluetooth so rescuers can find this phone.",
+  "victimUnsupported": "This phone cannot send a Bluetooth help signal. Use the SOS sound.",
+  "victimFailed": "The help signal stopped.",
+  "victimRetry": "Try again",
+  "victim112": "If you have mobile signal, call 112.",
+  "victimSosStop": "Stop the SOS sound",
+  "victimStopTitle": "Stop calling out?",
+  "victimStopBody": "Rescuers will no longer find this phone by its signal.",
+  "victimKeep": "Keep calling out",
+  "victimStop": "Stop"
 }

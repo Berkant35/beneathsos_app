@@ -39,10 +39,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get victimTitle => 'I am trapped';
 
   @override
-  String get victimPreparing =>
-      'This mode is not ready yet. In an emergency, call 112.';
-
-  @override
   String get readinessChecking => 'Checking Bluetooth…';
 
   @override
@@ -198,16 +194,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mapMeasure => 'Measure here';
 
   @override
-  String get victimSending => 'Your phone is sending a help signal.';
+  String get victimSending => 'Your phone is calling out to rescuers.';
 
   @override
-  String get victimCalm => 'Stay calm. Save your battery.';
+  String get victimCalm =>
+      'Stay calm. Keep this screen open — it stays dark to save battery.';
 
   @override
-  String get victimTap => 'When you hear rescuers, tap the screen 3 times.';
-
-  @override
-  String get victimBattery => 'Battery';
+  String get victimTap =>
+      'Touch the screen now and then: rescuers can see that someone touched the phone.';
 
   @override
   String get victimSos => 'Play SOS sound';
@@ -792,4 +787,64 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0: the map works from points around it.';
   }
+
+  @override
+  String get victimStarting => 'Starting the help signal…';
+
+  @override
+  String victimSignalName(String name) {
+    return 'Signal name: $name';
+  }
+
+  @override
+  String victimBatteryValue(int percent) {
+    return 'Battery: $percent %';
+  }
+
+  @override
+  String get victimNeedsPermission =>
+      'Allow Bluetooth so rescuers can find this phone.';
+
+  @override
+  String get victimAllow => 'Allow Bluetooth';
+
+  @override
+  String get victimNeedsSettings =>
+      'Bluetooth access is off for BeneathSOS. Turn it on in Settings.';
+
+  @override
+  String get victimOpenSettings => 'Open Settings';
+
+  @override
+  String get victimBluetoothOff =>
+      'Turn on Bluetooth so rescuers can find this phone.';
+
+  @override
+  String get victimUnsupported =>
+      'This phone cannot send a Bluetooth help signal. Use the SOS sound.';
+
+  @override
+  String get victimFailed => 'The help signal stopped.';
+
+  @override
+  String get victimRetry => 'Try again';
+
+  @override
+  String get victim112 => 'If you have mobile signal, call 112.';
+
+  @override
+  String get victimSosStop => 'Stop the SOS sound';
+
+  @override
+  String get victimStopTitle => 'Stop calling out?';
+
+  @override
+  String get victimStopBody =>
+      'Rescuers will no longer find this phone by its signal.';
+
+  @override
+  String get victimKeep => 'Keep calling out';
+
+  @override
+  String get victimStop => 'Stop';
 }

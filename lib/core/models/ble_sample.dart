@@ -11,11 +11,13 @@ final class BleSample {
     required this.wallClockMillis,
     this.companyId,
     this.payload,
+    this.serviceData,
     this.localName,
     this.txPower,
   });
 
-  /// Platform identity of the advertiser (rotates on phones, ~15 min).
+  /// Platform identity of the advertiser (rotates on phones, ~15 min); `sos-xxxx` for a victim
+  /// beacon (its beacon id, which does not rotate).
   final String key;
 
   /// Received signal strength in dBm.
@@ -29,6 +31,9 @@ final class BleSample {
 
   /// Advertised service UUIDs.
   final List<String> serviceUuids;
+
+  /// Service data by service UUID (any case).
+  final Map<String, Uint8List>? serviceData;
 
   /// Advertised local name.
   final String? localName;
