@@ -364,4 +364,125 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get finishFailed => 'Arama bitirilemedi. Biraz sonra yeniden deneyin.';
+
+  @override
+  String get drawTitle => 'Enkazın sınırı';
+
+  @override
+  String get drawHint =>
+      'Enkazın her köşesine dokunun. Taşımak için köşeyi sürükleyin.';
+
+  @override
+  String get drawUndo => 'Geri al';
+
+  @override
+  String get drawClear => 'Temizle';
+
+  @override
+  String drawSummary(int corners, String perimeter, String area) {
+    return '$corners köşe · çevre $perimeter · alan $area';
+  }
+
+  @override
+  String get drawTooFew => 'En az 3 köşeye dokunun.';
+
+  @override
+  String get drawTooClose =>
+      'İki köşe neredeyse üst üste. Birini uzaklaştırın.';
+
+  @override
+  String get drawCrossing =>
+      'İki kenar kesişiyor. Kesişmesinler diye bir köşeyi sürükleyin.';
+
+  @override
+  String get drawNoArea => 'Çizimin alanı yok. Köşeleri birbirinden ayırın.';
+
+  @override
+  String get drawBadCorner =>
+      'Bir köşe yerleştirilemedi. Son değişikliği geri alın.';
+
+  @override
+  String get drawNotSaved =>
+      'Çizim kaydedilemedi. Biraz sonra yeniden deneyin.';
+
+  @override
+  String get drawLoadFailed => 'Bu çizim açılamadı. Hiçbir şey silinmedi.';
+
+  @override
+  String get clearConfirmTitle => 'Çizim temizlensin mi?';
+
+  @override
+  String get clearConfirmBody => 'Tüm köşeler silinir. Geri alabilirsiniz.';
+
+  @override
+  String get clearConfirmYes => 'Temizle';
+
+  @override
+  String get clearConfirmNo => 'Kalsın';
+
+  @override
+  String lengthMetres(String value) {
+    return '$value m';
+  }
+
+  @override
+  String areaSquareMetres(String value) {
+    return '$value m²';
+  }
+
+  @override
+  String get scaleTitle => 'Gerçek boyut';
+
+  @override
+  String get scaleQuestion => 'İşaretli kenar gerçekte ne kadar uzun?';
+
+  @override
+  String get scalePickHint => 'Başka bir kenarı ölçmek için ona dokunun.';
+
+  @override
+  String scaleNow(String length) {
+    return 'Şu an $length görünüyor';
+  }
+
+  @override
+  String get scaleLabel => 'Metre cinsinden gerçek uzunluk';
+
+  @override
+  String get scaleHowTitle => 'Nasıl ölçtünüz?';
+
+  @override
+  String get scaleTape => 'Şerit metre';
+
+  @override
+  String get scaleSteps => 'Adımlayarak';
+
+  @override
+  String get scaleEstimate => 'Tahmin';
+
+  @override
+  String get scaleSave => 'Boyutu kaydet';
+
+  @override
+  String get scaleSkip => 'Atla';
+
+  @override
+  String get scaleNotANumber => 'Bir sayı girin, örneğin 18,5.';
+
+  @override
+  String get scaleOutOfRange => '0,5 ile 500 m arasında bir uzunluk girin.';
+
+  @override
+  String get scaleNotSaved =>
+      'Boyut kaydedilemedi. Biraz sonra yeniden deneyin.';
+
+  @override
+  String siteOutlineDone(String area) {
+    return 'Tamamlandı · $area';
+  }
+
+  @override
+  String get siteStepStart => 'Başlamak için dokunun';
+
+  @override
+  String get siteStepNotDone => 'Yapılmadı';
 }

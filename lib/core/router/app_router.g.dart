@@ -32,6 +32,18 @@ RouteBase get $homeRoute => GoRouteData.$route(
           path: ':sessionId',
           hasOverriddenOnExit: false,
           factory: $SiteRoute._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'draw',
+              hasOverriddenOnExit: false,
+              factory: $DrawOutlineRoute._fromState,
+            ),
+            GoRouteData.$route(
+              path: 'scale',
+              hasOverriddenOnExit: false,
+              factory: $ScaleRoute._fromState,
+            ),
+          ],
         ),
       ],
     ),
@@ -178,6 +190,56 @@ mixin $SiteRoute on GoRouteData {
   @override
   String get location =>
       GoRouteData.$location('/sites/${Uri.encodeComponent(_self.sessionId)}');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $DrawOutlineRoute on GoRouteData {
+  static DrawOutlineRoute _fromState(GoRouterState state) =>
+      DrawOutlineRoute(sessionId: state.pathParameters['sessionId']!);
+
+  DrawOutlineRoute get _self => this as DrawOutlineRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/sites/${Uri.encodeComponent(_self.sessionId)}/draw',
+  );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $ScaleRoute on GoRouteData {
+  static ScaleRoute _fromState(GoRouterState state) =>
+      ScaleRoute(sessionId: state.pathParameters['sessionId']!);
+
+  ScaleRoute get _self => this as ScaleRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/sites/${Uri.encodeComponent(_self.sessionId)}/scale',
+  );
 
   @override
   void go(BuildContext context) => context.go(location);

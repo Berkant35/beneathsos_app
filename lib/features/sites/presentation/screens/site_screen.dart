@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:beneathsos_app/core/formatting/date_labels.dart';
 import 'package:beneathsos_app/core/l10n_extension.dart';
+import 'package:beneathsos_app/core/router/app_router.dart';
 import 'package:beneathsos_app/core/sessions/presentation/mixins/finish_search_mixin.dart';
 import 'package:beneathsos_app/features/sites/presentation/mixins/site_screen_mixin.dart';
 import 'package:beneathsos_app/features/sites/presentation/providers/searches.dart';
@@ -61,8 +62,17 @@ class SiteScreen extends ConsumerWidget
                 ),
                 const SizedBox(height: BeneathSpacing.m),
               ],
-              for (final step in stepsFor(l10n, state.value))
-                SiteStepRow(step: step),
+              for (final step in stepsFor(
+                l10n,
+                state.value,
+                open: search.closedAt == null,
+              ))
+                SiteStepRow(
+                  step: step,
+                  onTap: step.opensDrawing
+                      ? () => DrawOutlineRoute(sessionId: sessionId).go(context)
+                      : null,
+                ),
               if (search.closedAt == null) ...[
                 const SizedBox(height: BeneathSpacing.xl),
                 SecondaryButton(

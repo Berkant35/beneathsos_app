@@ -241,7 +241,7 @@ void main() {
     await _tap(tester, 'Atatürk Cad. 12');
     expect(find.byType(SiteScreen), findsOneWidget);
     expect(find.text('Draw the rubble outline'), findsOneWidget);
-    expect(find.text('Done'), findsOneWidget);
+    expect(find.text('Done · 40 m²'), findsOneWidget);
     expect(find.text('1 point measured'), findsOneWidget);
     expect(find.text('Coming in the next update'), findsNWidgets(2));
     expect(id, isNotNull);

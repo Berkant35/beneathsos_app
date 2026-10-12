@@ -178,5 +178,83 @@
   "siteNotFound": "This search could not be opened.",
   "siteBackToList": "Back to searches",
   "newSiteFailed": "The search could not be saved. Try again in a moment.",
-  "finishFailed": "The search could not be finished. Try again in a moment."
+  "finishFailed": "The search could not be finished. Try again in a moment.",
+  "drawTitle": "Rubble outline",
+  "drawHint": "Tap each corner of the rubble. Drag a corner to move it.",
+  "drawUndo": "Undo",
+  "drawClear": "Clear",
+  "drawSummary": "{corners} corners · perimeter {perimeter} · area {area}",
+  "@drawSummary": {
+    "placeholders": {
+      "corners": {
+        "type": "int"
+      },
+      "perimeter": {
+        "type": "String"
+      },
+      "area": {
+        "type": "String"
+      }
+    }
+  },
+  "drawTooFew": "Tap at least 3 corners.",
+  "drawTooClose": "Two corners are almost on top of each other. Move one apart.",
+  "drawCrossing": "Two sides cross. Drag a corner so they do not.",
+  "drawNoArea": "The outline has no area. Spread the corners out.",
+  "drawBadCorner": "A corner could not be placed. Undo the last change.",
+  "drawNotSaved": "The outline could not be saved. Try again in a moment.",
+  "drawLoadFailed": "This outline could not be opened. Nothing was deleted.",
+  "clearConfirmTitle": "Clear the outline?",
+  "clearConfirmBody": "All corners are removed. You can undo it.",
+  "clearConfirmYes": "Clear",
+  "clearConfirmNo": "Keep it",
+  "lengthMetres": "{value} m",
+  "@lengthMetres": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "18.2"
+      }
+    }
+  },
+  "areaSquareMetres": "{value} m²",
+  "@areaSquareMetres": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "216"
+      }
+    }
+  },
+  "scaleTitle": "Real size",
+  "scaleQuestion": "How long is the highlighted side really?",
+  "scalePickHint": "Tap another side to measure that one instead.",
+  "scaleNow": "Now shown as {length}",
+  "@scaleNow": {
+    "placeholders": {
+      "length": {
+        "type": "String"
+      }
+    }
+  },
+  "scaleLabel": "Real length in metres",
+  "scaleHowTitle": "How did you measure it?",
+  "scaleTape": "Tape measure",
+  "scaleSteps": "Paced steps",
+  "scaleEstimate": "Estimate",
+  "scaleSave": "Save the size",
+  "scaleSkip": "Skip",
+  "scaleNotANumber": "Enter a number, for example 18.5.",
+  "scaleOutOfRange": "Use a length between 0.5 and 500 m.",
+  "scaleNotSaved": "The size could not be saved. Try again in a moment.",
+  "siteOutlineDone": "Done · {area}",
+  "@siteOutlineDone": {
+    "placeholders": {
+      "area": {
+        "type": "String"
+      }
+    }
+  },
+  "siteStepStart": "Tap to start",
+  "siteStepNotDone": "Not done"
 }

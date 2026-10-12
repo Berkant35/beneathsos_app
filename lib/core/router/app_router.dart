@@ -7,6 +7,8 @@ import 'package:beneathsos_app/features/preview/presentation/screens/preview_not
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_scan_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_site_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_target_screen.dart';
+import 'package:beneathsos_app/features/site_drawing/presentation/screens/draw_outline_screen.dart';
+import 'package:beneathsos_app/features/site_drawing/presentation/screens/scale_screen.dart';
 import 'package:beneathsos_app/features/sites/presentation/screens/new_site_screen.dart';
 import 'package:beneathsos_app/features/sites/presentation/screens/site_screen.dart';
 import 'package:beneathsos_app/features/sites/presentation/screens/sites_screen.dart';
@@ -30,7 +32,13 @@ part 'app_router.g.dart';
       path: 'sites',
       routes: [
         TypedGoRoute<NewSiteRoute>(path: 'new'),
-        TypedGoRoute<SiteRoute>(path: ':sessionId'),
+        TypedGoRoute<SiteRoute>(
+          path: ':sessionId',
+          routes: [
+            TypedGoRoute<DrawOutlineRoute>(path: 'draw'),
+            TypedGoRoute<ScaleRoute>(path: 'scale'),
+          ],
+        ),
       ],
     ),
     TypedGoRoute<PreviewNoticeRoute>(
@@ -139,6 +147,32 @@ class SiteRoute extends GoRouteData with $SiteRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       SiteScreen(sessionId: sessionId);
+}
+
+/// Draw the rubble outline (`/sites/:sessionId/draw`).
+class DrawOutlineRoute extends GoRouteData with $DrawOutlineRoute {
+  /// Route to the drawing of [sessionId].
+  const DrawOutlineRoute({required this.sessionId});
+
+  /// The search.
+  final String sessionId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      DrawOutlineScreen(sessionId: sessionId);
+}
+
+/// Correct the scale with one real measurement (`/sites/:sessionId/scale`).
+class ScaleRoute extends GoRouteData with $ScaleRoute {
+  /// Route to the scale step of [sessionId].
+  const ScaleRoute({required this.sessionId});
+
+  /// The search.
+  final String sessionId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      ScaleScreen(sessionId: sessionId);
 }
 
 /// Preview 1 (`/preview`): first-run notice.

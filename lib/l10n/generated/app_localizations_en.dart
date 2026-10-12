@@ -368,4 +368,125 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get finishFailed =>
       'The search could not be finished. Try again in a moment.';
+
+  @override
+  String get drawTitle => 'Rubble outline';
+
+  @override
+  String get drawHint =>
+      'Tap each corner of the rubble. Drag a corner to move it.';
+
+  @override
+  String get drawUndo => 'Undo';
+
+  @override
+  String get drawClear => 'Clear';
+
+  @override
+  String drawSummary(int corners, String perimeter, String area) {
+    return '$corners corners · perimeter $perimeter · area $area';
+  }
+
+  @override
+  String get drawTooFew => 'Tap at least 3 corners.';
+
+  @override
+  String get drawTooClose =>
+      'Two corners are almost on top of each other. Move one apart.';
+
+  @override
+  String get drawCrossing => 'Two sides cross. Drag a corner so they do not.';
+
+  @override
+  String get drawNoArea => 'The outline has no area. Spread the corners out.';
+
+  @override
+  String get drawBadCorner =>
+      'A corner could not be placed. Undo the last change.';
+
+  @override
+  String get drawNotSaved =>
+      'The outline could not be saved. Try again in a moment.';
+
+  @override
+  String get drawLoadFailed =>
+      'This outline could not be opened. Nothing was deleted.';
+
+  @override
+  String get clearConfirmTitle => 'Clear the outline?';
+
+  @override
+  String get clearConfirmBody => 'All corners are removed. You can undo it.';
+
+  @override
+  String get clearConfirmYes => 'Clear';
+
+  @override
+  String get clearConfirmNo => 'Keep it';
+
+  @override
+  String lengthMetres(String value) {
+    return '$value m';
+  }
+
+  @override
+  String areaSquareMetres(String value) {
+    return '$value m²';
+  }
+
+  @override
+  String get scaleTitle => 'Real size';
+
+  @override
+  String get scaleQuestion => 'How long is the highlighted side really?';
+
+  @override
+  String get scalePickHint => 'Tap another side to measure that one instead.';
+
+  @override
+  String scaleNow(String length) {
+    return 'Now shown as $length';
+  }
+
+  @override
+  String get scaleLabel => 'Real length in metres';
+
+  @override
+  String get scaleHowTitle => 'How did you measure it?';
+
+  @override
+  String get scaleTape => 'Tape measure';
+
+  @override
+  String get scaleSteps => 'Paced steps';
+
+  @override
+  String get scaleEstimate => 'Estimate';
+
+  @override
+  String get scaleSave => 'Save the size';
+
+  @override
+  String get scaleSkip => 'Skip';
+
+  @override
+  String get scaleNotANumber => 'Enter a number, for example 18.5.';
+
+  @override
+  String get scaleOutOfRange => 'Use a length between 0.5 and 500 m.';
+
+  @override
+  String get scaleNotSaved =>
+      'The size could not be saved. Try again in a moment.';
+
+  @override
+  String siteOutlineDone(String area) {
+    return 'Done · $area';
+  }
+
+  @override
+  String get siteStepStart => 'Tap to start';
+
+  @override
+  String get siteStepNotDone => 'Not done';
 }

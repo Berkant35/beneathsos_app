@@ -709,6 +709,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The search could not be finished. Try again in a moment.'**
   String get finishFailed;
+
+  /// No description provided for @drawTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rubble outline'**
+  String get drawTitle;
+
+  /// No description provided for @drawHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap each corner of the rubble. Drag a corner to move it.'**
+  String get drawHint;
+
+  /// No description provided for @drawUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get drawUndo;
+
+  /// No description provided for @drawClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get drawClear;
+
+  /// No description provided for @drawSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{corners} corners · perimeter {perimeter} · area {area}'**
+  String drawSummary(int corners, String perimeter, String area);
+
+  /// No description provided for @drawTooFew.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap at least 3 corners.'**
+  String get drawTooFew;
+
+  /// No description provided for @drawTooClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Two corners are almost on top of each other. Move one apart.'**
+  String get drawTooClose;
+
+  /// No description provided for @drawCrossing.
+  ///
+  /// In en, this message translates to:
+  /// **'Two sides cross. Drag a corner so they do not.'**
+  String get drawCrossing;
+
+  /// No description provided for @drawNoArea.
+  ///
+  /// In en, this message translates to:
+  /// **'The outline has no area. Spread the corners out.'**
+  String get drawNoArea;
+
+  /// No description provided for @drawBadCorner.
+  ///
+  /// In en, this message translates to:
+  /// **'A corner could not be placed. Undo the last change.'**
+  String get drawBadCorner;
+
+  /// No description provided for @drawNotSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'The outline could not be saved. Try again in a moment.'**
+  String get drawNotSaved;
+
+  /// No description provided for @drawLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'This outline could not be opened. Nothing was deleted.'**
+  String get drawLoadFailed;
+
+  /// No description provided for @clearConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear the outline?'**
+  String get clearConfirmTitle;
+
+  /// No description provided for @clearConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'All corners are removed. You can undo it.'**
+  String get clearConfirmBody;
+
+  /// No description provided for @clearConfirmYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clearConfirmYes;
+
+  /// No description provided for @clearConfirmNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it'**
+  String get clearConfirmNo;
+
+  /// No description provided for @lengthMetres.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} m'**
+  String lengthMetres(String value);
+
+  /// No description provided for @areaSquareMetres.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} m²'**
+  String areaSquareMetres(String value);
+
+  /// No description provided for @scaleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Real size'**
+  String get scaleTitle;
+
+  /// No description provided for @scaleQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'How long is the highlighted side really?'**
+  String get scaleQuestion;
+
+  /// No description provided for @scalePickHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap another side to measure that one instead.'**
+  String get scalePickHint;
+
+  /// No description provided for @scaleNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now shown as {length}'**
+  String scaleNow(String length);
+
+  /// No description provided for @scaleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Real length in metres'**
+  String get scaleLabel;
+
+  /// No description provided for @scaleHowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How did you measure it?'**
+  String get scaleHowTitle;
+
+  /// No description provided for @scaleTape.
+  ///
+  /// In en, this message translates to:
+  /// **'Tape measure'**
+  String get scaleTape;
+
+  /// No description provided for @scaleSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'Paced steps'**
+  String get scaleSteps;
+
+  /// No description provided for @scaleEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimate'**
+  String get scaleEstimate;
+
+  /// No description provided for @scaleSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save the size'**
+  String get scaleSave;
+
+  /// No description provided for @scaleSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get scaleSkip;
+
+  /// No description provided for @scaleNotANumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a number, for example 18.5.'**
+  String get scaleNotANumber;
+
+  /// No description provided for @scaleOutOfRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a length between 0.5 and 500 m.'**
+  String get scaleOutOfRange;
+
+  /// No description provided for @scaleNotSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'The size could not be saved. Try again in a moment.'**
+  String get scaleNotSaved;
+
+  /// No description provided for @siteOutlineDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done · {area}'**
+  String siteOutlineDone(String area);
+
+  /// No description provided for @siteStepStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to start'**
+  String get siteStepStart;
+
+  /// No description provided for @siteStepNotDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not done'**
+  String get siteStepNotDone;
 }
 
 class _AppLocalizationsDelegate
