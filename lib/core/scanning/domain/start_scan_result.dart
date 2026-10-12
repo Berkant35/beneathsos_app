@@ -18,10 +18,13 @@ final class PermissionMissing extends StartScanResult {
   final bool permanent;
 }
 
-/// Bluetooth is off or not available on this device.
+/// Bluetooth is off ([unsupported] false) or the device has no Bluetooth LE ([unsupported] true).
 final class BluetoothUnavailable extends StartScanResult {
   /// Creates the result.
-  const BluetoothUnavailable();
+  const BluetoothUnavailable({this.unsupported = false});
+
+  /// Whether the device cannot do Bluetooth LE at all.
+  final bool unsupported;
 }
 
 /// Starting failed unexpectedly.

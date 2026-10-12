@@ -57,6 +57,22 @@ void main() {
     );
   });
 
+  test(
+    'PermissionPrecondition with ask: false only checks, never requests',
+    () async {
+      final permissions = FakePermissions(checkResult: ScanPermission.denied);
+      final result = await PermissionPrecondition(
+        permissions,
+        ask: false,
+      ).check();
+      expect(
+        result,
+        isA<PermissionMissing>().having((r) => r.permanent, 'permanent', false),
+      );
+      expect(permissions.calls, ['check']);
+    },
+  );
+
   group('BluetoothPrecondition', () {
     Future<Object?> checkWith(BluetoothAvailability availability) =>
         BluetoothPrecondition(FakeScanner()..availability = availability)
@@ -76,11 +92,19 @@ void main() {
     test('blocks when off or unsupported', () async {
       expect(
         await checkWith(BluetoothAvailability.off),
-        isA<BluetoothUnavailable>(),
+        isA<BluetoothUnavailable>().having(
+          (r) => r.unsupported,
+          'unsupported',
+          false,
+        ),
       );
       expect(
         await checkWith(BluetoothAvailability.unsupported),
-        isA<BluetoothUnavailable>(),
+        isA<BluetoothUnavailable>().having(
+          (r) => r.unsupported,
+          'unsupported',
+          true,
+        ),
       );
     });
 

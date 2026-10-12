@@ -10,17 +10,20 @@ abstract interface class ScanPrecondition {
   Future<StartScanResult?> check();
 }
 
-/// Scanning permissions must be granted; asks once when they are missing.
+/// Scanning permissions must be granted; asks once when they are missing (unless [ask] is false).
 final class PermissionPrecondition implements ScanPrecondition {
   /// Creates the precondition.
-  const PermissionPrecondition(this._permissions);
+  const PermissionPrecondition(this._permissions, {this.ask = true});
 
   final ScanPermissionPort _permissions;
+
+  /// Whether a missing permission is requested (false: only checked).
+  final bool ask;
 
   @override
   Future<StartScanResult?> check() async {
     var permission = await _permissions.check();
-    if (permission == ScanPermission.denied) {
+    if (ask && permission == ScanPermission.denied) {
       permission = await _permissions.request();
     }
     return switch (permission) {
@@ -46,8 +49,10 @@ final class BluetoothPrecondition implements ScanPrecondition {
         BluetoothAvailability.unauthorized => const PermissionMissing(
           permanent: true,
         ),
-        BluetoothAvailability.off ||
-        BluetoothAvailability.unsupported => const BluetoothUnavailable(),
+        BluetoothAvailability.off => const BluetoothUnavailable(),
+        BluetoothAvailability.unsupported => const BluetoothUnavailable(
+          unsupported: true,
+        ),
         // `unknown` after the settle timeout: try anyway, the platform reports failures.
         BluetoothAvailability.on || BluetoothAvailability.unknown => null,
       };
