@@ -238,4 +238,22 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get lastSearchFinish => 'Bu aramayı bitir';
+
+  @override
+  String lastSearchUnreadable(String title, String time) {
+    return '$title · verilerinin bir kısmı okunamadı · başlangıç $time';
+  }
+
+  @override
+  String get finishConfirmTitle => 'Bu arama bitirilsin mi?';
+
+  @override
+  String get finishConfirmBody =>
+      'Bu aramaya bir daha devam edemezsiniz. Kaydedilen her şey saklanır.';
+
+  @override
+  String get finishConfirmYes => 'Bitir';
+
+  @override
+  String get finishConfirmNo => 'Açık kalsın';
 }

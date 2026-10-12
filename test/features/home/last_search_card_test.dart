@@ -11,8 +11,13 @@ import 'package:rubble_core/rubble_core.dart';
 
 import '../../helpers/pump_app.dart';
 
-/// A database holding one open practice search with one measured point, as left by a killed app.
-Future<(AppDatabase, SessionId)> _leftBehind(WidgetTester tester) async {
+/// A database holding one open search (practice unless [practice] is false) with one measured
+/// point, as left by a killed app; [broken] adds an event that no longer decodes.
+Future<(AppDatabase, SessionId)> _leftBehind(
+  WidgetTester tester, {
+  bool practice = true,
+  bool broken = false,
+}) async {
   final db = testDatabase();
   addTearDown(db.close);
   final id = await tester.runAsync(() async {
@@ -22,10 +27,27 @@ Future<(AppDatabase, SessionId)> _leftBehind(WidgetTester tester) async {
       random: Random(1),
     );
     final id = await store.create(
-      title: 'Practice search',
+      title: practice ? 'Practice search' : 'Atatürk Cad. 12',
       engineProfile: 'voided_pancake@1',
-      practice: true,
+      practice: practice,
     );
+    if (broken) {
+      await db
+          .into(db.events)
+          .insert(
+            EventsCompanion.insert(
+              id: 'broken',
+              sessionId: id.value,
+              seq: 99,
+              deviceId: 'device-x',
+              hlc: '000000000009000-00000000-device-x',
+              schema: 1,
+              type: 'ScaleSet',
+              payload: '{"factor": ',
+              createdAt: 9000,
+            ),
+          );
+    }
     const point = PointId('p1');
     await store.append(
       id,
@@ -77,7 +99,7 @@ void main() {
     );
   });
 
-  testWidgets('Finish closes the search and the card goes away', (
+  testWidgets('Finish asks first; Keep it open changes nothing', (
     tester,
   ) async {
     setPhoneSize(tester, 402, 874);
@@ -87,11 +109,59 @@ void main() {
     await tester.ensureVisible(find.text('Finish this search'));
     await tester.tap(find.text('Finish this search'));
     await _settle(tester);
+    expect(find.text('Finish this search?'), findsOneWidget);
+    await tester.tap(find.text('Keep it open'));
+    await _settle(tester);
+    expect(find.text('Last practice search'), findsOneWidget);
+    final session = await tester.runAsync(
+      () => db.select(db.sessions).getSingle(),
+    );
+    expect(session!.closedAt, isNull);
+  });
+
+  testWidgets('confirming Finish closes the search and the card goes away', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _leftBehind(tester);
+    await pumpRouterApp(tester, database: db);
+    await _settle(tester);
+    await tester.ensureVisible(find.text('Finish this search'));
+    await tester.tap(find.text('Finish this search'));
+    await _settle(tester);
+    await tester.tap(find.text('Finish'));
+    await _settle(tester);
     expect(find.text('Last practice search'), findsNothing);
     final session = await tester.runAsync(
       () => db.select(db.sessions).getSingle(),
     );
     expect(session!.closedAt, isNotNull);
+  });
+
+  testWidgets('a search with unreadable data is still offered, with a note', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _leftBehind(tester, broken: true);
+    await pumpRouterApp(tester, database: db);
+    await _settle(tester);
+    expect(
+      find.text(
+        'Practice search · some of its data could not be read · started 14:05',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('Continue the search'), findsOneWidget);
+  });
+
+  testWidgets('a real search is not continued in the preview', (tester) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _leftBehind(tester, practice: false);
+    await pumpRouterApp(tester, database: db);
+    await _settle(tester);
+    expect(find.text('Last search'), findsOneWidget);
+    expect(find.text('Continue the search'), findsNothing);
+    expect(find.text('Finish this search'), findsOneWidget);
   });
 
   testWidgets('Continue opens the map and resumes that search', (tester) async {

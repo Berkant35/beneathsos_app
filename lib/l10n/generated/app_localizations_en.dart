@@ -238,4 +238,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lastSearchFinish => 'Finish this search';
+
+  @override
+  String lastSearchUnreadable(String title, String time) {
+    return '$title · some of its data could not be read · started $time';
+  }
+
+  @override
+  String get finishConfirmTitle => 'Finish this search?';
+
+  @override
+  String get finishConfirmBody =>
+      'You will not be able to continue it. Everything recorded stays saved.';
+
+  @override
+  String get finishConfirmYes => 'Finish';
+
+  @override
+  String get finishConfirmNo => 'Keep it open';
 }

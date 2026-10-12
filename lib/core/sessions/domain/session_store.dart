@@ -12,6 +12,7 @@ final class SessionSummary {
     required this.practice,
     required this.createdAt,
     required this.measuredPoints,
+    required this.readable,
   });
 
   /// Session id.
@@ -26,8 +27,11 @@ final class SessionSummary {
   /// When the session was created (wall clock).
   final DateTime createdAt;
 
-  /// Points with readings that were not discarded.
+  /// Points with readings that were not discarded (0 when not [readable]).
   final int measuredPoints;
+
+  /// False when a stored event no longer decodes: the search is still offered, never hidden.
+  final bool readable;
 
   @override
   bool operator ==(Object other) =>
@@ -36,11 +40,12 @@ final class SessionSummary {
       other.title == title &&
       other.practice == practice &&
       other.createdAt == createdAt &&
-      other.measuredPoints == measuredPoints;
+      other.measuredPoints == measuredPoints &&
+      other.readable == readable;
 
   @override
   int get hashCode =>
-      Object.hash(id, title, practice, createdAt, measuredPoints);
+      Object.hash(id, title, practice, createdAt, measuredPoints, readable);
 }
 
 /// A stored event that no longer decodes. It is reported, never skipped (rule 3: no data is lost).
@@ -74,7 +79,8 @@ abstract interface class SessionStore {
   /// The projected state of [session], updated after every append.
   Stream<SessionState> watch(SessionId session);
 
-  /// The most recently created session that is not closed, or null.
+  /// The session to offer on the home screen: the newest open real search, else the newest open
+  /// practice search, else null.
   Stream<SessionSummary?> watchLatestOpen();
 
   /// Stores raw samples heard during [session] (at [point], when measuring one) in one batch.

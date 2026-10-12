@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:beneathsos_app/core/logging/app_logger.dart';
 import 'package:beneathsos_app/core/services/clock.dart';
+import 'package:beneathsos_app/core/sessions/domain/session_store.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
 import 'package:beneathsos_app/features/preview/domain/practice_sample.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -27,6 +28,7 @@ class PracticeSession extends _$PracticeSession {
   /// Starts a new practice search named [title].
   Future<void> start(String title) => _guard(() async {
     _points = 0;
+    state = null; // if creating fails, later steps must not go into the previous search
     state = await ref
         .read(sessionStoreProvider)
         .create(
@@ -36,8 +38,16 @@ class PracticeSession extends _$PracticeSession {
         );
   });
 
-  /// Continues an earlier search (from the home screen).
-  void resume(SessionId session) => state = session;
+  /// Continues an earlier practice [search] (from the home screen), after any step still running.
+  /// A real search is refused: the preview's sample data must never go into it.
+  Future<void> resume(SessionSummary search) => _guard(() async {
+    if (!search.practice) {
+      AppLogger.error('practice', 'Refused to resume a real search');
+      return;
+    }
+    _points = search.measuredPoints;
+    state = search.id;
+  });
 
   /// The outline is done.
   Future<void> outlineDrawn() =>

@@ -125,18 +125,27 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-    onCreate: (m) async {
-      await m.createAll();
+    // One transaction, and safe to run again: a first launch killed before drift saved the schema
+    // version runs onCreate a second time on the next launch.
+    onCreate: (m) => transaction(() async {
+      for (final entity in allSchemaEntities) {
+        if (!await _exists(entity.entityName)) await m.create(entity);
+      }
       // Events are evidence: rows are appended, never changed (deleting a session cascades).
       await customStatement('''
-        CREATE TRIGGER events_append_only BEFORE UPDATE ON events
+        CREATE TRIGGER IF NOT EXISTS events_append_only BEFORE UPDATE ON events
         BEGIN SELECT RAISE(ABORT, 'events are append-only'); END
       ''');
-    },
+    }),
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
       // Write-ahead log: a crash mid-write never loses a committed event (ADR 0006).
       await customStatement('PRAGMA journal_mode = WAL');
     },
   );
+
+  Future<bool> _exists(String name) async => (await customSelect(
+    'SELECT 1 FROM sqlite_master WHERE name = ?',
+    variables: [Variable.withString(name)],
+  ).get()).isNotEmpty;
 }

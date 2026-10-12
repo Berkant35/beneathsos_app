@@ -38,18 +38,20 @@ class LastSearchCard extends ConsumerWidget with LastSearchCardMixin {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(cardBody(l10n, search)),
-            const SizedBox(height: BeneathSpacing.m),
-            SecondaryButton(
-              label: l10n.lastSearchContinue,
-              icon: Icons.play_arrow_rounded,
-              onPressed: () => continueSearch(context, ref, search),
-            ),
+            if (canContinue(search)) ...[
+              const SizedBox(height: BeneathSpacing.m),
+              SecondaryButton(
+                label: l10n.lastSearchContinue,
+                icon: Icons.play_arrow_rounded,
+                onPressed: () => continueSearch(context, ref, search),
+              ),
+            ],
             const SizedBox(height: BeneathSpacing.sm),
             SecondaryButton(
               label: l10n.lastSearchFinish,
               icon: Icons.flag_rounded,
-              // Errors are logged inside; the card updates from the database.
-              onPressed: () => unawaited(finishSearch(ref, search)),
+              // Asks first; errors are logged inside; the card updates from the database.
+              onPressed: () => unawaited(finishSearch(context, ref, search)),
             ),
           ],
         ),

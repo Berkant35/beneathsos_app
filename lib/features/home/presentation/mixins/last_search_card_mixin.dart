@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:beneathsos_app/core/logging/app_logger.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
 import 'package:beneathsos_app/core/sessions/domain/session_store.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
+import 'package:beneathsos_app/features/home/presentation/widgets/finish_search_dialog.dart';
 import 'package:beneathsos_app/features/preview/presentation/providers/practice_session.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:flutter/widgets.dart';
@@ -15,13 +18,16 @@ mixin LastSearchCardMixin {
   String cardTitle(AppLocalizations l10n, SessionSummary search) =>
       search.practice ? l10n.lastPracticeTitle : l10n.lastSearchTitle;
 
-  /// "<title> · N points measured · started HH:mm".
-  String cardBody(AppLocalizations l10n, SessionSummary search) =>
-      l10n.lastSearchBody(
-        search.title,
-        search.measuredPoints,
-        DateFormat.Hm(l10n.localeName).format(search.createdAt),
-      );
+  /// "<title> · N points measured · started HH:mm", or a note when some data could not be read.
+  String cardBody(AppLocalizations l10n, SessionSummary search) {
+    final time = DateFormat.Hm(l10n.localeName).format(search.createdAt);
+    return search.readable
+        ? l10n.lastSearchBody(search.title, search.measuredPoints, time)
+        : l10n.lastSearchUnreadable(search.title, time);
+  }
+
+  /// Only practice searches continue in the preview; real searches get their own flow (phase 4+).
+  bool canContinue(SessionSummary search) => search.practice;
 
   /// Opens the map of [search]; later steps are recorded into it.
   void continueSearch(
@@ -29,12 +35,17 @@ mixin LastSearchCardMixin {
     WidgetRef ref,
     SessionSummary search,
   ) {
-    ref.read(practiceSessionProvider.notifier).resume(search.id);
+    unawaited(ref.read(practiceSessionProvider.notifier).resume(search));
     const PreviewMapRoute().go(context);
   }
 
-  /// Closes [search] (its events stay stored); a failure is logged.
-  Future<void> finishSearch(WidgetRef ref, SessionSummary search) async {
+  /// After the user confirms, closes [search] (its events stay stored); a failure is logged.
+  Future<void> finishSearch(
+    BuildContext context,
+    WidgetRef ref,
+    SessionSummary search,
+  ) async {
+    if (!await FinishSearchDialog.confirm(context)) return;
     try {
       await ref
           .read(sessionStoreProvider)

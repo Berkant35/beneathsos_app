@@ -156,7 +156,7 @@ final class DriftSessionStore implements SessionStore {
   Stream<SessionSummary?> watchLatestOpen() => _db
       .customSelect(
         'SELECT id FROM sessions WHERE closed_at IS NULL '
-        'ORDER BY created_at DESC, id DESC LIMIT 1',
+        'ORDER BY practice ASC, created_at DESC, id DESC LIMIT 1',
         readsFrom: {_db.sessions, _db.events},
       )
       .watch()
@@ -173,13 +173,19 @@ final class DriftSessionStore implements SessionStore {
     final events = await (_db.select(
       _db.events,
     )..where((e) => e.sessionId.equals(id))).get();
-    final state = SessionProjection.replay(events.map(_decode));
+    SessionState? state;
+    try {
+      state = SessionProjection.replay(events.map(_decode));
+    } on UnreadableEvent {
+      state = null; // watch(id) reports the event; the search itself stays reachable
+    }
     return SessionSummary(
       id: SessionId(id),
       title: session.title,
       practice: session.practice,
       createdAt: DateTime.fromMillisecondsSinceEpoch(session.createdAt),
-      measuredPoints: state.measuredPoints.length,
+      measuredPoints: state?.measuredPoints.length ?? 0,
+      readable: state != null,
     );
   }
 

@@ -17,16 +17,22 @@ final class _FlakyStore implements SessionStore {
   final Object error;
   int failures = 1;
 
+  /// When true, `create` fails instead of `append`.
+  bool failCreate = false;
+
   @override
   Future<SessionId> create({
     required String title,
     required String engineProfile,
     required bool practice,
-  }) => inner.create(
-    title: title,
-    engineProfile: engineProfile,
-    practice: practice,
-  );
+  }) {
+    if (failCreate) return Future.error(error);
+    return inner.create(
+      title: title,
+      engineProfile: engineProfile,
+      practice: practice,
+    );
+  }
 
   @override
   Future<void> append(SessionId session, SessionEvent event) {
@@ -74,6 +80,19 @@ final class _BrokenStore implements SessionStore {
     List<BleSample> samples,
   ) => Future.error(const FormatException('disk full'));
 }
+
+SessionSummary _summary(
+  SessionId id, {
+  required bool practice,
+  int measuredPoints = 0,
+}) => SessionSummary(
+  id: id,
+  title: 'Earlier',
+  practice: practice,
+  createdAt: DateTime(2026),
+  measuredPoints: measuredPoints,
+  readable: true,
+);
 
 void main() {
   ProviderContainer container() {
@@ -166,7 +185,8 @@ void main() {
       engineProfile: 'voided_pancake@1',
       practice: true,
     );
-    final practice = c.read(practiceSessionProvider.notifier)..resume(earlier);
+    final practice = c.read(practiceSessionProvider.notifier);
+    await practice.resume(_summary(earlier, practice: true));
     await practice.pointMeasured();
     expect(c.read(practiceSessionProvider), earlier);
     expect((await store.watch(earlier).first).measuredPoints, hasLength(1));
@@ -188,4 +208,84 @@ void main() {
     await practice.pointMeasured();
     expect(c.read(practiceSessionProvider), isNull);
   });
+
+  test(
+    'when a new start fails, later steps do not go into the previous search',
+    () async {
+      final db = AppDatabase(NativeDatabase.memory());
+      addTearDown(db.close);
+      final plain = ProviderContainer(
+        overrides: [appDatabaseProvider.overrideWithValue(db)],
+      );
+      addTearDown(plain.dispose);
+      final real = plain.read(sessionStoreProvider);
+      final flaky = _FlakyStore(real, const FormatException('disk full'))
+        ..failures = 0;
+      final c = ProviderContainer(
+        overrides: [
+          appDatabaseProvider.overrideWithValue(db),
+          sessionStoreProvider.overrideWithValue(flaky),
+        ],
+      );
+      addTearDown(c.dispose);
+      final practice = c.read(practiceSessionProvider.notifier);
+      await practice.start('Practice search');
+      final first = c.read(practiceSessionProvider)!;
+      flaky.failCreate = true;
+      await practice.start('Practice search');
+      await practice.outlineDrawn();
+      expect(c.read(practiceSessionProvider), isNull);
+      expect((await real.watch(first).first).outline, isNull);
+    },
+  );
+
+  test('a real search is never resumed by the practice journey', () async {
+    final c = container();
+    await c
+        .read(practiceSessionProvider.notifier)
+        .resume(_summary(const SessionId('real'), practice: false));
+    expect(c.read(practiceSessionProvider), isNull);
+  });
+
+  test('resume waits for a start that is still running', () async {
+    final c = container();
+    final store = c.read(sessionStoreProvider);
+    final earlier = await store.create(
+      title: 'Earlier',
+      engineProfile: 'voided_pancake@1',
+      practice: true,
+    );
+    final practice = c.read(practiceSessionProvider.notifier);
+    final started = practice.start('Practice search');
+    await practice.resume(_summary(earlier, practice: true));
+    await started;
+    expect(c.read(practiceSessionProvider), earlier);
+  });
+
+  test(
+    'points after resume do not reuse the positions already measured',
+    () async {
+      final db = AppDatabase(NativeDatabase.memory());
+      addTearDown(db.close);
+      ProviderContainer app() {
+        final c = ProviderContainer(
+          overrides: [appDatabaseProvider.overrideWithValue(db)],
+        );
+        addTearDown(c.dispose);
+        return c;
+      }
+
+      final before = app();
+      await before.read(practiceSessionProvider.notifier).start('Practice');
+      await before.read(practiceSessionProvider.notifier).pointMeasured();
+      final id = before.read(practiceSessionProvider)!;
+
+      final after = app(); // the app was restarted
+      final practice = after.read(practiceSessionProvider.notifier);
+      await practice.resume(_summary(id, practice: true, measuredPoints: 1));
+      await practice.pointMeasured();
+      final state = await after.read(sessionStoreProvider).watch(id).first;
+      expect(state.measuredPoints.map((p) => p.at).toSet(), hasLength(2));
+    },
+  );
 }

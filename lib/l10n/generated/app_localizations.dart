@@ -505,6 +505,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Finish this search'**
   String get lastSearchFinish;
+
+  /// Home card when a stored event of the search no longer decodes.
+  ///
+  /// In en, this message translates to:
+  /// **'{title} · some of its data could not be read · started {time}'**
+  String lastSearchUnreadable(String title, String time);
+
+  /// No description provided for @finishConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish this search?'**
+  String get finishConfirmTitle;
+
+  /// No description provided for @finishConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You will not be able to continue it. Everything recorded stays saved.'**
+  String get finishConfirmBody;
+
+  /// No description provided for @finishConfirmYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get finishConfirmYes;
+
+  /// No description provided for @finishConfirmNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it open'**
+  String get finishConfirmNo;
 }
 
 class _AppLocalizationsDelegate

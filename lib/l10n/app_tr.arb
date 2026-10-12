@@ -67,5 +67,10 @@
   "lastPracticeTitle": "Son alıştırma araması",
   "lastSearchBody": "{title} · {count, plural, =0{henüz ölçülen nokta yok} other{{count} nokta ölçüldü}} · başlangıç {time}",
   "lastSearchContinue": "Aramaya devam et",
-  "lastSearchFinish": "Bu aramayı bitir"
+  "lastSearchFinish": "Bu aramayı bitir",
+  "lastSearchUnreadable": "{title} · verilerinin bir kısmı okunamadı · başlangıç {time}",
+  "finishConfirmTitle": "Bu arama bitirilsin mi?",
+  "finishConfirmBody": "Bu aramaya bir daha devam edemezsiniz. Kaydedilen her şey saklanır.",
+  "finishConfirmYes": "Bitir",
+  "finishConfirmNo": "Açık kalsın"
 }

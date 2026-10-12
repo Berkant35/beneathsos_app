@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:beneathsos_app/core/database/app_database.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -88,4 +90,37 @@ void main() {
     final row = await db.select(db.settings).getSingle();
     expect((row.key, row.value), ('device_id', 'abc'));
   });
+
+  test(
+    'a first launch killed before the schema version was saved opens again',
+    () async {
+      final dir = await Directory.systemTemp.createTemp('beneathsos_db');
+      addTearDown(() => dir.delete(recursive: true));
+      final file = File('${dir.path}/beneathsos.sqlite');
+      final first = AppDatabase(NativeDatabase(file));
+      await first.select(first.sessions).get(); // opens: onCreate ran
+      await first.customStatement(
+        'PRAGMA user_version = 0',
+      ); // as if killed before it was saved
+      await first.close();
+
+      final again = AppDatabase(NativeDatabase(file));
+      addTearDown(again.close);
+      expect(await again.select(again.sessions).get(), isEmpty);
+      await expectLater(
+        again.customStatement(
+          'INSERT INTO sessions VALUES (?, ?, ?, ?, ?, ?)',
+          ['s1', 'T', 'dense@1', 1, 1, null],
+        ),
+        completes,
+      );
+      await again.customStatement(
+        "INSERT INTO events VALUES ('e1', 's1', 1, 'd', 'h', 1, 'SessionClosed', '{}', 1)",
+      );
+      await expectLater(
+        again.customUpdate("UPDATE events SET type = 'x'"),
+        throwsA(isA<SqliteException>()),
+      );
+    },
+  );
 }

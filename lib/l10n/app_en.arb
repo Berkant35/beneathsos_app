@@ -99,5 +99,22 @@
     }
   },
   "lastSearchContinue": "Continue the search",
-  "lastSearchFinish": "Finish this search"
+  "lastSearchFinish": "Finish this search",
+  "lastSearchUnreadable": "{title} · some of its data could not be read · started {time}",
+  "@lastSearchUnreadable": {
+    "description": "Home card when a stored event of the search no longer decodes.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String",
+        "example": "14:05"
+      }
+    }
+  },
+  "finishConfirmTitle": "Finish this search?",
+  "finishConfirmBody": "You will not be able to continue it. Everything recorded stays saved.",
+  "finishConfirmYes": "Finish",
+  "finishConfirmNo": "Keep it open"
 }

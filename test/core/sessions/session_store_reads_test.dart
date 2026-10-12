@@ -125,6 +125,7 @@ void main() {
           practice: true,
           createdAt: DateTime.fromMillisecondsSinceEpoch(6000),
           measuredPoints: 1,
+          readable: true,
         ),
       ),
     );
@@ -192,4 +193,43 @@ void main() {
     expect(state.title, 'Kept');
     expect(state.measuredPoints, hasLength(1));
   });
+
+  test('a real search is offered before a newer practice search', () async {
+    final s = store();
+    final real = await s.create(
+      title: 'Atatürk Cad. 12',
+      engineProfile: 'voided_pancake@1',
+      practice: false,
+    );
+    wall = 6000;
+    await create(s, 'Practice search');
+    final latest = await s.watchLatestOpen().first;
+    expect(latest!.id, real);
+  });
+
+  test(
+    'a search with an unreadable event is still offered, marked unreadable',
+    () async {
+      final s = store();
+      final id = await create(s, 'Practice search');
+      await db
+          .into(db.events)
+          .insert(
+            EventsCompanion.insert(
+              id: 'broken',
+              sessionId: id.value,
+              seq: 99,
+              deviceId: 'device-x',
+              hlc: '000000000009000-00000000-device-x',
+              schema: 1,
+              type: 'ScaleSet',
+              payload: '{"factor": ',
+              createdAt: 9000,
+            ),
+          );
+      final latest = await s.watchLatestOpen().first;
+      expect(latest!.id, id);
+      expect(latest.readable, isFalse);
+    },
+  );
 }
