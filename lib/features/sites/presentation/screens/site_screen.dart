@@ -80,6 +80,9 @@ class SiteScreen extends ConsumerWidget
                     SiteStepAction.target => () => TargetsRoute(
                       sessionId: sessionId,
                     ).go(context),
+                    SiteStepAction.measure => () => MeasureRoute(
+                      sessionId: sessionId,
+                    ).go(context),
                     null => null,
                   },
                 ),

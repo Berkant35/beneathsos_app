@@ -656,4 +656,66 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get scanFailed => 'Tarama durdu. Yeniden denemek için dokunun.';
+
+  @override
+  String get pointTitle => 'Ölçüm';
+
+  @override
+  String get pointChoose =>
+      'Enkazın çevresinde bir yerde durun ve haritada bulunduğunuz yere dokunun.';
+
+  @override
+  String pointSummary(int count, int heard) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nokta ölçüldü',
+      zero: 'Henüz ölçülen nokta yok',
+    );
+    return '$_temp0 · $heard tanesinde sinyal var';
+  }
+
+  @override
+  String get pointMoving =>
+      'Hareket var — telefon sabit olana kadar sayım bekliyor.';
+
+  @override
+  String pointHeard(String label) {
+    return '$label: sinyal var';
+  }
+
+  @override
+  String pointNotYet(String label) {
+    return '$label: henüz duyulmadı';
+  }
+
+  @override
+  String pointSavedHeard(String value) {
+    return 'Nokta kaydedildi: sinyal var ($value dBm).';
+  }
+
+  @override
+  String get pointSavedNotHeard =>
+      'Nokta kaydedildi: duyulmadı — bu da bir bilgi.';
+
+  @override
+  String get pointNotSaved => 'Nokta kaydedilemedi. Yeniden ölçün.';
+
+  @override
+  String get pointNeedsOutline => 'Önce enkazın sınırını çizin.';
+
+  @override
+  String get pointNeedsTarget => 'Önce aranacak telefonu seçin.';
+
+  @override
+  String relinkQuestion(int seconds) {
+    return 'Telefon Bluetooth kimliğini değiştirmiş olabilir: $seconds sn sonra benzer sinyalli yeni bir kimlik çıktı. Aynı telefon mu?';
+  }
+
+  @override
+  String get relinkYes => 'Evet, aynı telefon';
+
+  @override
+  String get mapLegend =>
+      'Dolu: sinyal var · Halka: duyulmadı · Turuncu: şimdi ölçülüyor';
 }

@@ -217,10 +217,8 @@ void main() {
     await settleWithDatabase(tester);
     await _tap(tester, 'Start a search');
     await _tap(tester, 'Atatürk Cad. 12');
-    expect(
-      find.text('Not done'),
-      findsNWidgets(3),
-    ); // outline, surface scan, target
+    // Every step of a finished search: outline, surface scan, target, measuring.
+    expect(find.text('Not done'), findsNWidgets(4));
     await _tap(tester, 'Draw the rubble outline');
     expect(find.byType(DrawOutlineScreen), findsNothing);
   });

@@ -6,6 +6,8 @@ import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
 import 'package:beneathsos_app/core/scanning/presentation/providers/scanning_providers.dart';
 import 'package:beneathsos_app/core/services/app_lifecycle.dart';
 import 'package:beneathsos_app/core/services/ble_service.dart';
+import 'package:beneathsos_app/core/services/motion_service.dart';
+import 'package:beneathsos_app/features/measurement/domain/motion_port.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:drift/drift.dart' show DatabaseConnection;
@@ -33,7 +35,9 @@ List<Override> fakePortOverrides({
   AppDatabase? database,
   Stream<List<BleSample>>? samples,
   Stream<AppLifecycleState>? lifecycle,
+  Stream<double>? motion,
 }) => [
+  motionPortProvider.overrideWithValue(_FakeMotion(motion)),
   bleSamplesProvider.overrideWith((ref) => samples ?? const Stream.empty()),
   screenAwakePortProvider.overrideWithValue(FakeScreen()),
   if (database != null)
@@ -101,6 +105,7 @@ Future<void> pumpRouterApp(
   AppDatabase? database,
   Stream<List<BleSample>>? samples,
   Stream<AppLifecycleState>? lifecycle,
+  Stream<double>? motion,
   List<Override> overrides = const [],
 }) async {
   final router = GoRouter(routes: $appRoutes);
@@ -114,6 +119,7 @@ Future<void> pumpRouterApp(
           database: database,
           samples: samples,
           lifecycle: lifecycle,
+          motion: motion,
         ),
         ...overrides,
       ],
@@ -165,4 +171,14 @@ Future<void> settleWithDatabase(WidgetTester tester) async {
     await tester.runAsync(() => Future<void>.delayed(Duration.zero));
     await tester.pumpAndSettle();
   }
+}
+
+/// Motion readings from the test (none: the phone counts as still).
+final class _FakeMotion implements MotionPort {
+  _FakeMotion(this._stream);
+
+  final Stream<double>? _stream;
+
+  @override
+  Stream<double> get accelerations => _stream ?? const Stream.empty();
 }

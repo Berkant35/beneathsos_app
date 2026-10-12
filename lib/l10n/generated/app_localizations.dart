@@ -1183,6 +1183,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scanning stopped. Tap to try again.'**
   String get scanFailed;
+
+  /// No description provided for @pointTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Measure'**
+  String get pointTitle;
+
+  /// No description provided for @pointChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Stand at a spot around the rubble and tap where you are on the map.'**
+  String get pointChoose;
+
+  /// No description provided for @pointSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No point measured yet} =1{1 point measured} other{{count} points measured}} · {heard} with a signal'**
+  String pointSummary(int count, int heard);
+
+  /// No description provided for @pointMoving.
+  ///
+  /// In en, this message translates to:
+  /// **'Moving — the count waits until the phone is still.'**
+  String get pointMoving;
+
+  /// No description provided for @pointHeard.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: signal heard'**
+  String pointHeard(String label);
+
+  /// No description provided for @pointNotYet.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: not heard yet'**
+  String pointNotYet(String label);
+
+  /// No description provided for @pointSavedHeard.
+  ///
+  /// In en, this message translates to:
+  /// **'Point saved: signal heard ({value} dBm).'**
+  String pointSavedHeard(String value);
+
+  /// No description provided for @pointSavedNotHeard.
+  ///
+  /// In en, this message translates to:
+  /// **'Point saved: not heard — that is information too.'**
+  String get pointSavedNotHeard;
+
+  /// No description provided for @pointNotSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'The point could not be saved. Measure again.'**
+  String get pointNotSaved;
+
+  /// No description provided for @pointNeedsOutline.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw the rubble outline first.'**
+  String get pointNeedsOutline;
+
+  /// No description provided for @pointNeedsTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the phone to search for first.'**
+  String get pointNeedsTarget;
+
+  /// No description provided for @relinkQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'The phone may have changed its Bluetooth identity: a new one appeared {seconds} s later with a similar signal. Is it the same phone?'**
+  String relinkQuestion(int seconds);
+
+  /// No description provided for @relinkYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, the same phone'**
+  String get relinkYes;
+
+  /// No description provided for @mapLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'Filled: signal heard · Ring: not heard · Orange: measuring now'**
+  String get mapLegend;
 }
 
 class _AppLocalizationsDelegate

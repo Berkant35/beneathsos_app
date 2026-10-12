@@ -369,5 +369,57 @@
   "putBack": "Put back",
   "setAsideNotHeard": "Not heard now",
   "sortAgain": "Sort again",
-  "scanFailed": "Scanning stopped. Tap to try again."
+  "scanFailed": "Scanning stopped. Tap to try again.",
+  "pointTitle": "Measure",
+  "pointChoose": "Stand at a spot around the rubble and tap where you are on the map.",
+  "pointSummary": "{count, plural, =0{No point measured yet} =1{1 point measured} other{{count} points measured}} · {heard} with a signal",
+  "@pointSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "heard": {
+        "type": "int"
+      }
+    }
+  },
+  "pointMoving": "Moving — the count waits until the phone is still.",
+  "pointHeard": "{label}: signal heard",
+  "@pointHeard": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "pointNotYet": "{label}: not heard yet",
+  "@pointNotYet": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "pointSavedHeard": "Point saved: signal heard ({value} dBm).",
+  "@pointSavedHeard": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "pointSavedNotHeard": "Point saved: not heard — that is information too.",
+  "pointNotSaved": "The point could not be saved. Measure again.",
+  "pointNeedsOutline": "Draw the rubble outline first.",
+  "pointNeedsTarget": "Choose the phone to search for first.",
+  "relinkQuestion": "The phone may have changed its Bluetooth identity: a new one appeared {seconds} s later with a similar signal. Is it the same phone?",
+  "@relinkQuestion": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "relinkYes": "Yes, the same phone",
+  "mapLegend": "Filled: signal heard · Ring: not heard · Orange: measuring now"
 }

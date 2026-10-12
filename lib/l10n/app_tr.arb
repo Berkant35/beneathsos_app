@@ -180,5 +180,19 @@
   "putBack": "Geri koy",
   "setAsideNotHeard": "Şu an duyulmuyor",
   "sortAgain": "Yeniden sırala",
-  "scanFailed": "Tarama durdu. Yeniden denemek için dokunun."
+  "scanFailed": "Tarama durdu. Yeniden denemek için dokunun.",
+  "pointTitle": "Ölçüm",
+  "pointChoose": "Enkazın çevresinde bir yerde durun ve haritada bulunduğunuz yere dokunun.",
+  "pointSummary": "{count, plural, =0{Henüz ölçülen nokta yok} other{{count} nokta ölçüldü}} · {heard} tanesinde sinyal var",
+  "pointMoving": "Hareket var — telefon sabit olana kadar sayım bekliyor.",
+  "pointHeard": "{label}: sinyal var",
+  "pointNotYet": "{label}: henüz duyulmadı",
+  "pointSavedHeard": "Nokta kaydedildi: sinyal var ({value} dBm).",
+  "pointSavedNotHeard": "Nokta kaydedildi: duyulmadı — bu da bir bilgi.",
+  "pointNotSaved": "Nokta kaydedilemedi. Yeniden ölçün.",
+  "pointNeedsOutline": "Önce enkazın sınırını çizin.",
+  "pointNeedsTarget": "Önce aranacak telefonu seçin.",
+  "relinkQuestion": "Telefon Bluetooth kimliğini değiştirmiş olabilir: {seconds} sn sonra benzer sinyalli yeni bir kimlik çıktı. Aynı telefon mu?",
+  "relinkYes": "Evet, aynı telefon",
+  "mapLegend": "Dolu: sinyal var · Halka: duyulmadı · Turuncu: şimdi ölçülüyor"
 }

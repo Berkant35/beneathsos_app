@@ -12,6 +12,9 @@ enum SiteStepAction {
 
   /// Choose the target.
   target,
+
+  /// Measure at points.
+  measure,
 }
 
 /// One step of the rescuer flow on the overview; [action] is the screen it opens, if any.
@@ -70,11 +73,9 @@ mixin SiteScreenMixin {
       ),
       (
         label: l10n.siteStepMeasure,
-        status: measured > 0
-            ? l10n.siteMeasuredCount(measured)
-            : l10n.siteStepNext,
+        status: measured > 0 ? l10n.siteMeasuredCount(measured) : notDone(),
         done: measured > 0,
-        action: null,
+        action: canOpen ? SiteStepAction.measure : null,
       ),
     ];
   }

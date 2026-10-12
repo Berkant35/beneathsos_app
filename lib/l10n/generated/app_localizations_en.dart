@@ -664,4 +664,67 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scanFailed => 'Scanning stopped. Tap to try again.';
+
+  @override
+  String get pointTitle => 'Measure';
+
+  @override
+  String get pointChoose =>
+      'Stand at a spot around the rubble and tap where you are on the map.';
+
+  @override
+  String pointSummary(int count, int heard) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count points measured',
+      one: '1 point measured',
+      zero: 'No point measured yet',
+    );
+    return '$_temp0 · $heard with a signal';
+  }
+
+  @override
+  String get pointMoving =>
+      'Moving — the count waits until the phone is still.';
+
+  @override
+  String pointHeard(String label) {
+    return '$label: signal heard';
+  }
+
+  @override
+  String pointNotYet(String label) {
+    return '$label: not heard yet';
+  }
+
+  @override
+  String pointSavedHeard(String value) {
+    return 'Point saved: signal heard ($value dBm).';
+  }
+
+  @override
+  String get pointSavedNotHeard =>
+      'Point saved: not heard — that is information too.';
+
+  @override
+  String get pointNotSaved => 'The point could not be saved. Measure again.';
+
+  @override
+  String get pointNeedsOutline => 'Draw the rubble outline first.';
+
+  @override
+  String get pointNeedsTarget => 'Choose the phone to search for first.';
+
+  @override
+  String relinkQuestion(int seconds) {
+    return 'The phone may have changed its Bluetooth identity: a new one appeared $seconds s later with a similar signal. Is it the same phone?';
+  }
+
+  @override
+  String get relinkYes => 'Yes, the same phone';
+
+  @override
+  String get mapLegend =>
+      'Filled: signal heard · Ring: not heard · Orange: measuring now';
 }

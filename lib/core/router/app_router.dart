@@ -1,5 +1,6 @@
 import 'package:beneathsos_app/core/disclaimer/disclaimer.dart';
 import 'package:beneathsos_app/features/home/presentation/screens/home_screen.dart';
+import 'package:beneathsos_app/features/measurement/presentation/screens/measure_screen.dart';
 import 'package:beneathsos_app/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_map_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_measure_screen.dart';
@@ -41,6 +42,7 @@ part 'app_router.g.dart';
             TypedGoRoute<ScaleRoute>(path: 'scale'),
             TypedGoRoute<AmbientRoute>(path: 'ambient'),
             TypedGoRoute<TargetsRoute>(path: 'targets'),
+            TypedGoRoute<MeasureRoute>(path: 'measure'),
           ],
         ),
       ],
@@ -203,6 +205,19 @@ class TargetsRoute extends GoRouteData with $TargetsRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       TargetsScreen(sessionId: sessionId);
+}
+
+/// Measure at points around the rubble (`/sites/:sessionId/measure`).
+class MeasureRoute extends GoRouteData with $MeasureRoute {
+  /// Route to measuring in [sessionId].
+  const MeasureRoute({required this.sessionId});
+
+  /// The search.
+  final String sessionId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      MeasureScreen(sessionId: sessionId);
 }
 
 /// Preview 1 (`/preview`): first-run notice.
