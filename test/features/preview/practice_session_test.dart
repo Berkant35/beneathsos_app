@@ -47,6 +47,9 @@ final class _FlakyStore implements SessionStore {
   Stream<SessionSummary?> watchLatestOpen() => inner.watchLatestOpen();
 
   @override
+  Stream<List<SessionSummary>> watchSearches() => inner.watchSearches();
+
+  @override
   Future<void> addSamples(
     SessionId session,
     PointId? point,
@@ -72,6 +75,9 @@ final class _BrokenStore implements SessionStore {
 
   @override
   Stream<SessionSummary?> watchLatestOpen() => const Stream.empty();
+
+  @override
+  Stream<List<SessionSummary>> watchSearches() => const Stream.empty();
 
   @override
   Future<void> addSamples(

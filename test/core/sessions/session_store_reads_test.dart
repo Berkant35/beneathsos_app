@@ -232,4 +232,40 @@ void main() {
       expect(latest.readable, isFalse);
     },
   );
+
+  group('the list of real searches', () {
+    Future<SessionId> real(DriftSessionStore s, String title) => s.create(
+      title: title,
+      engineProfile: 'voided_pancake@1',
+      practice: false,
+    );
+
+    test('lists real searches only, open ones first, newest first', () async {
+      final s = store();
+      final older = await real(s, 'Older');
+      wall = 6000;
+      final finished = await real(s, 'Finished');
+      wall = 7000;
+      final newer = await real(s, 'Newer');
+      await create(s, 'Practice search');
+      wall = 8000;
+      await s.append(finished, const SessionClosed());
+      final list = await s.watchSearches().first;
+      expect(list.map((x) => x.id), [newer, older, finished]);
+      expect(list.last.closedAt, DateTime.fromMillisecondsSinceEpoch(8000));
+      expect(list.first.closedAt, isNull);
+    });
+
+    test('follows new searches and measurements', () async {
+      final s = store();
+      final searches = s.watchSearches();
+      final expectation = expectLater(
+        searches.map((l) => [for (final x in l) x.measuredPoints]),
+        emitsThrough([1]),
+      );
+      final id = await real(s, 'Atatürk Cad. 12');
+      await measure(s, id, 'p1');
+      await expectation;
+    });
+  });
 }

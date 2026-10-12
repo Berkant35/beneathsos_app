@@ -13,6 +13,7 @@ final class SessionSummary {
     required this.createdAt,
     required this.measuredPoints,
     required this.readable,
+    this.closedAt,
   });
 
   /// Session id.
@@ -33,6 +34,9 @@ final class SessionSummary {
   /// False when a stored event no longer decodes: the search is still offered, never hidden.
   final bool readable;
 
+  /// When the search was finished; null while it is open.
+  final DateTime? closedAt;
+
   @override
   bool operator ==(Object other) =>
       other is SessionSummary &&
@@ -41,11 +45,19 @@ final class SessionSummary {
       other.practice == practice &&
       other.createdAt == createdAt &&
       other.measuredPoints == measuredPoints &&
-      other.readable == readable;
+      other.readable == readable &&
+      other.closedAt == closedAt;
 
   @override
-  int get hashCode =>
-      Object.hash(id, title, practice, createdAt, measuredPoints, readable);
+  int get hashCode => Object.hash(
+    id,
+    title,
+    practice,
+    createdAt,
+    measuredPoints,
+    readable,
+    closedAt,
+  );
 }
 
 /// A stored event that no longer decodes. It is reported, never skipped (rule 3: no data is lost).
@@ -82,6 +94,9 @@ abstract interface class SessionStore {
   /// The session to offer on the home screen: the newest open real search, else the newest open
   /// practice search, else null.
   Stream<SessionSummary?> watchLatestOpen();
+
+  /// Every real (not practice) search: open ones first, then newest first; updated on every change.
+  Stream<List<SessionSummary>> watchSearches();
 
   /// Stores raw samples heard during [session] (at [point], when measuring one) in one batch.
   Future<void> addSamples(

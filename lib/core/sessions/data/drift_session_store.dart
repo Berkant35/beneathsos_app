@@ -173,6 +173,40 @@ final class DriftSessionStore implements SessionStore {
     final events = await (_db.select(
       _db.events,
     )..where((e) => e.sessionId.equals(id))).get();
+    return _summaryOf(session, events);
+  }
+
+  @override
+  Stream<List<SessionSummary>> watchSearches() {
+    final searches = _db.select(_db.sessions)
+      ..where((s) => s.practice.equals(false))
+      ..orderBy([
+        (s) => OrderingTerm.asc(s.closedAt.isNotNull()),
+        (s) => OrderingTerm.desc(s.createdAt),
+        (s) => OrderingTerm.desc(s.id),
+      ]);
+    return _db
+        .customSelect('SELECT 1', readsFrom: {_db.sessions, _db.events})
+        .watch()
+        .asyncMap((_) async {
+          final sessions = await searches.get();
+          final events =
+              await (_db.select(_db.events)..where(
+                    (e) => e.sessionId.isIn([for (final s in sessions) s.id]),
+                  ))
+                  .get();
+          final bySession = <String, List<EventRow>>{};
+          for (final e in events) {
+            (bySession[e.sessionId] ??= []).add(e);
+          }
+          return [
+            for (final s in sessions)
+              _summaryOf(s, bySession[s.id] ?? const []),
+          ];
+        });
+  }
+
+  static SessionSummary _summaryOf(SessionRow session, List<EventRow> events) {
     SessionState? state;
     try {
       state = SessionProjection.replay(events.map(_decode));
@@ -180,12 +214,15 @@ final class DriftSessionStore implements SessionStore {
       state = null; // watch(id) reports the event; the search itself stays reachable
     }
     return SessionSummary(
-      id: SessionId(id),
+      id: SessionId(session.id),
       title: session.title,
       practice: session.practice,
       createdAt: DateTime.fromMillisecondsSinceEpoch(session.createdAt),
       measuredPoints: state?.measuredPoints.length ?? 0,
       readable: state != null,
+      closedAt: session.closedAt == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(session.closedAt!),
     );
   }
 
