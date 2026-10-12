@@ -50,7 +50,7 @@ final class PracticeSessionProvider
   }
 }
 
-String _$practiceSessionHash() => r'471628de871a14cde6ced66034210e7811e9caf0';
+String _$practiceSessionHash() => r'9a18e9e0070f71001c69fb79898d2cd1fea99d1f';
 
 /// Records the preview journey as a practice search; the state is its session id (null before
 /// "Start"). Steps run one after the other in call order, so screens need not wait for them; a
