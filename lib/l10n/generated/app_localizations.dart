@@ -697,6 +697,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to searches'**
   String get siteBackToList;
+
+  /// No description provided for @newSiteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The search could not be saved. Try again in a moment.'**
+  String get newSiteFailed;
+
+  /// No description provided for @finishFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The search could not be finished. Try again in a moment.'**
+  String get finishFailed;
 }
 
 class _AppLocalizationsDelegate

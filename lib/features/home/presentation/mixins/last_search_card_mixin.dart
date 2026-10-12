@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:beneathsos_app/core/router/app_router.dart';
 import 'package:beneathsos_app/core/sessions/domain/session_store.dart';
-import 'package:beneathsos_app/core/sessions/presentation/widgets/finish_search_dialog.dart';
 import 'package:beneathsos_app/features/preview/presentation/providers/practice_session.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:flutter/widgets.dart';
@@ -37,11 +36,4 @@ mixin LastSearchCardMixin {
     unawaited(ref.read(practiceSessionProvider.notifier).resume(search));
     const PreviewMapRoute().go(context);
   }
-
-  /// After the user confirms, finishes [search] (its events stay stored).
-  Future<void> confirmFinish(
-    BuildContext context,
-    WidgetRef ref,
-    SessionSummary search,
-  ) => FinishSearchDialog.confirmAndFinish(context, ref, search.id);
 }

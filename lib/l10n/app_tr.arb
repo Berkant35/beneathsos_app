@@ -93,11 +93,13 @@
   "siteStepAmbient": "Yüzeydeki telefonları bulun",
   "siteStepTarget": "Aranacak telefonu seçin",
   "siteStepMeasure": "Enkazın çevresinde noktalarda ölçüm yapın",
-  "siteStepDone": "Tamam",
+  "siteStepDone": "Tamamlandı",
   "siteStepNext": "Sonraki güncellemede",
   "siteMeasuredCount": "{count, plural, other{{count} nokta ölçüldü}}",
   "siteFinished": "Bu arama bitti. Verileri saklanıyor.",
   "siteUnreadable": "Bu aramanın verilerinin bir kısmı okunamadı. Hiçbir şey silinmedi.",
   "siteNotFound": "Bu arama açılamadı.",
-  "siteBackToList": "Aramalara dön"
+  "siteBackToList": "Aramalara dön",
+  "newSiteFailed": "Arama kaydedilemedi. Biraz sonra yeniden deneyin.",
+  "finishFailed": "Arama bitirilemedi. Biraz sonra yeniden deneyin."
 }

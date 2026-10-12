@@ -330,7 +330,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get siteStepMeasure => 'Enkazın çevresinde noktalarda ölçüm yapın';
 
   @override
-  String get siteStepDone => 'Tamam';
+  String get siteStepDone => 'Tamamlandı';
 
   @override
   String get siteStepNext => 'Sonraki güncellemede';
@@ -357,4 +357,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get siteBackToList => 'Aramalara dön';
+
+  @override
+  String get newSiteFailed =>
+      'Arama kaydedilemedi. Biraz sonra yeniden deneyin.';
+
+  @override
+  String get finishFailed => 'Arama bitirilemedi. Biraz sonra yeniden deneyin.';
 }

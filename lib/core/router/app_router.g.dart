@@ -105,10 +105,15 @@ mixin $HomeRoute on GoRouteData {
 
 mixin $OnboardingRoute on GoRouteData {
   static OnboardingRoute _fromState(GoRouterState state) =>
-      const OnboardingRoute();
+      OnboardingRoute(from: state.uri.queryParameters['from']);
+
+  OnboardingRoute get _self => this as OnboardingRoute;
 
   @override
-  String get location => GoRouteData.$location('/onboarding');
+  String get location => GoRouteData.$location(
+    '/onboarding',
+    queryParams: {if (_self.from != null) 'from': _self.from},
+  );
 
   @override
   void go(BuildContext context) => context.go(location);

@@ -176,5 +176,7 @@
   "siteFinished": "This search is finished. Its data stays saved.",
   "siteUnreadable": "Some of this search's data could not be read. Nothing was deleted.",
   "siteNotFound": "This search could not be opened.",
-  "siteBackToList": "Back to searches"
+  "siteBackToList": "Back to searches",
+  "newSiteFailed": "The search could not be saved. Try again in a moment.",
+  "finishFailed": "The search could not be finished. Try again in a moment."
 }

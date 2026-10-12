@@ -56,7 +56,7 @@ void main() {
   ) async {
     await pumpRouterApp(tester);
     await tester.tap(find.text('Start a search'));
-    await tester.pumpAndSettle();
+    await settleWithDatabase(tester);
     expect(find.byType(OnboardingScreen), findsOneWidget);
     await tester.pageBack();
     await tester.pumpAndSettle();
@@ -68,7 +68,7 @@ void main() {
   ) async {
     await pumpRouterApp(tester);
     await tester.tap(find.text('Start a search'));
-    await tester.pumpAndSettle();
+    await settleWithDatabase(tester);
     final back = tester.getSize(find.byType(BackButton));
     expect(back.shortestSide, greaterThanOrEqualTo(56));
   });
@@ -89,7 +89,7 @@ void main() {
       await pumpRouterApp(tester);
       await tester.tap(find.text('Start a search'));
       await tester.tap(find.text('Start a search'), warnIfMissed: false);
-      await tester.pumpAndSettle();
+      await settleWithDatabase(tester);
       await tester.pageBack();
       await tester.pumpAndSettle();
       expect(find.byType(HomeScreen), findsOneWidget);
@@ -242,7 +242,7 @@ void main() {
   testWidgets('Start a search stays enabled while blocked', (tester) async {
     await pumpWith(tester, bluetooth: BluetoothAvailability.off);
     await tester.tap(find.text('Start a search'));
-    await tester.pumpAndSettle();
+    await settleWithDatabase(tester);
     expect(find.byType(OnboardingScreen), findsOneWidget);
   });
 

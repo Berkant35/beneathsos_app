@@ -268,4 +268,27 @@ void main() {
       await expectation;
     });
   });
+
+  group('one search', () {
+    test('is null when it does not exist', () async {
+      expect(
+        await store().watchSummary(const SessionId('missing')).first,
+        isNull,
+      );
+    });
+
+    test('is summarised and follows its changes', () async {
+      final s = store();
+      final id = await s.create(
+        title: 'Atatürk Cad. 12',
+        engineProfile: 'voided_pancake@1',
+        practice: false,
+      );
+      expect((await s.watchSummary(id).first)!.title, 'Atatürk Cad. 12');
+      final closed = s.watchSummary(id).map((x) => x?.closedAt != null);
+      final expectation = expectLater(closed, emitsThrough(true));
+      await s.append(id, const SessionClosed());
+      await expectation;
+    });
+  });
 }

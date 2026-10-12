@@ -95,6 +95,9 @@ abstract interface class SessionStore {
   /// practice search, else null.
   Stream<SessionSummary?> watchLatestOpen();
 
+  /// One search, or null when it does not exist; updated on every change.
+  Stream<SessionSummary?> watchSummary(SessionId session);
+
   /// Every real (not practice) search: open ones first, then newest first; updated on every change.
   Stream<List<SessionSummary>> watchSearches();
 

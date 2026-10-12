@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:beneathsos_app/core/disclaimer/disclaimer_content.dart';
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
-import 'package:beneathsos_app/features/onboarding/presentation/widgets/disclaimer_content.dart';
 import 'package:beneathsos_app/features/preview/presentation/providers/practice_session.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';

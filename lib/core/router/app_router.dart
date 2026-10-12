@@ -1,5 +1,5 @@
+import 'package:beneathsos_app/core/disclaimer/disclaimer.dart';
 import 'package:beneathsos_app/features/home/presentation/screens/home_screen.dart';
-import 'package:beneathsos_app/features/onboarding/presentation/providers/disclaimer.dart';
 import 'package:beneathsos_app/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_map_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_measure_screen.dart';
@@ -68,29 +68,49 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   Widget build(BuildContext context, GoRouterState state) => const HomeScreen();
 }
 
-/// First run of the rescuer flow (`/onboarding`): the disclaimer.
+/// First run of the rescuer flow (`/onboarding?from=`): the disclaimer, then [from] (a `/sites`
+/// location the rescuer was going to) or the list.
 class OnboardingRoute extends GoRouteData with $OnboardingRoute {
   /// Route to onboarding.
-  const OnboardingRoute();
+  const OnboardingRoute({this.from});
+
+  /// Where to continue after the disclaimer.
+  final String? from;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const OnboardingScreen();
+      OnboardingScreen(from: from);
 }
 
-/// The rescuer's searches (`/sites`). It and its children wait for the disclaimer; while its state
-/// is still loading the disclaimer is shown (accepting twice is harmless).
+/// After the disclaimer: continue to [from] when it is a rescuer-flow location, else the list.
+void continueAfterDisclaimer(BuildContext context, String? from) {
+  final target = from ?? '';
+  if (target.startsWith(const SitesRoute().location)) {
+    GoRouter.of(context).go(target);
+  } else {
+    const SitesRoute().go(context);
+  }
+}
+
+/// The rescuer's searches (`/sites`). It and its children wait for the disclaimer state (read from
+/// the database the first time), so a returning rescuer never sees it again; an error counts as
+/// "not accepted".
 class SitesRoute extends GoRouteData with $SitesRoute {
   /// Route to the list.
   const SitesRoute();
 
   @override
-  String? redirect(BuildContext context, GoRouterState state) {
-    final accepted = ProviderScope.containerOf(
-      context,
-      listen: false,
-    ).read(disclaimerProvider).value;
-    return accepted ?? false ? null : const OnboardingRoute().location;
+  Future<String?> redirect(BuildContext context, GoRouterState state) async {
+    final container = ProviderScope.containerOf(context, listen: false);
+    bool accepted;
+    try {
+      accepted = await container.read(disclaimerProvider.future);
+    } on Exception {
+      accepted = false;
+    }
+    return accepted
+        ? null
+        : OnboardingRoute(from: state.uri.toString()).location;
   }
 
   @override

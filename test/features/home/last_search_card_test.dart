@@ -71,10 +71,7 @@ Future<(AppDatabase, SessionId)> _leftBehind(
   return (db, id!);
 }
 
-Future<void> _settle(WidgetTester tester) async {
-  await tester.runAsync(() => Future<void>.delayed(Duration.zero));
-  await tester.pumpAndSettle();
-}
+Future<void> _settle(WidgetTester tester) => settleWithDatabase(tester);
 
 void main() {
   testWidgets('without an open search there is no card', (tester) async {

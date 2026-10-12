@@ -93,16 +93,20 @@ Future<void> pumpRouterApp(
   FakeScanner? scanner,
   FakePermissions? permissions,
   AppDatabase? database,
+  List<Override> overrides = const [],
 }) async {
   final router = GoRouter(routes: $appRoutes);
   addTearDown(router.dispose);
   await tester.pumpWidget(
     ProviderScope(
-      overrides: fakePortOverrides(
-        scanner: scanner,
-        permissions: permissions,
-        database: database,
-      ),
+      overrides: [
+        ...fakePortOverrides(
+          scanner: scanner,
+          permissions: permissions,
+          database: database,
+        ),
+        ...overrides,
+      ],
       child: MaterialApp.router(
         locale: locale,
         theme: theme ?? BeneathTheme.light(),
@@ -142,4 +146,13 @@ Future<void> expectFullyReadable(WidgetTester tester, Finder text) async {
   await tester.ensureVisible(text);
   await tester.pumpAndSettle();
   expect(text.hitTestable(), findsOneWidget);
+}
+
+/// `pumpAndSettle` that also lets the in-memory database answer: drift does real asynchronous work,
+/// which the fake clock of widget tests does not run (e.g. the disclaimer gate reading settings).
+Future<void> settleWithDatabase(WidgetTester tester) async {
+  for (var i = 0; i < 3; i++) {
+    await tester.runAsync(() => Future<void>.delayed(Duration.zero));
+    await tester.pumpAndSettle();
+  }
 }

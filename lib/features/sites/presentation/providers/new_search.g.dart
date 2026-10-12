@@ -43,7 +43,7 @@ final class NewSearchProvider extends $NotifierProvider<NewSearch, bool> {
   }
 }
 
-String _$newSearchHash() => r'72dd55ef47948c1763764406726aa17c76b5a938';
+String _$newSearchHash() => r'4fe695ca6716cb8e4edce5524ae62ea4984cc970';
 
 /// Creates real searches. The state is true while one is being created, so a double tap makes one.
 

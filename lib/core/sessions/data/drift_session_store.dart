@@ -177,6 +177,20 @@ final class DriftSessionStore implements SessionStore {
   }
 
   @override
+  Stream<SessionSummary?> watchSummary(SessionId session) => _db
+      .customSelect(
+        'SELECT id FROM sessions WHERE id = ?',
+        variables: [Variable.withString(session.value)],
+        readsFrom: {_db.sessions, _db.events},
+      )
+      .watch()
+      .asyncMap(
+        (rows) => rows.isEmpty
+            ? Future<SessionSummary?>.value()
+            : _summary(session.value),
+      );
+
+  @override
   Stream<List<SessionSummary>> watchSearches() {
     final searches = _db.select(_db.sessions)
       ..where((s) => s.practice.equals(false))

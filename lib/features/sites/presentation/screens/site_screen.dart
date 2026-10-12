@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:beneathsos_app/core/formatting/date_labels.dart';
 import 'package:beneathsos_app/core/l10n_extension.dart';
-import 'package:beneathsos_app/core/sessions/presentation/widgets/finish_search_dialog.dart';
+import 'package:beneathsos_app/core/sessions/presentation/mixins/finish_search_mixin.dart';
 import 'package:beneathsos_app/features/sites/presentation/mixins/site_screen_mixin.dart';
 import 'package:beneathsos_app/features/sites/presentation/providers/searches.dart';
 import 'package:beneathsos_app/features/sites/presentation/widgets/site_not_found.dart';
@@ -12,7 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// One search: its name, when it started, the steps of the rescuer flow and Finish.
-class SiteScreen extends ConsumerWidget with SiteScreenMixin {
+class SiteScreen extends ConsumerWidget
+    with SiteScreenMixin, FinishSearchMixin {
   /// Creates the screen for [sessionId].
   const SiteScreen({required this.sessionId, super.key});
 
@@ -23,18 +24,17 @@ class SiteScreen extends ConsumerWidget with SiteScreenMixin {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final text = Theme.of(context).textTheme;
-    final searches = ref.watch(searchesProvider);
-    final search = searches.value
-        ?.where((s) => s.id.value == sessionId)
-        .firstOrNull;
+    final summary = ref.watch(searchSummaryProvider(sessionId));
     final state = ref.watch(searchStateProvider(sessionId));
     return BeneathScaffold(
       title: l10n.searchTitle,
       body: SingleChildScrollView(
-        child: switch ((searches.hasValue, search)) {
-          (false, _) => const SizedBox.shrink(),
-          (true, null) => const SiteNotFound(),
-          (true, final search?) => Column(
+        // Riverpod retries a failed stream: the state is then "loading with an error", so decide by
+        // hasError, not by the AsyncError type.
+        child: switch (summary) {
+          _ when summary.hasError => const SiteNotFound(),
+          AsyncData(value: null) => const SiteNotFound(),
+          AsyncData(value: final search?) => Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Semantics(
@@ -68,18 +68,14 @@ class SiteScreen extends ConsumerWidget with SiteScreenMixin {
                 SecondaryButton(
                   label: l10n.lastSearchFinish,
                   icon: Icons.flag_rounded,
-                  // Asks first; errors are logged; the screen updates from the database.
-                  onPressed: () => unawaited(
-                    FinishSearchDialog.confirmAndFinish(
-                      context,
-                      ref,
-                      search.id,
-                    ),
-                  ),
+                  // Asks first; a failure is shown; the screen updates from the database.
+                  onPressed: () =>
+                      unawaited(confirmAndFinish(context, ref, search.id)),
                 ),
               ],
             ],
           ),
+          _ => const SizedBox.shrink(),
         },
       ),
     );

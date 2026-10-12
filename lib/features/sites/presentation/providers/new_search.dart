@@ -1,7 +1,7 @@
 import 'package:beneathsos_app/core/logging/app_logger.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
+import 'package:beneathsos_app/features/sites/domain/create_search_result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:rubble_core/rubble_core.dart';
 
 part 'new_search.g.dart';
 
@@ -14,17 +14,19 @@ class NewSearch extends _$NewSearch {
   @override
   bool build() => false;
 
-  /// Creates a search named [name]; null while another is being created or when it failed (logged).
-  Future<SessionId?> create(String name) async {
-    if (state) return null;
+  /// Creates a search named [name].
+  Future<CreateSearchResult> create(String name) async {
+    if (state) return const CreateAlreadyRunning();
     state = true;
     try {
-      return await ref
-          .read(sessionStoreProvider)
-          .create(title: name, engineProfile: engineProfile, practice: false);
+      return SearchCreated(
+        await ref
+            .read(sessionStoreProvider)
+            .create(title: name, engineProfile: engineProfile, practice: false),
+      );
     } on Exception catch (error, stack) {
       AppLogger.error('sites', 'Could not create the search', error, stack);
-      return null;
+      return const CreateFailed();
     } finally {
       if (ref.mounted) state = false;
     }

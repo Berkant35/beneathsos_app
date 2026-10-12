@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/logging/app_logger.dart';
+import 'package:beneathsos_app/core/sessions/presentation/mixins/finish_search_mixin.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
 import 'package:beneathsos_app/features/home/presentation/mixins/last_search_card_mixin.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
@@ -10,7 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// The newest search that was not finished — it survives the app being killed — with Continue
 /// and Finish. Nothing while there is none.
-class LastSearchCard extends ConsumerWidget with LastSearchCardMixin {
+class LastSearchCard extends ConsumerWidget
+    with LastSearchCardMixin, FinishSearchMixin {
   /// Creates the card.
   const LastSearchCard({super.key});
 
@@ -49,7 +51,8 @@ class LastSearchCard extends ConsumerWidget with LastSearchCardMixin {
               label: l10n.lastSearchFinish,
               icon: Icons.flag_rounded,
               // Asks first; errors are logged inside; the card updates from the database.
-              onPressed: () => unawaited(confirmFinish(context, ref, search)),
+              onPressed: () =>
+                  unawaited(confirmAndFinish(context, ref, search.id)),
             ),
           ],
         ),

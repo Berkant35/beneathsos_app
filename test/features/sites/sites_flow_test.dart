@@ -1,24 +1,97 @@
 import 'dart:math';
 
 import 'package:beneathsos_app/core/database/app_database.dart';
+import 'package:beneathsos_app/core/models/ble_sample.dart';
 import 'package:beneathsos_app/core/sessions/data/drift_session_store.dart';
+import 'package:beneathsos_app/core/sessions/domain/session_store.dart';
+import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
 import 'package:beneathsos_app/core/settings/data/drift_settings_store.dart';
 import 'package:beneathsos_app/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_notice_screen.dart';
+import 'package:beneathsos_app/features/sites/presentation/screens/new_site_screen.dart';
 import 'package:beneathsos_app/features/sites/presentation/screens/site_screen.dart';
 import 'package:beneathsos_app/features/sites/presentation/screens/sites_screen.dart';
 import 'package:beneathsos_app/features/victim/presentation/screens/victim_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rubble_core/rubble_core.dart';
 
 import '../../helpers/pump_app.dart';
 
-Future<void> _settle(WidgetTester tester) async {
-  await tester.runAsync(() => Future<void>.delayed(Duration.zero));
-  await tester.pumpAndSettle();
+/// The real store, except the operations told to fail (as a full disk or a broken file would).
+final class _FailingStore implements SessionStore {
+  _FailingStore(
+    this.inner, {
+    this.failCreate = false,
+    this.failAppend = false,
+    this.failSummary = false,
+  });
+
+  final SessionStore inner;
+  final bool failCreate;
+  final bool failAppend;
+  final bool failSummary;
+
+  static const _disk = FormatException('disk full');
+
+  @override
+  Future<SessionId> create({
+    required String title,
+    required String engineProfile,
+    required bool practice,
+  }) => failCreate
+      ? Future.error(_disk)
+      : inner.create(
+          title: title,
+          engineProfile: engineProfile,
+          practice: practice,
+        );
+
+  @override
+  Future<void> append(SessionId session, SessionEvent event) =>
+      failAppend ? Future.error(_disk) : inner.append(session, event);
+
+  @override
+  Stream<SessionState> watch(SessionId session) => inner.watch(session);
+
+  @override
+  Stream<SessionSummary?> watchLatestOpen() => inner.watchLatestOpen();
+
+  @override
+  Stream<SessionSummary?> watchSummary(SessionId session) =>
+      failSummary ? Stream.error(_disk) : inner.watchSummary(session);
+
+  @override
+  Stream<List<SessionSummary>> watchSearches() => inner.watchSearches();
+
+  @override
+  Future<void> addSamples(
+    SessionId session,
+    PointId? point,
+    List<BleSample> samples,
+  ) => inner.addSamples(session, point, samples);
 }
+
+/// Overrides the store with a [_FailingStore] around the real one on [db].
+List<Override> _failing(
+  AppDatabase db, {
+  bool failCreate = false,
+  bool failAppend = false,
+  bool failSummary = false,
+}) => [
+  sessionStoreProvider.overrideWith(
+    (ref) => _FailingStore(
+      DriftSessionStore(db, nowMs: () => 5000, random: Random(3)),
+      failCreate: failCreate,
+      failAppend: failAppend,
+      failSummary: failSummary,
+    ),
+  ),
+];
+
+Future<void> _settle(WidgetTester tester) => settleWithDatabase(tester);
 
 Future<void> _tap(WidgetTester tester, String label) async {
   await tester.ensureVisible(find.text(label).last);
@@ -263,4 +336,113 @@ void main() {
     expect(tester.takeException(), isNull);
     await expectFullyReadable(tester, find.text('Aramayı oluştur'));
   });
+
+  testWidgets(
+    'creating opens the overview without a false "could not be opened"',
+    (tester) async {
+      setPhoneSize(tester, 402, 874);
+      final (db, _) = await _returning(tester);
+      await pumpRouterApp(tester, database: db);
+      await _settle(tester);
+      await _tap(tester, 'Start a search');
+      await _tap(tester, 'New search');
+      await tester.enterText(find.byType(TextField), 'Atatürk Cad. 12');
+      await tester.tap(find.text('Create search'));
+      for (var frame = 0; frame < 30; frame++) {
+        await tester.runAsync(() => Future<void>.delayed(Duration.zero));
+        await tester.pump(const Duration(milliseconds: 16));
+        expect(
+          find.text('This search could not be opened.'),
+          findsNothing,
+          reason: 'frame $frame',
+        );
+      }
+      await tester.pumpAndSettle();
+      expect(find.byType(SiteScreen), findsOneWidget);
+    },
+  );
+
+  testWidgets('a search that cannot be saved says so', (tester) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _returning(tester);
+    await pumpRouterApp(
+      tester,
+      database: db,
+      overrides: _failing(db, failCreate: true),
+    );
+    await _settle(tester);
+    await _tap(tester, 'Start a search');
+    await _tap(tester, 'New search');
+    await tester.enterText(find.byType(TextField), 'Atatürk Cad. 12');
+    await _tap(tester, 'Create search');
+    expect(find.byType(NewSiteScreen), findsOneWidget);
+    expect(
+      find.text('The search could not be saved. Try again in a moment.'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('a search that cannot be finished says so', (tester) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _returning(tester, search: 'Atatürk Cad. 12');
+    await pumpRouterApp(
+      tester,
+      database: db,
+      overrides: _failing(db, failAppend: true),
+    );
+    await _settle(tester);
+    await _tap(tester, 'Start a search');
+    await _tap(tester, 'Atatürk Cad. 12');
+    await _tap(tester, 'Finish this search');
+    await _tap(tester, 'Finish');
+    expect(
+      find.text('The search could not be finished. Try again in a moment.'),
+      findsOneWidget,
+    );
+    expect(find.text('Finish this search'), findsOneWidget);
+  });
+
+  testWidgets('an overview that cannot be loaded gives a way back', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _returning(tester, search: 'Atatürk Cad. 12');
+    await pumpRouterApp(
+      tester,
+      database: db,
+      overrides: _failing(db, failSummary: true),
+    );
+    await _settle(tester);
+    await _tap(tester, 'Start a search');
+    await _tap(tester, 'Atatürk Cad. 12');
+    expect(find.text('This search could not be opened.'), findsOneWidget);
+    await _tap(tester, 'Back to searches');
+    expect(find.byType(SitesScreen), findsOneWidget);
+  });
+
+  testWidgets(
+    'a returning rescuer goes straight to the list, even right after launch',
+    (tester) async {
+      setPhoneSize(tester, 402, 874);
+      final (db, _) = await _returning(tester);
+      await pumpRouterApp(tester, database: db);
+      await _tap(tester, 'Start a search');
+      expect(find.byType(OnboardingScreen), findsNothing);
+      expect(find.byType(SitesScreen), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'a link to a new search on first use: disclaimer, then the form',
+    (tester) async {
+      setPhoneSize(tester, 402, 874);
+      await pumpRouterApp(tester);
+      await _settle(tester);
+      GoRouter.of(tester.element(find.byType(Scaffold).first)).go('/sites/new');
+      await _settle(tester);
+      expect(find.byType(OnboardingScreen), findsOneWidget);
+      await _tap(tester, 'I understand');
+      expect(find.byType(NewSiteScreen), findsOneWidget);
+    },
+  );
 }

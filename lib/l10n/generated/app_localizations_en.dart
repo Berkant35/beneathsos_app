@@ -360,4 +360,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get siteBackToList => 'Back to searches';
+
+  @override
+  String get newSiteFailed =>
+      'The search could not be saved. Try again in a moment.';
+
+  @override
+  String get finishFailed =>
+      'The search could not be finished. Try again in a moment.';
 }
