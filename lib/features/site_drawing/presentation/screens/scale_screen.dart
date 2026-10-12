@@ -1,7 +1,7 @@
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
+import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/mixins/scale_screen_mixin.dart';
-import 'package:beneathsos_app/features/site_drawing/presentation/providers/drawing_providers.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/widgets/scale_form.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class _ScaleScreenState extends ConsumerState<ScaleScreen>
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final search = ref.watch(drawingSearchProvider(widget.sessionId));
+    final search = ref.watch(sessionStateProvider(widget.sessionId));
     final outline = search.value?.outline;
     void skip() => SiteRoute(sessionId: widget.sessionId).go(context);
     return BeneathScaffold(

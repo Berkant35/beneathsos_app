@@ -3,6 +3,7 @@ import 'package:beneathsos_app/features/targets/domain/device_track.dart';
 import 'package:beneathsos_app/features/targets/domain/presence_event.dart';
 import 'package:beneathsos_app/features/targets/domain/tracker_policy.dart';
 import 'package:beneathsos_app/features/targets/domain/tracker_snapshot.dart';
+import 'package:rubble_core/rubble_core.dart';
 
 /// Turns raw samples into per-identity tracks and a presence log. Pure: no clock, no timers —
 /// the caller passes the time to [tick].
@@ -91,12 +92,21 @@ final class DeviceTracker {
     if (overflow > 0) _events.removeRange(0, overflow);
   }
 
-  static DeviceSummary _summarize(DeviceTrack t) => DeviceSummary(
-    key: t.key,
-    kind: t.kind,
-    lastRssi: t.lastRssi,
-    firstSeenMillis: t.firstSeenMillis,
-    lastSeenMillis: t.lastSeenMillis,
-    sampleCount: t.sampleCount,
-  );
+  /// The window of [DeviceSummary.median] and [DeviceSummary.spread].
+  static const summaryWindow = Duration(seconds: 30);
+
+  static DeviceSummary _summarize(DeviceTrack t) {
+    final median = t.medianWithin(summaryWindow, t.lastSeenMillis);
+    final spread = t.stdDevWithin(summaryWindow, t.lastSeenMillis);
+    return DeviceSummary(
+      key: t.key,
+      kind: t.kind,
+      lastRssi: t.lastRssi,
+      firstSeenMillis: t.firstSeenMillis,
+      lastSeenMillis: t.lastSeenMillis,
+      sampleCount: t.sampleCount,
+      median: median == null ? null : Dbm(median),
+      spread: spread == null ? null : Decibels(spread),
+    );
+  }
 }

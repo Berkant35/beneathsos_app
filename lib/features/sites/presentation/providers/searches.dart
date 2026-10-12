@@ -10,11 +10,6 @@ part 'searches.g.dart';
 Stream<List<SessionSummary>> searches(Ref ref) =>
     ref.watch(sessionStoreProvider).watchSearches();
 
-/// The projected state of one search (errors with `UnreadableEvent` when stored data is broken).
-@riverpod
-Stream<SessionState> searchState(Ref ref, String sessionId) =>
-    ref.watch(sessionStoreProvider).watch(SessionId(sessionId));
-
 /// One search (null when it does not exist), straight from the database — not from the list, which
 /// may not have caught up with a search created a moment ago.
 @riverpod

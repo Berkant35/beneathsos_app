@@ -6,6 +6,7 @@ import 'package:beneathsos_app/core/sessions/data/drift_session_store.dart';
 import 'package:beneathsos_app/core/sessions/domain/finish_search.dart';
 import 'package:beneathsos_app/core/sessions/domain/session_store.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:rubble_core/rubble_core.dart';
 
 part 'session_providers.g.dart';
 
@@ -29,3 +30,9 @@ Stream<SessionSummary?> latestOpenSession(Ref ref) =>
 @Riverpod(keepAlive: true)
 FinishSearch finishSearch(Ref ref) =>
     FinishSearch(ref.watch(sessionStoreProvider));
+
+/// One session's projected state, updated after every event (errors with `UnreadableEvent` when stored
+/// data is broken).
+@riverpod
+Stream<SessionState> sessionState(Ref ref, String sessionId) =>
+    ref.watch(sessionStoreProvider).watch(SessionId(sessionId));

@@ -1,4 +1,5 @@
 import 'package:beneathsos_app/core/l10n_extension.dart';
+import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/providers/drawing_providers.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/widgets/draw_outline_body.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/widgets/leave_drawing_dialog.dart';
@@ -18,7 +19,7 @@ class DrawOutlineScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final draft = ref.watch(outlineDraftControllerProvider(sessionId));
-    final scale = ref.watch(drawingSearchProvider(sessionId)).value?.scale ?? 1;
+    final scale = ref.watch(sessionStateProvider(sessionId)).value?.scale ?? 1;
     final unsaved = ref
         .read(outlineDraftControllerProvider(sessionId).notifier)
         .hasUnsavedChanges;

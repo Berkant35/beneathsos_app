@@ -1,5 +1,6 @@
 import 'package:beneathsos_app/features/targets/domain/device_kind.dart';
 import 'package:beneathsos_app/features/targets/domain/presence_event.dart';
+import 'package:rubble_core/rubble_core.dart';
 
 /// Immutable view of one advertiser at snapshot time.
 final class DeviceSummary {
@@ -11,6 +12,8 @@ final class DeviceSummary {
     required this.firstSeenMillis,
     required this.lastSeenMillis,
     required this.sampleCount,
+    this.median,
+    this.spread,
   });
 
   /// Platform identity (rotates on phones).
@@ -30,6 +33,13 @@ final class DeviceSummary {
 
   /// Readings received so far.
   final int sampleCount;
+
+  /// Median signal over the last 30 s ([DeviceTracker.summaryWindow]); null without readings.
+  final Dbm? median;
+
+  /// Sample standard deviation over the same window; null with fewer than two readings. Small means
+  /// the device and the rescuer are not moving.
+  final Decibels? spread;
 }
 
 /// Immutable view of everything the tracker knows.

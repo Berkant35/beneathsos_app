@@ -4,6 +4,7 @@ import 'package:beneathsos_app/core/formatting/date_labels.dart';
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
 import 'package:beneathsos_app/core/sessions/presentation/mixins/finish_search_mixin.dart';
+import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
 import 'package:beneathsos_app/features/sites/presentation/mixins/site_screen_mixin.dart';
 import 'package:beneathsos_app/features/sites/presentation/providers/searches.dart';
 import 'package:beneathsos_app/features/sites/presentation/widgets/site_not_found.dart';
@@ -26,7 +27,7 @@ class SiteScreen extends ConsumerWidget
     final l10n = context.l10n;
     final text = Theme.of(context).textTheme;
     final summary = ref.watch(searchSummaryProvider(sessionId));
-    final state = ref.watch(searchStateProvider(sessionId));
+    final state = ref.watch(sessionStateProvider(sessionId));
     return BeneathScaffold(
       title: l10n.searchTitle,
       body: SingleChildScrollView(

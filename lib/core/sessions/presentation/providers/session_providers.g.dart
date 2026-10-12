@@ -143,3 +143,92 @@ final class FinishSearchProvider
 }
 
 String _$finishSearchHash() => r'1653fb52755997da34e588d755d1cb68dab3d8eb';
+
+/// One session's projected state, updated after every event (errors with `UnreadableEvent` when stored
+/// data is broken).
+
+@ProviderFor(sessionState)
+final sessionStateProvider = SessionStateFamily._();
+
+/// One session's projected state, updated after every event (errors with `UnreadableEvent` when stored
+/// data is broken).
+
+final class SessionStateProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<SessionState>,
+          SessionState,
+          Stream<SessionState>
+        >
+    with $FutureModifier<SessionState>, $StreamProvider<SessionState> {
+  /// One session's projected state, updated after every event (errors with `UnreadableEvent` when stored
+  /// data is broken).
+  SessionStateProvider._({
+    required SessionStateFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'sessionStateProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$sessionStateHash();
+
+  @override
+  String toString() {
+    return r'sessionStateProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<SessionState> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<SessionState> create(Ref ref) {
+    final argument = this.argument as String;
+    return sessionState(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SessionStateProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$sessionStateHash() => r'760c0b085d71e95ab58b9704d2e3e109686ebb8d';
+
+/// One session's projected state, updated after every event (errors with `UnreadableEvent` when stored
+/// data is broken).
+
+final class SessionStateFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<SessionState>, String> {
+  SessionStateFamily._()
+    : super(
+        retry: null,
+        name: r'sessionStateProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// One session's projected state, updated after every event (errors with `UnreadableEvent` when stored
+  /// data is broken).
+
+  SessionStateProvider call(String sessionId) =>
+      SessionStateProvider._(argument: sessionId, from: this);
+
+  @override
+  String toString() => r'sessionStateProvider';
+}

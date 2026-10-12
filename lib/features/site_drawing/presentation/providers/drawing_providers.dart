@@ -18,11 +18,6 @@ SetOutline setOutline(Ref ref) => SetOutline(ref.watch(sessionStoreProvider));
 @Riverpod(keepAlive: true)
 SetScale setScale(Ref ref) => SetScale(ref.watch(sessionStoreProvider));
 
-/// One search's projected state (outline, scale) for the drawing screens.
-@riverpod
-Stream<SessionState> drawingSearch(Ref ref, String sessionId) =>
-    ref.watch(sessionStoreProvider).watch(SessionId(sessionId));
-
 /// The outline being drawn for one search, starting from the stored one.
 @riverpod
 class OutlineDraftController extends _$OutlineDraftController {

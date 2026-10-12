@@ -100,90 +100,6 @@ final class SetScaleProvider
 
 String _$setScaleHash() => r'b86fc3818c94426719f0a4cd2ac39a636374062c';
 
-/// One search's projected state (outline, scale) for the drawing screens.
-
-@ProviderFor(drawingSearch)
-final drawingSearchProvider = DrawingSearchFamily._();
-
-/// One search's projected state (outline, scale) for the drawing screens.
-
-final class DrawingSearchProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<SessionState>,
-          SessionState,
-          Stream<SessionState>
-        >
-    with $FutureModifier<SessionState>, $StreamProvider<SessionState> {
-  /// One search's projected state (outline, scale) for the drawing screens.
-  DrawingSearchProvider._({
-    required DrawingSearchFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'drawingSearchProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$drawingSearchHash();
-
-  @override
-  String toString() {
-    return r'drawingSearchProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  $StreamProviderElement<SessionState> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
-
-  @override
-  Stream<SessionState> create(Ref ref) {
-    final argument = this.argument as String;
-    return drawingSearch(ref, argument);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is DrawingSearchProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
-String _$drawingSearchHash() => r'79fc1252f7b59510774dad4b52ce59513b5c3aa1';
-
-/// One search's projected state (outline, scale) for the drawing screens.
-
-final class DrawingSearchFamily extends $Family
-    with $FunctionalFamilyOverride<Stream<SessionState>, String> {
-  DrawingSearchFamily._()
-    : super(
-        retry: null,
-        name: r'drawingSearchProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  /// One search's projected state (outline, scale) for the drawing screens.
-
-  DrawingSearchProvider call(String sessionId) =>
-      DrawingSearchProvider._(argument: sessionId, from: this);
-
-  @override
-  String toString() => r'drawingSearchProvider';
-}
-
 /// The outline being drawn for one search, starting from the stored one.
 
 @ProviderFor(OutlineDraftController)
@@ -231,7 +147,7 @@ final class OutlineDraftControllerProvider
 }
 
 String _$outlineDraftControllerHash() =>
-    r'a807af27e0030ca16e7318ffa8637f65cd117191';
+    r'ab37c076fd0a5710d5f97bd61ab6ff26c314f8f1';
 
 /// The outline being drawn for one search, starting from the stored one.
 
