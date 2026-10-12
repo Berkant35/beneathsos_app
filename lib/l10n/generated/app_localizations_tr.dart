@@ -18,4 +18,41 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get homeUnderConstructionBody =>
       'Kurtarıcı ve kurban akışları tasarlanıyor. İlerlemeyi herkese açık yol haritasından takip edebilirsiniz.';
+
+  @override
+  String get logoLabel => 'BeneathSOS';
+
+  @override
+  String get homeHeadline => 'Enkaz altındaki bir telefonu arayın';
+
+  @override
+  String get homeBody =>
+      'Telefonun Bluetooth sinyalini birkaç noktadan ölçün; uygulama en olası bölgeyi gösterir.';
+
+  @override
+  String get homeStartSearch => 'Aramayı başlat';
+
+  @override
+  String get homeTrapped => 'Enkaz altındayım';
+
+  @override
+  String get homeIndependence =>
+      'BeneathSOS bağımsız bir açık kaynak projedir; AFAD veya herhangi bir kamu kurumuyla bağlantısı yoktur.';
+
+  @override
+  String get poweredBy => 'Powered by Socrepho';
+
+  @override
+  String get newSiteTitle => 'Yeni arama';
+
+  @override
+  String get newSitePreparing =>
+      'Bu adım hazırlanıyor. Burada enkaz alanının sınırlarını çizeceksiniz.';
+
+  @override
+  String get victimTitle => 'Enkaz altındayım';
+
+  @override
+  String get victimPreparing =>
+      'Bu mod henüz hazır değil. Acil durumda 112\'yi arayın.';
 }

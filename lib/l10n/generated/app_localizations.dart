@@ -115,6 +115,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The rescuer and victim flows are being designed. Follow the public roadmap for progress.'**
   String get homeUnderConstructionBody;
+
+  /// No description provided for @logoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'BeneathSOS'**
+  String get logoLabel;
+
+  /// No description provided for @homeHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a phone under rubble'**
+  String get homeHeadline;
+
+  /// No description provided for @homeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Measure the phone\'s Bluetooth signal at a few points; the app shows the most likely area.'**
+  String get homeBody;
+
+  /// No description provided for @homeStartSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a search'**
+  String get homeStartSearch;
+
+  /// No description provided for @homeTrapped.
+  ///
+  /// In en, this message translates to:
+  /// **'I am trapped'**
+  String get homeTrapped;
+
+  /// No description provided for @homeIndependence.
+  ///
+  /// In en, this message translates to:
+  /// **'BeneathSOS is an independent open-source project and is not affiliated with AFAD or any government agency.'**
+  String get homeIndependence;
+
+  /// No description provided for @poweredBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Powered by Socrepho'**
+  String get poweredBy;
+
+  /// No description provided for @newSiteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New search'**
+  String get newSiteTitle;
+
+  /// No description provided for @newSitePreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'This step is being prepared. Here you will draw the outline of the rubble site.'**
+  String get newSitePreparing;
+
+  /// No description provided for @victimTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I am trapped'**
+  String get victimTitle;
+
+  /// No description provided for @victimPreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'This mode is not ready yet. In an emergency, call 112.'**
+  String get victimPreparing;
 }
 
 class _AppLocalizationsDelegate

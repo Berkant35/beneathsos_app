@@ -2,5 +2,16 @@
   "@@locale": "en",
   "appTitle": "BeneathSOS",
   "homeUnderConstructionTitle": "Under construction",
-  "homeUnderConstructionBody": "The rescuer and victim flows are being designed. Follow the public roadmap for progress."
+  "homeUnderConstructionBody": "The rescuer and victim flows are being designed. Follow the public roadmap for progress.",
+  "logoLabel": "BeneathSOS",
+  "homeHeadline": "Search for a phone under rubble",
+  "homeBody": "Measure the phone's Bluetooth signal at a few points; the app shows the most likely area.",
+  "homeStartSearch": "Start a search",
+  "homeTrapped": "I am trapped",
+  "homeIndependence": "BeneathSOS is an independent open-source project and is not affiliated with AFAD or any government agency.",
+  "poweredBy": "Powered by Socrepho",
+  "newSiteTitle": "New search",
+  "newSitePreparing": "This step is being prepared. Here you will draw the outline of the rubble site.",
+  "victimTitle": "I am trapped",
+  "victimPreparing": "This mode is not ready yet. In an emergency, call 112."
 }

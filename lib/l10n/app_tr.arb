@@ -2,5 +2,16 @@
   "@@locale": "tr",
   "appTitle": "BeneathSOS",
   "homeUnderConstructionTitle": "Yapım aşamasında",
-  "homeUnderConstructionBody": "Kurtarıcı ve kurban akışları tasarlanıyor. İlerlemeyi herkese açık yol haritasından takip edebilirsiniz."
+  "homeUnderConstructionBody": "Kurtarıcı ve kurban akışları tasarlanıyor. İlerlemeyi herkese açık yol haritasından takip edebilirsiniz.",
+  "logoLabel": "BeneathSOS",
+  "homeHeadline": "Enkaz altındaki bir telefonu arayın",
+  "homeBody": "Telefonun Bluetooth sinyalini birkaç noktadan ölçün; uygulama en olası bölgeyi gösterir.",
+  "homeStartSearch": "Aramayı başlat",
+  "homeTrapped": "Enkaz altındayım",
+  "homeIndependence": "BeneathSOS bağımsız bir açık kaynak projedir; AFAD veya herhangi bir kamu kurumuyla bağlantısı yoktur.",
+  "poweredBy": "Powered by Socrepho",
+  "newSiteTitle": "Yeni arama",
+  "newSitePreparing": "Bu adım hazırlanıyor. Burada enkaz alanının sınırlarını çizeceksiniz.",
+  "victimTitle": "Enkaz altındayım",
+  "victimPreparing": "Bu mod henüz hazır değil. Acil durumda 112'yi arayın."
 }
