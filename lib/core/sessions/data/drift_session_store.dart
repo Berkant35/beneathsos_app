@@ -196,10 +196,9 @@ final class DriftSessionStore implements SessionStore {
         'payload': jsonDecode(row.payload),
       });
     } on FormatException catch (e) {
+      // rubble_core decoding reports anything invalid (also values its constructors reject) as a
+      // FormatException; jsonDecode does the same for broken JSON.
       throw UnreadableEvent(EventId(row.id), e.message);
-    } on ArgumentError catch (e) {
-      // A value the event's constructor rejects (for example a scale factor of 0).
-      throw UnreadableEvent(EventId(row.id), '${e.message}');
     }
   }
 
