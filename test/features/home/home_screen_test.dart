@@ -61,6 +61,16 @@ void main() {
     expect(find.byType(HomeScreen), findsOneWidget);
   });
 
+  testWidgets('the Back button is a 56 px target for gloved hands', (
+    tester,
+  ) async {
+    await pumpRouterApp(tester);
+    await tester.tap(find.text('Start a search'));
+    await tester.pumpAndSettle();
+    final back = tester.getSize(find.byType(BackButton));
+    expect(back.shortestSide, greaterThanOrEqualTo(56));
+  });
+
   testWidgets('I am trapped opens the victim screen with the 112 note', (
     tester,
   ) async {

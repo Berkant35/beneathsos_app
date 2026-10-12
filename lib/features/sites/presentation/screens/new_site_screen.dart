@@ -10,9 +10,12 @@ class NewSiteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AppScaffold(
     title: context.l10n.newSiteTitle,
-    body: Text(
-      context.l10n.newSitePreparing,
-      style: Theme.of(context).textTheme.bodyLarge,
+    // Scrolls so large system text is never cut off (no overflow error would reveal it).
+    body: SingleChildScrollView(
+      child: Text(
+        context.l10n.newSitePreparing,
+        style: Theme.of(context).textTheme.bodyLarge,
+      ),
     ),
   );
 }

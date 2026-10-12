@@ -23,4 +23,13 @@ void main() {
     expect(find.text('Yeni arama'), findsOneWidget);
     expect(find.textContaining('enkaz alanının sınırlarını'), findsOneWidget);
   });
+
+  testWidgets(
+    '200 % text on a small phone: the whole explanation is readable',
+    (tester) async {
+      setPhoneSize(tester, 375, 667);
+      await pumpLocalizedScaled(tester, const NewSiteScreen(), textScale: 2);
+      await expectFullyReadable(tester, find.textContaining('rubble site'));
+    },
+  );
 }

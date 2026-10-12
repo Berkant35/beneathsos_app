@@ -13,4 +13,16 @@ void main() {
     expect(theme.colorScheme.primary, BeneathColors.primaryLight);
     expect(theme.extension<BeneathTokens>(), isNotNull);
   });
+
+  testWidgets('dark system setting gives the dark BeneathSOS theme', (
+    tester,
+  ) async {
+    tester.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
+    addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
+    await tester.pumpWidget(const ProviderScope(child: BeneathSosApp()));
+    await tester.pumpAndSettle();
+    final theme = Theme.of(tester.element(find.byType(HomeScreen)));
+    expect(theme.colorScheme.primary, BeneathColors.primaryDark);
+    expect(theme.extension<BeneathTokens>()!.accent, BeneathColors.accentDark);
+  });
 }
