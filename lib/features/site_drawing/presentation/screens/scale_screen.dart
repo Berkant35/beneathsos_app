@@ -37,7 +37,9 @@ class _ScaleScreenState extends ConsumerState<ScaleScreen>
                   if (search.hasError || search.hasValue)
                     StatusBanner(
                       kind: StatusKind.attention,
-                      message: l10n.drawLoadFailed,
+                      message: search.hasError
+                          ? l10n.drawLoadFailed
+                          : l10n.scaleNoOutline,
                     ),
                   const SizedBox(height: BeneathSpacing.l),
                   SecondaryButton(label: l10n.scaleSkip, onPressed: skip),

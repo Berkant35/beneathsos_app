@@ -90,7 +90,7 @@ class ScaleForm extends StatelessWidget {
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           decoration: InputDecoration(
             labelText: l10n.scaleLabel,
-            suffixText: 'm',
+            suffixText: l10n.unitMetres,
             errorText: errorText,
             errorMaxLines: 3,
             border: const OutlineInputBorder(),

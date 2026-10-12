@@ -489,4 +489,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get siteStepNotDone => 'Not done';
+
+  @override
+  String get leaveDrawTitle => 'Leave without saving?';
+
+  @override
+  String get leaveDrawBody =>
+      'The corners drawn since the last save will be lost.';
+
+  @override
+  String get leaveDrawStay => 'Keep drawing';
+
+  @override
+  String get leaveDrawLeave => 'Leave';
+
+  @override
+  String get scaleConfirmTitle => 'Is this right?';
+
+  @override
+  String scaleConfirmBody(String factor, String real) {
+    return 'Every length becomes $factor times what you drew: this side would be $real. Check the number.';
+  }
+
+  @override
+  String get scaleConfirmFix => 'Correct it';
+
+  @override
+  String get scaleConfirmSave => 'Save anyway';
+
+  @override
+  String get unitMetres => 'm';
+
+  @override
+  String get scaleNoOutline => 'Draw the outline first.';
 }

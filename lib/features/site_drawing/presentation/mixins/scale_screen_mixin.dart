@@ -1,11 +1,14 @@
+import 'package:beneathsos_app/core/formatting/measures.dart';
 import 'package:beneathsos_app/core/logging/app_logger.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
 import 'package:beneathsos_app/features/site_drawing/domain/scale_rule.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/providers/drawing_providers.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/screens/scale_screen.dart';
+import 'package:beneathsos_app/features/site_drawing/presentation/widgets/unusual_scale_dialog.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:rubble_core/rubble_core.dart';
 
 /// The chosen side, the typed real length and how it was measured (form state only).
@@ -55,6 +58,8 @@ mixin ScaleScreenMixin on ConsumerState<ScaleScreen> {
     });
     final factor = checked.factor;
     if (factor == null || _saving) return;
+    if (isUnusualScale(factor) && !await _confirmUnusual(factor, drawn)) return;
+    if (!mounted) return;
     _saving = true;
     try {
       await ref
@@ -67,6 +72,15 @@ mixin ScaleScreenMixin on ConsumerState<ScaleScreen> {
     } finally {
       _saving = false;
     }
+  }
+
+  Future<bool> _confirmUnusual(double factor, Meters drawn) {
+    final l10n = AppLocalizations.of(context);
+    return UnusualScaleDialog.confirm(
+      context,
+      factor: NumberFormat('0.0', l10n.localeName).format(factor),
+      real: metresLabel(l10n, Meters(drawn.value * factor)),
+    );
   }
 
   @override

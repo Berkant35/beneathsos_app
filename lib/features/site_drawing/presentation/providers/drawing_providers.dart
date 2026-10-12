@@ -3,6 +3,7 @@ import 'package:beneathsos_app/core/sessions/presentation/providers/session_prov
 import 'package:beneathsos_app/features/site_drawing/domain/save_outline_result.dart';
 import 'package:beneathsos_app/features/site_drawing/domain/set_outline.dart';
 import 'package:beneathsos_app/features/site_drawing/domain/set_scale.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rubble_canvas/rubble_canvas.dart';
 import 'package:rubble_core/rubble_core.dart';
@@ -40,6 +41,12 @@ class OutlineDraftController extends _$OutlineDraftController {
         ? const OutlineDraft.empty()
         : OutlineDraft.from(stored);
   }
+
+  /// Whether the drawing differs from the stored outline (Back then asks before it is lost).
+  bool get hasUnsavedChanges => !listEquals(
+    state.value?.corners ?? const [],
+    _stored?.corners ?? const [],
+  );
 
   /// The rescuer changed the drawing.
   void change(OutlineDraft next) => state = AsyncData(next);

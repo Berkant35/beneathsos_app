@@ -919,6 +919,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not done'**
   String get siteStepNotDone;
+
+  /// No description provided for @leaveDrawTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave without saving?'**
+  String get leaveDrawTitle;
+
+  /// No description provided for @leaveDrawBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The corners drawn since the last save will be lost.'**
+  String get leaveDrawBody;
+
+  /// No description provided for @leaveDrawStay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep drawing'**
+  String get leaveDrawStay;
+
+  /// No description provided for @leaveDrawLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get leaveDrawLeave;
+
+  /// No description provided for @scaleConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Is this right?'**
+  String get scaleConfirmTitle;
+
+  /// No description provided for @scaleConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Every length becomes {factor} times what you drew: this side would be {real}. Check the number.'**
+  String scaleConfirmBody(String factor, String real);
+
+  /// No description provided for @scaleConfirmFix.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct it'**
+  String get scaleConfirmFix;
+
+  /// No description provided for @scaleConfirmSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save anyway'**
+  String get scaleConfirmSave;
+
+  /// No description provided for @unitMetres.
+  ///
+  /// In en, this message translates to:
+  /// **'m'**
+  String get unitMetres;
+
+  /// No description provided for @scaleNoOutline.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw the outline first.'**
+  String get scaleNoOutline;
 }
 
 class _AppLocalizationsDelegate

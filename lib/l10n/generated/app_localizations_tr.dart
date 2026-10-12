@@ -485,4 +485,36 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get siteStepNotDone => 'Yapılmadı';
+
+  @override
+  String get leaveDrawTitle => 'Kaydetmeden çıkılsın mı?';
+
+  @override
+  String get leaveDrawBody => 'Son kayıttan sonra çizilen köşeler kaybolur.';
+
+  @override
+  String get leaveDrawStay => 'Çizmeye devam et';
+
+  @override
+  String get leaveDrawLeave => 'Çık';
+
+  @override
+  String get scaleConfirmTitle => 'Bu doğru mu?';
+
+  @override
+  String scaleConfirmBody(String factor, String real) {
+    return 'Tüm uzunluklar çizdiğinizin $factor katı olur: bu kenar $real olur. Sayıyı kontrol edin.';
+  }
+
+  @override
+  String get scaleConfirmFix => 'Düzelt';
+
+  @override
+  String get scaleConfirmSave => 'Yine de kaydet';
+
+  @override
+  String get unitMetres => 'm';
+
+  @override
+  String get scaleNoOutline => 'Önce sınırı çizin.';
 }

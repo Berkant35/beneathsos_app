@@ -41,4 +41,11 @@ void main() {
     ]);
     expect(longestSide(outline), 2); // the hypotenuse back to the start
   });
+
+  test('a factor far from 1 is unusual (probably a typo)', () {
+    expect(isUnusualScale(1.3), isFalse);
+    expect(isUnusualScale(0.6), isFalse);
+    expect(isUnusualScale(0.4), isTrue);
+    expect(isUnusualScale(2.5), isTrue);
+  });
 }

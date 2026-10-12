@@ -256,5 +256,27 @@
     }
   },
   "siteStepStart": "Tap to start",
-  "siteStepNotDone": "Not done"
+  "siteStepNotDone": "Not done",
+  "leaveDrawTitle": "Leave without saving?",
+  "leaveDrawBody": "The corners drawn since the last save will be lost.",
+  "leaveDrawStay": "Keep drawing",
+  "leaveDrawLeave": "Leave",
+  "scaleConfirmTitle": "Is this right?",
+  "scaleConfirmBody": "Every length becomes {factor} times what you drew: this side would be {real}. Check the number.",
+  "scaleConfirmFix": "Correct it",
+  "scaleConfirmSave": "Save anyway",
+  "unitMetres": "m",
+  "scaleNoOutline": "Draw the outline first.",
+  "@scaleConfirmBody": {
+    "placeholders": {
+      "factor": {
+        "type": "String",
+        "example": "11.3"
+      },
+      "real": {
+        "type": "String",
+        "example": "180.0 m"
+      }
+    }
+  }
 }

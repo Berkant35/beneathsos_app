@@ -40,3 +40,7 @@ int longestSide(RubblePolygon outline) {
   }
   return longest;
 }
+
+/// Whether [factor] changes every length so much that a typo is more likely than a real correction
+/// (a sketch is rarely off by more than half or double); the rescuer is asked before it is stored.
+bool isUnusualScale(double factor) => factor < 0.5 || factor > 2;

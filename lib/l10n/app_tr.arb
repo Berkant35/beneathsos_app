@@ -136,5 +136,15 @@
   "scaleNotSaved": "Boyut kaydedilemedi. Biraz sonra yeniden deneyin.",
   "siteOutlineDone": "Tamamlandı · {area}",
   "siteStepStart": "Başlamak için dokunun",
-  "siteStepNotDone": "Yapılmadı"
+  "siteStepNotDone": "Yapılmadı",
+  "leaveDrawTitle": "Kaydetmeden çıkılsın mı?",
+  "leaveDrawBody": "Son kayıttan sonra çizilen köşeler kaybolur.",
+  "leaveDrawStay": "Çizmeye devam et",
+  "leaveDrawLeave": "Çık",
+  "scaleConfirmTitle": "Bu doğru mu?",
+  "scaleConfirmBody": "Tüm uzunluklar çizdiğinizin {factor} katı olur: bu kenar {real} olur. Sayıyı kontrol edin.",
+  "scaleConfirmFix": "Düzelt",
+  "scaleConfirmSave": "Yine de kaydet",
+  "unitMetres": "m",
+  "scaleNoOutline": "Önce sınırı çizin."
 }

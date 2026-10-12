@@ -253,4 +253,64 @@ void main() {
     await expectFullyReadable(tester, find.text('Boyutu kaydet'));
     await expectFullyReadable(tester, find.text('Adımlayarak'));
   });
+
+  testWidgets('Back with unsaved corners asks before the drawing is lost', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _search(tester);
+    await pumpRouterApp(tester, database: db);
+    await settleWithDatabase(tester);
+    await _openDrawing(tester);
+    await _tapSite(tester, 0, 0);
+    await tester.tap(find.byType(BackButton));
+    await settleWithDatabase(tester);
+    expect(find.text('Leave without saving?'), findsOneWidget);
+    await _tap(tester, 'Keep drawing');
+    expect(find.byType(DrawOutlineScreen), findsOneWidget);
+    await tester.tap(find.byType(BackButton));
+    await settleWithDatabase(tester);
+    await _tap(tester, 'Leave');
+    expect(find.byType(SiteScreen), findsOneWidget);
+  });
+
+  testWidgets('Back without changes leaves at once', (tester) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _search(tester);
+    await pumpRouterApp(tester, database: db);
+    await settleWithDatabase(tester);
+    await _openDrawing(tester);
+    await tester.tap(find.byType(BackButton));
+    await settleWithDatabase(tester);
+    expect(find.byType(SiteScreen), findsOneWidget);
+  });
+
+  testWidgets('a size that changes every length a lot asks first', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, id) = await _search(
+      tester,
+      outline: RubblePolygon(const [
+        SitePoint(Meters.zero, Meters.zero),
+        SitePoint(Meters(16), Meters.zero),
+        SitePoint(Meters(16), Meters(4)),
+        SitePoint(Meters.zero, Meters(4)),
+      ]),
+    );
+    await pumpRouterApp(tester, database: db);
+    await settleWithDatabase(tester);
+    await _openDrawing(tester);
+    await _tap(tester, 'Outline done');
+    await tester.enterText(find.byType(TextField), '180');
+    await _tap(tester, 'Save the size');
+    expect(find.text('Is this right?'), findsOneWidget);
+    await _tap(tester, 'Correct it');
+    expect(find.byType(ScaleScreen), findsOneWidget);
+    expect((await _stored(tester, db, id)).scale, 1);
+    await _tap(tester, 'Save the size');
+    await _tap(tester, 'Save anyway');
+    expect(find.byType(SiteScreen), findsOneWidget);
+    expect((await _stored(tester, db, id)).scale, 11.25);
+  });
 }
