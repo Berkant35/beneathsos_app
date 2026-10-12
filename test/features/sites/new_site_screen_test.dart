@@ -1,4 +1,5 @@
 import 'package:beneathsos_app/features/sites/presentation/screens/new_site_screen.dart';
+import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -32,4 +33,13 @@ void main() {
       await expectFullyReadable(tester, find.textContaining('rubble site'));
     },
   );
+
+  testWidgets('the explanation sits in a "Being prepared" card', (
+    tester,
+  ) async {
+    await pumpLocalized(tester, const NewSiteScreen());
+    expect(find.byType(BeneathCard), findsOneWidget);
+    expect(find.text('Being prepared'), findsOneWidget);
+    expect(find.byIcon(Icons.construction_rounded), findsOneWidget);
+  });
 }

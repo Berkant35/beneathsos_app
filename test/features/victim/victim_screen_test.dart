@@ -1,4 +1,5 @@
 import 'package:beneathsos_app/features/victim/presentation/screens/victim_screen.dart';
+import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -46,4 +47,16 @@ void main() {
       );
     }
   }
+
+  testWidgets('Turkish: the 112 instruction sits in a "Hazırlanıyor" card', (
+    tester,
+  ) async {
+    await pumpLocalized(
+      tester,
+      const VictimScreen(),
+      locale: const Locale('tr'),
+    );
+    expect(find.byType(BeneathCard), findsOneWidget);
+    expect(find.text('Hazırlanıyor'), findsOneWidget);
+  });
 }

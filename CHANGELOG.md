@@ -8,6 +8,9 @@ and appear only in TestFlight.
 
 ### Added
 
+- Readiness banner on the home screen: Bluetooth and permission state, live; asks for
+  Bluetooth permission on first launch.
+- "Being prepared" screens show their text in a card.
 - Branded home screen: logo, "Start a search" and "I am trapped" (both open "being prepared"
   screens; the victim screen says to call 112), independence note, "Powered by Socrepho".
 - BeneathSOS theme from `beneathsos_ui` (light and dark, Atkinson Hyperlegible Next).
