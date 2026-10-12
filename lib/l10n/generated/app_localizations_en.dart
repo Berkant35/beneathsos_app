@@ -211,4 +211,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get victimSos => 'Play SOS sound';
+
+  @override
+  String get practiceTitle => 'Practice search';
+
+  @override
+  String get lastSearchTitle => 'Last search';
+
+  @override
+  String get lastPracticeTitle => 'Last practice search';
+
+  @override
+  String lastSearchBody(String title, int count, String time) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count points measured',
+      one: '1 point measured',
+      zero: 'no point measured yet',
+    );
+    return '$title · $_temp0 · started $time';
+  }
+
+  @override
+  String get lastSearchContinue => 'Continue the search';
+
+  @override
+  String get lastSearchFinish => 'Finish this search';
 }

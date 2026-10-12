@@ -10,7 +10,8 @@ import 'package:rubble_core/rubble_core.dart';
 part 'practice_session.g.dart';
 
 /// Records the preview journey as a practice search; the state is its session id (null before
-/// "Start"). A failed write is logged and never blocks the preview.
+/// "Start"). Steps run one after the other in call order, so screens need not wait for them; a
+/// failed write is logged and never blocks the preview.
 @Riverpod(keepAlive: true)
 class PracticeSession extends _$PracticeSession {
   late final Uuid7Generator _ids = Uuid7Generator(
@@ -18,6 +19,7 @@ class PracticeSession extends _$PracticeSession {
     random: Random.secure(),
   );
   int _points = 0;
+  Future<void> _last = Future.value();
 
   @override
   SessionId? build() => null;
@@ -98,7 +100,15 @@ class PracticeSession extends _$PracticeSession {
     }
   });
 
-  Future<void> _guard(Future<void> Function() write) async {
+  Future<void> _guard(Future<void> Function() write) {
+    final step = _last.then((_) => _run(write));
+    // The next step waits for this one but never inherits its error (an Error is a bug: it reaches
+    // the caller of this step only).
+    _last = step.then<void>((_) {}, onError: (Object _) {});
+    return step;
+  }
+
+  Future<void> _run(Future<void> Function() write) async {
     try {
       await write();
     } on Exception catch (error, stack) {

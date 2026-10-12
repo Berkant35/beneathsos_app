@@ -469,6 +469,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Play SOS sound'**
   String get victimSos;
+
+  /// No description provided for @practiceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice search'**
+  String get practiceTitle;
+
+  /// No description provided for @lastSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Last search'**
+  String get lastSearchTitle;
+
+  /// No description provided for @lastPracticeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Last practice search'**
+  String get lastPracticeTitle;
+
+  /// Home card for the newest open session.
+  ///
+  /// In en, this message translates to:
+  /// **'{title} · {count, plural, =0{no point measured yet} =1{1 point measured} other{{count} points measured}} · started {time}'**
+  String lastSearchBody(String title, int count, String time);
+
+  /// No description provided for @lastSearchContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue the search'**
+  String get lastSearchContinue;
+
+  /// No description provided for @lastSearchFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish this search'**
+  String get lastSearchFinish;
 }
 
 class _AppLocalizationsDelegate

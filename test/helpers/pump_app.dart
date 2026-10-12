@@ -1,9 +1,13 @@
+import 'package:beneathsos_app/core/database/app_database.dart';
+import 'package:beneathsos_app/core/database/database_provider.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
 import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
 import 'package:beneathsos_app/core/scanning/presentation/providers/scanning_providers.dart';
 import 'package:beneathsos_app/core/services/app_lifecycle.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
+import 'package:drift/drift.dart' show DatabaseConnection;
+import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,11 +17,27 @@ import 'package:go_router/go_router.dart';
 
 import '../core/scanning/fakes.dart';
 
-/// Fake hardware ports for widget tests (a real BleService needs the platform plugin).
+/// An in-memory database for widget tests. Streams close synchronously, so no drift timer is left
+/// pending when the widget tree is disposed.
+AppDatabase testDatabase() => AppDatabase(
+  DatabaseConnection(NativeDatabase.memory(), closeStreamsSynchronously: true),
+);
+
+/// Fake hardware ports for widget tests (a real BleService needs the platform plugin) and an
+/// in-memory database ([database], or a fresh one closed with the scope).
 List<Override> fakePortOverrides({
   FakeScanner? scanner,
   FakePermissions? permissions,
+  AppDatabase? database,
 }) => [
+  if (database != null)
+    appDatabaseProvider.overrideWithValue(database)
+  else
+    appDatabaseProvider.overrideWith((ref) {
+      final db = testDatabase();
+      ref.onDispose(db.close);
+      return db;
+    }),
   scannerPortProvider.overrideWithValue(scanner ?? FakeScanner()),
   scanPermissionPortProvider.overrideWithValue(
     permissions ?? FakePermissions(checkResult: ScanPermission.granted),
@@ -72,12 +92,17 @@ Future<void> pumpRouterApp(
   ThemeData? theme,
   FakeScanner? scanner,
   FakePermissions? permissions,
+  AppDatabase? database,
 }) async {
   final router = GoRouter(routes: $appRoutes);
   addTearDown(router.dispose);
   await tester.pumpWidget(
     ProviderScope(
-      overrides: fakePortOverrides(scanner: scanner, permissions: permissions),
+      overrides: fakePortOverrides(
+        scanner: scanner,
+        permissions: permissions,
+        database: database,
+      ),
       child: MaterialApp.router(
         locale: locale,
         theme: theme ?? BeneathTheme.light(),

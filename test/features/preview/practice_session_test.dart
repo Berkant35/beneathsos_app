@@ -9,6 +9,45 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rubble_core/rubble_core.dart';
 
+/// A store whose first [failures] appends throw [error]; then it delegates to [inner].
+final class _FlakyStore implements SessionStore {
+  _FlakyStore(this.inner, this.error);
+
+  final SessionStore inner;
+  final Object error;
+  int failures = 1;
+
+  @override
+  Future<SessionId> create({
+    required String title,
+    required String engineProfile,
+    required bool practice,
+  }) => inner.create(
+    title: title,
+    engineProfile: engineProfile,
+    practice: practice,
+  );
+
+  @override
+  Future<void> append(SessionId session, SessionEvent event) {
+    if (failures-- > 0) return Future.error(error);
+    return inner.append(session, event);
+  }
+
+  @override
+  Stream<SessionState> watch(SessionId session) => inner.watch(session);
+
+  @override
+  Stream<SessionSummary?> watchLatestOpen() => inner.watchLatestOpen();
+
+  @override
+  Future<void> addSamples(
+    SessionId session,
+    PointId? point,
+    List<BleSample> samples,
+  ) => inner.addSamples(session, point, samples);
+}
+
 /// A store whose every write fails, as a full disk would.
 final class _BrokenStore implements SessionStore {
   @override
@@ -70,6 +109,42 @@ void main() {
     expect(state.measuredPoints, hasLength(2));
     final summary = await c.read(sessionStoreProvider).watchLatestOpen().first;
     expect(summary!.practice, isTrue);
+  });
+
+  test('steps run in order even when the screens do not wait', () async {
+    final c = container();
+    final practice = c.read(practiceSessionProvider.notifier);
+    final started = practice.start('Practice search');
+    final drawn = practice.outlineDrawn();
+    await Future.wait([started, drawn]);
+    final id = c.read(practiceSessionProvider)!;
+    final state = await c.read(sessionStoreProvider).watch(id).first;
+    expect(state.outline, isNotNull);
+  });
+
+  test('a step that fails with an error does not stop later steps', () async {
+    final db = AppDatabase(NativeDatabase.memory());
+    addTearDown(db.close);
+    final c = ProviderContainer(
+      overrides: [appDatabaseProvider.overrideWithValue(db)],
+    );
+    addTearDown(c.dispose);
+    final real = c.read(sessionStoreProvider);
+    final flaky = ProviderContainer(
+      overrides: [
+        appDatabaseProvider.overrideWithValue(db),
+        sessionStoreProvider.overrideWithValue(
+          _FlakyStore(real, StateError('bug')),
+        ),
+      ],
+    );
+    addTearDown(flaky.dispose);
+    final practice = flaky.read(practiceSessionProvider.notifier);
+    await practice.start('Practice search');
+    await expectLater(practice.outlineDrawn(), throwsStateError);
+    await practice.ambientScanned();
+    final id = flaky.read(practiceSessionProvider)!;
+    expect((await real.watch(id).first).blacklist, hasLength(2));
   });
 
   test('discarding sets the point aside', () async {

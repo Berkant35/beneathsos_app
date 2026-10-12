@@ -1,16 +1,20 @@
+import 'dart:async';
+
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
+import 'package:beneathsos_app/features/preview/presentation/providers/practice_session.dart';
 import 'package:beneathsos_app/features/preview/presentation/widgets/preview_banner.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Preview 5 — 15 s point measurement: hold still; "no signal" is information.
-class PreviewMeasureScreen extends StatelessWidget {
+class PreviewMeasureScreen extends ConsumerWidget {
   /// Creates the screen.
   const PreviewMeasureScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final text = Theme.of(context).textTheme;
     return BeneathScaffold(
@@ -47,10 +51,22 @@ class PreviewMeasureScreen extends StatelessWidget {
             PrimaryButton(
               label: l10n.measureShowMap,
               icon: Icons.map_rounded,
-              onPressed: () => const PreviewMapRoute().go(context),
+              onPressed: () {
+                // Queued in order and never throws (see PracticeSession).
+                unawaited(
+                  ref.read(practiceSessionProvider.notifier).pointMeasured(),
+                );
+                const PreviewMapRoute().go(context);
+              },
             ),
             const SizedBox(height: BeneathSpacing.m),
-            SecondaryButton(label: l10n.measureDiscard, onPressed: () {}),
+            SecondaryButton(
+              label: l10n.measureDiscard,
+              // Queued in order and never throws (see PracticeSession).
+              onPressed: () => unawaited(
+                ref.read(practiceSessionProvider.notifier).pointDiscarded(),
+              ),
+            ),
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:beneathsos_app/core/router/app_router.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_map_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_measure_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_notice_screen.dart';
@@ -47,6 +48,25 @@ void main() {
       await tester.pageBack();
       await tester.pumpAndSettle();
       expect(find.byType(PreviewTargetScreen), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'the walked journey is kept: back home, the card offers to continue it',
+    (tester) async {
+      setPhoneSize(tester, 402, 874);
+      await pumpRouterApp(tester);
+      for (final (button, _) in steps) {
+        await _tap(tester, button);
+      }
+      const HomeRoute().go(tester.element(find.byType(PreviewMapScreen)));
+      await tester.runAsync(() => Future<void>.delayed(Duration.zero));
+      await tester.pumpAndSettle();
+      expect(find.text('Last practice search'), findsOneWidget);
+      expect(
+        find.textContaining('Practice search · 1 point measured'),
+        findsOneWidget,
+      );
     },
   );
 

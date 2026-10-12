@@ -1,16 +1,20 @@
+import 'dart:async';
+
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
+import 'package:beneathsos_app/features/preview/presentation/providers/practice_session.dart';
 import 'package:beneathsos_app/features/preview/presentation/widgets/preview_banner.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Preview 4 — choose the target: candidates ranked with the reason in plain words.
-class PreviewTargetScreen extends StatelessWidget {
+class PreviewTargetScreen extends ConsumerWidget {
   /// Creates the screen.
   const PreviewTargetScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final scheme = Theme.of(context).colorScheme;
     final candidates = [
@@ -68,7 +72,13 @@ class PreviewTargetScreen extends StatelessWidget {
             PrimaryButton(
               label: l10n.targetTrack,
               icon: Icons.track_changes_rounded,
-              onPressed: () => const PreviewMeasureRoute().go(context),
+              onPressed: () {
+                // Queued in order and never throws (see PracticeSession).
+                unawaited(
+                  ref.read(practiceSessionProvider.notifier).targetChosen(),
+                );
+                const PreviewMeasureRoute().go(context);
+              },
             ),
           ],
         ),

@@ -1,11 +1,13 @@
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/features/home/presentation/widgets/home_actions.dart';
 import 'package:beneathsos_app/features/home/presentation/widgets/home_footer.dart';
+import 'package:beneathsos_app/features/home/presentation/widgets/last_search_card.dart';
 import 'package:beneathsos_app/features/home/presentation/widgets/readiness_banner.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 
-/// Entry point: logo, one message, "Start a search" and "I am trapped". Scrolls at large text.
+/// Entry point: logo, one message, the last unfinished search, "Start a search" and "I am trapped".
+/// Scrolls at large text.
 class HomeScreen extends StatelessWidget {
   /// Creates the home screen.
   const HomeScreen({super.key});
@@ -46,6 +48,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: BeneathSpacing.xl),
                   const ReadinessBanner(),
                   const SizedBox(height: BeneathSpacing.m),
+                  const LastSearchCard(),
                   const HomeActions(),
                   const SizedBox(height: BeneathSpacing.l),
                   const HomeFooter(),

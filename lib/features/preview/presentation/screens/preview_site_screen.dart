@@ -1,18 +1,22 @@
+import 'dart:async';
+
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
+import 'package:beneathsos_app/features/preview/presentation/providers/practice_session.dart';
 import 'package:beneathsos_app/features/preview/presentation/widgets/outline_painter.dart';
 import 'package:beneathsos_app/features/preview/presentation/widgets/preview_banner.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 /// Preview 2 — rubble site outline: corners tapped while walking around the rubble.
-class PreviewSiteScreen extends StatelessWidget {
+class PreviewSiteScreen extends ConsumerWidget {
   /// Creates the screen.
   const PreviewSiteScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final scheme = Theme.of(context).colorScheme;
     final metres = NumberFormat('0.0', l10n.localeName);
@@ -56,7 +60,13 @@ class PreviewSiteScreen extends StatelessWidget {
             PrimaryButton(
               label: l10n.siteDone,
               icon: Icons.check_rounded,
-              onPressed: () => const PreviewScanRoute().go(context),
+              onPressed: () {
+                // Queued in order and never throws (see PracticeSession).
+                unawaited(
+                  ref.read(practiceSessionProvider.notifier).outlineDrawn(),
+                );
+                const PreviewScanRoute().go(context);
+              },
             ),
           ],
         ),

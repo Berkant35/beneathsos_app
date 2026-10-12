@@ -78,5 +78,26 @@
   "victimCalm": "Stay calm. Save your battery.",
   "victimTap": "When you hear rescuers, tap the screen 3 times.",
   "victimBattery": "Battery",
-  "victimSos": "Play SOS sound"
+  "victimSos": "Play SOS sound",
+  "practiceTitle": "Practice search",
+  "lastSearchTitle": "Last search",
+  "lastPracticeTitle": "Last practice search",
+  "lastSearchBody": "{title} · {count, plural, =0{no point measured yet} =1{1 point measured} other{{count} points measured}} · started {time}",
+  "@lastSearchBody": {
+    "description": "Home card for the newest open session.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String",
+        "example": "14:05"
+      }
+    }
+  },
+  "lastSearchContinue": "Continue the search",
+  "lastSearchFinish": "Finish this search"
 }

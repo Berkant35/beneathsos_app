@@ -1,16 +1,20 @@
+import 'dart:async';
+
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
+import 'package:beneathsos_app/features/preview/presentation/providers/practice_session.dart';
 import 'package:beneathsos_app/features/preview/presentation/widgets/preview_banner.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Preview 3 — 30 s ambient scan: surface phones are listed so they are never suggested.
-class PreviewScanScreen extends StatelessWidget {
+class PreviewScanScreen extends ConsumerWidget {
   /// Creates the screen.
   const PreviewScanScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final text = Theme.of(context).textTheme;
     return BeneathScaffold(
@@ -50,7 +54,13 @@ class PreviewScanScreen extends StatelessWidget {
             const SizedBox(height: BeneathSpacing.l),
             PrimaryButton(
               label: l10n.scanContinue,
-              onPressed: () => const PreviewTargetRoute().go(context),
+              onPressed: () {
+                // Queued in order and never throws (see PracticeSession).
+                unawaited(
+                  ref.read(practiceSessionProvider.notifier).ambientScanned(),
+                );
+                const PreviewTargetRoute().go(context);
+              },
             ),
           ],
         ),

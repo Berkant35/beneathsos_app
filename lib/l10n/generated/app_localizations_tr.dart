@@ -212,4 +212,30 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get victimSos => 'SOS sesi çal';
+
+  @override
+  String get practiceTitle => 'Alıştırma araması';
+
+  @override
+  String get lastSearchTitle => 'Son arama';
+
+  @override
+  String get lastPracticeTitle => 'Son alıştırma araması';
+
+  @override
+  String lastSearchBody(String title, int count, String time) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nokta ölçüldü',
+      zero: 'henüz ölçülen nokta yok',
+    );
+    return '$title · $_temp0 · başlangıç $time';
+  }
+
+  @override
+  String get lastSearchContinue => 'Aramaya devam et';
+
+  @override
+  String get lastSearchFinish => 'Bu aramayı bitir';
 }

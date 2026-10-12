@@ -61,5 +61,11 @@
   "victimCalm": "Sakin olun. Pilinizi koruyun.",
   "victimTap": "Kurtarıcıları duyduğunuzda ekrana 3 kez dokunun.",
   "victimBattery": "Pil",
-  "victimSos": "SOS sesi çal"
+  "victimSos": "SOS sesi çal",
+  "practiceTitle": "Alıştırma araması",
+  "lastSearchTitle": "Son arama",
+  "lastPracticeTitle": "Son alıştırma araması",
+  "lastSearchBody": "{title} · {count, plural, =0{henüz ölçülen nokta yok} other{{count} nokta ölçüldü}} · başlangıç {time}",
+  "lastSearchContinue": "Aramaya devam et",
+  "lastSearchFinish": "Bu aramayı bitir"
 }
