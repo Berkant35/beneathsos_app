@@ -8,8 +8,6 @@
   "homeTrapped": "I am trapped",
   "homeIndependence": "BeneathSOS is an independent open-source project and is not affiliated with AFAD or any government agency.",
   "poweredBy": "Powered by Socrepho",
-  "newSiteTitle": "New search",
-  "newSitePreparing": "This step is being prepared. Here you will draw the outline of the rubble site.",
   "victimTitle": "I am trapped",
   "victimPreparing": "This mode is not ready yet. In an emergency, call 112.",
   "readinessChecking": "Checking Bluetooth…",
@@ -19,5 +17,66 @@
   "readinessBluetoothOff": "Bluetooth is off. Turn it on in your phone's settings.",
   "readinessUnsupported": "This phone does not support Bluetooth LE. Search with another phone.",
   "preparingCardTitle": "Being prepared",
-  "readinessFailed": "Could not check Bluetooth. Tap to try again."
+  "readinessFailed": "Could not check Bluetooth. Tap to try again.",
+  "previewBanner": "Preview — sample data, no real measurement.",
+  "noticeTitle": "Before you start",
+  "noticeDoesTitle": "What BeneathSOS does",
+  "noticeDoesBody": "It measures the Bluetooth signal of a phone at several points and shows the area where it most likely is — an area, never an exact spot.",
+  "noticeDoesNotTitle": "What it does not do",
+  "noticeDoesNotBody": "It does not replace professional rescue. Call 112 and follow AFAD and the rescue teams on site.",
+  "noticeAccept": "I understand",
+  "siteTitle": "Rubble site",
+  "siteHint": "Walk around the rubble and tap each corner.",
+  "siteSummary": "4 corners · {width} × {depth} m",
+  "@siteSummary": {
+    "placeholders": {
+      "width": {
+        "type": "String"
+      },
+      "depth": {
+        "type": "String"
+      }
+    }
+  },
+  "siteDone": "Outline done",
+  "scanTitle": "Ambient scan",
+  "scanStand": "Stand 10 m away from the rubble.",
+  "scanBody": "Phones on the surface — rescuers, bystanders — are listed now and will not be suggested as targets.",
+  "scanFound": "Surface phones found",
+  "scanContinue": "Continue",
+  "secondsLeft": "{seconds} seconds left",
+  "@secondsLeft": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "targetTitle": "Choose the target",
+  "targetHint": "Hold a rescuer's phone next to yours to exclude it.",
+  "targetSamsung": "Samsung phone",
+  "targetUnknown": "Unknown device",
+  "targetReasonLikely": "Not moving · weak signal · not seen on the surface",
+  "targetReasonMedium": "Not moving · medium signal",
+  "targetReasonMoving": "Moving — probably on the surface",
+  "targetTrack": "Track this phone",
+  "measureTitle": "Point 3 of 5",
+  "measureHold": "Hold the phone still at this point.",
+  "measureHeard": "Signal heard: −71 dBm.",
+  "measureStill": "The phone is still.",
+  "measureShowMap": "Show the map",
+  "measureDiscard": "Discard this point",
+  "mapTitle": "Probability map",
+  "mapRotation": "Its Bluetooth identity changes in about 2 min. Stay near the rubble.",
+  "mapMostLikely": "Most likely area · 50 %",
+  "mapRegion90": "90 %",
+  "mapHeard": "signal heard",
+  "mapNoSignal": "no signal",
+  "mapNext": "suggested next point",
+  "mapMeasure": "Measure here",
+  "victimSending": "Your phone is sending a help signal.",
+  "victimCalm": "Stay calm. Save your battery.",
+  "victimTap": "When you hear rescuers, tap the screen 3 times.",
+  "victimBattery": "Battery",
+  "victimSos": "Play SOS sound"
 }

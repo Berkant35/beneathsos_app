@@ -17,7 +17,7 @@ class HomeActions extends StatelessWidget {
         PrimaryButton(
           label: l10n.homeStartSearch,
           icon: Icons.search_rounded,
-          onPressed: () => const NewSiteRoute().go(context),
+          onPressed: () => const PreviewNoticeRoute().go(context),
         ),
         const SizedBox(height: BeneathSpacing.m),
         SecondaryButton(

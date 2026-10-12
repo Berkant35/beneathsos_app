@@ -14,9 +14,44 @@ RouteBase get $homeRoute => GoRouteData.$route(
   factory: $HomeRoute._fromState,
   routes: [
     GoRouteData.$route(
-      path: 'sites/new',
+      path: 'preview',
       hasOverriddenOnExit: false,
-      factory: $NewSiteRoute._fromState,
+      factory: $PreviewNoticeRoute._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: 'site',
+          hasOverriddenOnExit: false,
+          factory: $PreviewSiteRoute._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'scan',
+              hasOverriddenOnExit: false,
+              factory: $PreviewScanRoute._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'target',
+                  hasOverriddenOnExit: false,
+                  factory: $PreviewTargetRoute._fromState,
+                  routes: [
+                    GoRouteData.$route(
+                      path: 'measure',
+                      hasOverriddenOnExit: false,
+                      factory: $PreviewMeasureRoute._fromState,
+                      routes: [
+                        GoRouteData.$route(
+                          path: 'map',
+                          hasOverriddenOnExit: false,
+                          factory: $PreviewMapRoute._fromState,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
     ),
     GoRouteData.$route(
       path: 'victim',
@@ -46,11 +81,119 @@ mixin $HomeRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin $NewSiteRoute on GoRouteData {
-  static NewSiteRoute _fromState(GoRouterState state) => const NewSiteRoute();
+mixin $PreviewNoticeRoute on GoRouteData {
+  static PreviewNoticeRoute _fromState(GoRouterState state) =>
+      const PreviewNoticeRoute();
 
   @override
-  String get location => GoRouteData.$location('/sites/new');
+  String get location => GoRouteData.$location('/preview');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $PreviewSiteRoute on GoRouteData {
+  static PreviewSiteRoute _fromState(GoRouterState state) =>
+      const PreviewSiteRoute();
+
+  @override
+  String get location => GoRouteData.$location('/preview/site');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $PreviewScanRoute on GoRouteData {
+  static PreviewScanRoute _fromState(GoRouterState state) =>
+      const PreviewScanRoute();
+
+  @override
+  String get location => GoRouteData.$location('/preview/site/scan');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $PreviewTargetRoute on GoRouteData {
+  static PreviewTargetRoute _fromState(GoRouterState state) =>
+      const PreviewTargetRoute();
+
+  @override
+  String get location => GoRouteData.$location('/preview/site/scan/target');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $PreviewMeasureRoute on GoRouteData {
+  static PreviewMeasureRoute _fromState(GoRouterState state) =>
+      const PreviewMeasureRoute();
+
+  @override
+  String get location =>
+      GoRouteData.$location('/preview/site/scan/target/measure');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $PreviewMapRoute on GoRouteData {
+  static PreviewMapRoute _fromState(GoRouterState state) =>
+      const PreviewMapRoute();
+
+  @override
+  String get location =>
+      GoRouteData.$location('/preview/site/scan/target/measure/map');
 
   @override
   void go(BuildContext context) => context.go(location);

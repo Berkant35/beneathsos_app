@@ -56,7 +56,27 @@ void main() {
       const VictimScreen(),
       locale: const Locale('tr'),
     );
-    expect(find.byType(BeneathCard), findsOneWidget);
+    expect(
+      find.ancestor(
+        of: find.textContaining("112'yi"),
+        matching: find.byType(BeneathCard),
+      ),
+      findsOneWidget,
+    );
     expect(find.text('Hazırlanıyor'), findsOneWidget);
   });
+
+  testWidgets(
+    'victim preview: help signal, calm guidance, SOS sound — and still 112',
+    (tester) async {
+      await pumpLocalized(tester, const VictimScreen());
+      expect(find.text('Your phone is sending a help signal.'), findsOneWidget);
+      expect(find.text('Play SOS sound'), findsOneWidget);
+      expect(
+        find.text('Preview — sample data, no real measurement.'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('call 112'), findsOneWidget);
+    },
+  );
 }
