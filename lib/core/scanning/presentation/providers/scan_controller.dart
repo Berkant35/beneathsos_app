@@ -46,6 +46,8 @@ class ScanController extends _$ScanController {
 
   /// Stops scanning.
   Future<void> stop() async {
+    // A screen that scanned may close after the whole scope is gone (app shut down).
+    if (!ref.mounted) return;
     await ref.read(stopScanProvider)();
     state = const ScanIdle();
   }

@@ -44,6 +44,29 @@ void main() {
     expect(keys(), ['A', 'B', 'C']);
   });
 
+  test(
+    'no batch is lost when several arrive at once (broadcast source)',
+    () async {
+      final burst = StreamController<List<BleSample>>.broadcast();
+      addTearDown(burst.close);
+      final c = ProviderContainer(
+        overrides: [bleSamplesProvider.overrideWith((ref) => burst.stream)],
+      );
+      addTearDown(c.dispose);
+      c.listen(trackedDevicesProvider, (_, _) {});
+      await pumpEventQueue();
+      burst
+        ..add([sample(key: 'A')])
+        ..add([sample(key: 'B', at: 100)])
+        ..add([sample(key: 'C', at: 200)]);
+      await pumpEventQueue();
+      expect(
+        [for (final d in c.read(trackedDevicesProvider).devices) d.key],
+        ['A', 'B', 'C'],
+      );
+    },
+  );
+
   test('reset publishes an empty snapshot', () async {
     samples.add([sample(key: 'A')]);
     await pumpEventQueue();

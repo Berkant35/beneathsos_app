@@ -47,7 +47,7 @@ final class ScanControllerProvider
   }
 }
 
-String _$scanControllerHash() => r'72b8caf30117fc55dec6d8a5d88f41627e200382';
+String _$scanControllerHash() => r'edfc50f2d8e47f1bee7e71f21b9177ac3207c2fa';
 
 /// Scanner state for the UI. Thin: calls use cases, maps results, wires streams.
 /// Rules live in `core/scanning/domain`.

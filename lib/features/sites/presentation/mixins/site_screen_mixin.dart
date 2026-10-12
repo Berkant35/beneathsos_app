@@ -2,31 +2,41 @@ import 'package:beneathsos_app/core/formatting/measures.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:rubble_core/rubble_core.dart';
 
-/// One step of the rescuer flow on the overview; [opensDrawing] when tapping it draws the outline.
+/// Which screen a step of the overview opens.
+enum SiteStepAction {
+  /// Draw the rubble outline.
+  draw,
+
+  /// The surface scan.
+  ambient,
+
+  /// Choose the target.
+  target,
+}
+
+/// One step of the rescuer flow on the overview; [action] is the screen it opens, if any.
 typedef SiteStep = ({
   String label,
   String status,
   bool done,
-  bool opensDrawing,
+  SiteStepAction? action,
 });
 
 /// The steps of a search, from its projected state.
 mixin SiteScreenMixin {
   /// Outline, surface phones, target, measured points. [state] is null while loading or when stored
-  /// data cannot be read; only an [open] search can be drawn.
+  /// data cannot be read; only an [open] search can be changed.
   List<SiteStep> stepsFor(
     AppLocalizations l10n,
     SessionState? state, {
     required bool open,
   }) {
-    SiteStep comingLater(String label, {required bool done}) => (
-      label: label,
-      status: done ? l10n.siteStepDone : l10n.siteStepNext,
-      done: done,
-      opensDrawing: false,
-    );
+    final canOpen = open && state != null;
+    String notDone() => open ? l10n.siteStepStart : l10n.siteStepNotDone;
     final outline = state?.outline;
     final scale = state?.scale ?? 1;
+    final surface = state?.blacklist.length ?? 0;
+    final target = state?.targets.values.firstOrNull;
     final measured = state?.measuredPoints.length ?? 0;
     return [
       (
@@ -38,17 +48,23 @@ mixin SiteScreenMixin {
                   SquareMeters(outline.area.value * scale * scale),
                 ),
               )
-            : (open ? l10n.siteStepStart : l10n.siteStepNotDone),
+            : notDone(),
         done: outline != null,
-        opensDrawing: open && state != null,
+        action: canOpen ? SiteStepAction.draw : null,
       ),
-      comingLater(
-        l10n.siteStepAmbient,
-        done: state?.blacklist.isNotEmpty ?? false,
+      (
+        label: l10n.siteStepAmbient,
+        status: surface > 0 ? l10n.siteAmbientDone(surface) : notDone(),
+        done: surface > 0,
+        action: canOpen ? SiteStepAction.ambient : null,
       ),
-      comingLater(
-        l10n.siteStepTarget,
-        done: state?.targets.isNotEmpty ?? false,
+      (
+        label: l10n.siteStepTarget,
+        status: target != null
+            ? l10n.siteTargetDone(target.label ?? target.peripheralKey)
+            : notDone(),
+        done: target != null,
+        action: canOpen ? SiteStepAction.target : null,
       ),
       (
         label: l10n.siteStepMeasure,
@@ -56,7 +72,7 @@ mixin SiteScreenMixin {
             ? l10n.siteMeasuredCount(measured)
             : l10n.siteStepNext,
         done: measured > 0,
-        opensDrawing: false,
+        action: null,
       ),
     ];
   }

@@ -278,5 +278,66 @@
         "example": "180.0 m"
       }
     }
+  },
+  "ambientTitle": "Surface phones",
+  "ambientHeard": "{count, plural, =0{No phone heard yet} =1{1 phone heard so far} other{{count} phones heard so far}}",
+  "@ambientHeard": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ambientDone": "{count, plural, =0{No phone close by: nothing was set aside.} =1{1 surface phone set aside. It will not be suggested.} other{{count} surface phones set aside. They will not be suggested.}}",
+  "@ambientDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ambientNotSaved": "The scan could not be saved. Scan again.",
+  "ambientAgain": "Scan again",
+  "ambientChoose": "Choose the phone",
+  "ambientBack": "Back to the search",
+  "targetsHintExclude": "Hold a rescuer's phone next to yours: it shows as very strong — exclude it.",
+  "targetsNoSurfaceScan": "No surface scan yet: rescuers' phones may be listed. Tap to scan first.",
+  "targetsNone": "No phones heard yet. Keep this screen open.",
+  "reasonNotMoving": "Not moving",
+  "reasonWeak": "weak signal",
+  "reasonMedium": "medium signal",
+  "reasonNotOnSurface": "not seen on the surface",
+  "reasonVeryStrong": "Very strong — probably right next to you",
+  "targetSignal": "Signal {value} dBm",
+  "@targetSignal": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "-78"
+      }
+    }
+  },
+  "targetExclude": "Exclude — it is on the surface",
+  "targetNotSaved": "Could not be saved. Try again in a moment.",
+  "kindFindMy": "Apple · Find My",
+  "kindApple": "Apple device",
+  "kindWindows": "Windows device",
+  "kindGoogle": "Android device (Google)",
+  "kindOther": "Bluetooth device",
+  "siteAmbientDone": "{count, plural, =0{Done · nothing set aside} =1{Done · 1 phone set aside} other{Done · {count} phones set aside}}",
+  "@siteAmbientDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "siteTargetDone": "Done · {label}",
+  "@siteTargetDone": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
   }
 }

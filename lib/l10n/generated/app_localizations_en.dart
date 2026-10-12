@@ -522,4 +522,112 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scaleNoOutline => 'Draw the outline first.';
+
+  @override
+  String get ambientTitle => 'Surface phones';
+
+  @override
+  String ambientHeard(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count phones heard so far',
+      one: '1 phone heard so far',
+      zero: 'No phone heard yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String ambientDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count surface phones set aside. They will not be suggested.',
+      one: '1 surface phone set aside. It will not be suggested.',
+      zero: 'No phone close by: nothing was set aside.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ambientNotSaved => 'The scan could not be saved. Scan again.';
+
+  @override
+  String get ambientAgain => 'Scan again';
+
+  @override
+  String get ambientChoose => 'Choose the phone';
+
+  @override
+  String get ambientBack => 'Back to the search';
+
+  @override
+  String get targetsHintExclude =>
+      'Hold a rescuer\'s phone next to yours: it shows as very strong — exclude it.';
+
+  @override
+  String get targetsNoSurfaceScan =>
+      'No surface scan yet: rescuers\' phones may be listed. Tap to scan first.';
+
+  @override
+  String get targetsNone => 'No phones heard yet. Keep this screen open.';
+
+  @override
+  String get reasonNotMoving => 'Not moving';
+
+  @override
+  String get reasonWeak => 'weak signal';
+
+  @override
+  String get reasonMedium => 'medium signal';
+
+  @override
+  String get reasonNotOnSurface => 'not seen on the surface';
+
+  @override
+  String get reasonVeryStrong => 'Very strong — probably right next to you';
+
+  @override
+  String targetSignal(String value) {
+    return 'Signal $value dBm';
+  }
+
+  @override
+  String get targetExclude => 'Exclude — it is on the surface';
+
+  @override
+  String get targetNotSaved => 'Could not be saved. Try again in a moment.';
+
+  @override
+  String get kindFindMy => 'Apple · Find My';
+
+  @override
+  String get kindApple => 'Apple device';
+
+  @override
+  String get kindWindows => 'Windows device';
+
+  @override
+  String get kindGoogle => 'Android device (Google)';
+
+  @override
+  String get kindOther => 'Bluetooth device';
+
+  @override
+  String siteAmbientDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Done · $count phones set aside',
+      one: 'Done · 1 phone set aside',
+      zero: 'Done · nothing set aside',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String siteTargetDone(String label) {
+    return 'Done · $label';
+  }
 }

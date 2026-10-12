@@ -43,6 +43,16 @@ RouteBase get $homeRoute => GoRouteData.$route(
               hasOverriddenOnExit: false,
               factory: $ScaleRoute._fromState,
             ),
+            GoRouteData.$route(
+              path: 'ambient',
+              hasOverriddenOnExit: false,
+              factory: $AmbientRoute._fromState,
+            ),
+            GoRouteData.$route(
+              path: 'targets',
+              hasOverriddenOnExit: false,
+              factory: $TargetsRoute._fromState,
+            ),
           ],
         ),
       ],
@@ -239,6 +249,56 @@ mixin $ScaleRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
     '/sites/${Uri.encodeComponent(_self.sessionId)}/scale',
+  );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $AmbientRoute on GoRouteData {
+  static AmbientRoute _fromState(GoRouterState state) =>
+      AmbientRoute(sessionId: state.pathParameters['sessionId']!);
+
+  AmbientRoute get _self => this as AmbientRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/sites/${Uri.encodeComponent(_self.sessionId)}/ambient',
+  );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $TargetsRoute on GoRouteData {
+  static TargetsRoute _fromState(GoRouterState state) =>
+      TargetsRoute(sessionId: state.pathParameters['sessionId']!);
+
+  TargetsRoute get _self => this as TargetsRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/sites/${Uri.encodeComponent(_self.sessionId)}/targets',
   );
 
   @override

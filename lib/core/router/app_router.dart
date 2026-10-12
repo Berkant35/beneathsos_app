@@ -12,6 +12,8 @@ import 'package:beneathsos_app/features/site_drawing/presentation/screens/scale_
 import 'package:beneathsos_app/features/sites/presentation/screens/new_site_screen.dart';
 import 'package:beneathsos_app/features/sites/presentation/screens/site_screen.dart';
 import 'package:beneathsos_app/features/sites/presentation/screens/sites_screen.dart';
+import 'package:beneathsos_app/features/targets/presentation/screens/ambient_scan_screen.dart';
+import 'package:beneathsos_app/features/targets/presentation/screens/targets_screen.dart';
 import 'package:beneathsos_app/features/victim/presentation/screens/victim_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,6 +39,8 @@ part 'app_router.g.dart';
           routes: [
             TypedGoRoute<DrawOutlineRoute>(path: 'draw'),
             TypedGoRoute<ScaleRoute>(path: 'scale'),
+            TypedGoRoute<AmbientRoute>(path: 'ambient'),
+            TypedGoRoute<TargetsRoute>(path: 'targets'),
           ],
         ),
       ],
@@ -173,6 +177,32 @@ class ScaleRoute extends GoRouteData with $ScaleRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       ScaleScreen(sessionId: sessionId);
+}
+
+/// The 30 s surface scan (`/sites/:sessionId/ambient`).
+class AmbientRoute extends GoRouteData with $AmbientRoute {
+  /// Route to the surface scan of [sessionId].
+  const AmbientRoute({required this.sessionId});
+
+  /// The search.
+  final String sessionId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      AmbientScanScreen(sessionId: sessionId);
+}
+
+/// Choose the phone to search for (`/sites/:sessionId/targets`).
+class TargetsRoute extends GoRouteData with $TargetsRoute {
+  /// Route to the candidates of [sessionId].
+  const TargetsRoute({required this.sessionId});
+
+  /// The search.
+  final String sessionId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      TargetsScreen(sessionId: sessionId);
 }
 
 /// Preview 1 (`/preview`): first-run notice.

@@ -1,9 +1,11 @@
 import 'package:beneathsos_app/core/database/app_database.dart';
 import 'package:beneathsos_app/core/database/database_provider.dart';
+import 'package:beneathsos_app/core/models/ble_sample.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
 import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
 import 'package:beneathsos_app/core/scanning/presentation/providers/scanning_providers.dart';
 import 'package:beneathsos_app/core/services/app_lifecycle.dart';
+import 'package:beneathsos_app/core/services/ble_service.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:drift/drift.dart' show DatabaseConnection;
@@ -29,7 +31,10 @@ List<Override> fakePortOverrides({
   FakeScanner? scanner,
   FakePermissions? permissions,
   AppDatabase? database,
+  Stream<List<BleSample>>? samples,
 }) => [
+  bleSamplesProvider.overrideWith((ref) => samples ?? const Stream.empty()),
+  screenAwakePortProvider.overrideWithValue(FakeScreen()),
   if (database != null)
     appDatabaseProvider.overrideWithValue(database)
   else
@@ -93,6 +98,7 @@ Future<void> pumpRouterApp(
   FakeScanner? scanner,
   FakePermissions? permissions,
   AppDatabase? database,
+  Stream<List<BleSample>>? samples,
   List<Override> overrides = const [],
 }) async {
   final router = GoRouter(routes: $appRoutes);
@@ -104,6 +110,7 @@ Future<void> pumpRouterApp(
           scanner: scanner,
           permissions: permissions,
           database: database,
+          samples: samples,
         ),
         ...overrides,
       ],

@@ -517,4 +517,109 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get scaleNoOutline => 'Önce sınırı çizin.';
+
+  @override
+  String get ambientTitle => 'Yüzeydeki telefonlar';
+
+  @override
+  String ambientHeard(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Şimdiye kadar $count telefon duyuldu',
+      zero: 'Henüz telefon duyulmadı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String ambientDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count yüzey telefonu ayrıldı. Hedef olarak önerilmeyecekler.',
+      zero: 'Yakında telefon yok: hiçbiri ayrılmadı.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ambientNotSaved => 'Tarama kaydedilemedi. Yeniden tarayın.';
+
+  @override
+  String get ambientAgain => 'Yeniden tara';
+
+  @override
+  String get ambientChoose => 'Telefonu seç';
+
+  @override
+  String get ambientBack => 'Aramaya dön';
+
+  @override
+  String get targetsHintExclude =>
+      'Bir kurtarıcının telefonunu sizinkinin yanına tutun: çok güçlü görünür — onu hariç tutun.';
+
+  @override
+  String get targetsNoSurfaceScan =>
+      'Henüz yüzey taraması yok: kurtarıcıların telefonları listelenebilir. Önce taramak için dokunun.';
+
+  @override
+  String get targetsNone => 'Henüz telefon duyulmadı. Bu ekranı açık tutun.';
+
+  @override
+  String get reasonNotMoving => 'Hareketsiz';
+
+  @override
+  String get reasonWeak => 'zayıf sinyal';
+
+  @override
+  String get reasonMedium => 'orta sinyal';
+
+  @override
+  String get reasonNotOnSurface => 'yüzeyde görülmedi';
+
+  @override
+  String get reasonVeryStrong => 'Çok güçlü — büyük olasılıkla hemen yanınızda';
+
+  @override
+  String targetSignal(String value) {
+    return 'Sinyal $value dBm';
+  }
+
+  @override
+  String get targetExclude => 'Hariç tut — yüzeyde';
+
+  @override
+  String get targetNotSaved => 'Kaydedilemedi. Biraz sonra yeniden deneyin.';
+
+  @override
+  String get kindFindMy => 'Apple · Find My';
+
+  @override
+  String get kindApple => 'Apple cihazı';
+
+  @override
+  String get kindWindows => 'Windows cihazı';
+
+  @override
+  String get kindGoogle => 'Android cihazı (Google)';
+
+  @override
+  String get kindOther => 'Bluetooth cihazı';
+
+  @override
+  String siteAmbientDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tamamlandı · $count telefon ayrıldı',
+      zero: 'Tamamlandı · hiçbiri ayrılmadı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String siteTargetDone(String label) {
+    return 'Tamamlandı · $label';
+  }
 }

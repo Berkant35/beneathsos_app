@@ -1,0 +1,258 @@
+import 'dart:async';
+import 'dart:math';
+import 'dart:typed_data';
+
+import 'package:beneathsos_app/core/database/app_database.dart';
+import 'package:beneathsos_app/core/models/ble_sample.dart';
+import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
+import 'package:beneathsos_app/core/sessions/data/drift_session_store.dart';
+import 'package:beneathsos_app/core/settings/data/drift_settings_store.dart';
+import 'package:beneathsos_app/features/sites/presentation/screens/site_screen.dart';
+import 'package:beneathsos_app/features/targets/presentation/screens/ambient_scan_screen.dart';
+import 'package:beneathsos_app/features/targets/presentation/screens/targets_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:rubble_core/rubble_core.dart';
+
+import '../../../core/scanning/fakes.dart';
+import '../../../helpers/pump_app.dart';
+
+var _clock = 0;
+
+/// [count] readings of [key] at [rssi]; [findMy] makes it an Apple Find My advertisement.
+List<BleSample> _heard(
+  String key,
+  int rssi, {
+  int count = 6,
+  bool findMy = false,
+}) => [
+  for (var i = 0; i < count; i++)
+    BleSample(
+      key: key,
+      rssi: rssi,
+      serviceUuids: const [],
+      monotonicNanos: _clock,
+      // The tracker forgets devices silent for 30 s by the wall clock: stamp readings with it.
+      wallClockMillis: DateTime.now().millisecondsSinceEpoch + _clock++,
+      companyId: findMy ? 0x004C : null,
+      payload: findMy ? Uint8List.fromList([0x12, 0x19]) : null,
+    ),
+];
+
+Future<void> _tap(WidgetTester tester, String label) async {
+  await tester.ensureVisible(find.text(label).first);
+  await tester.pumpAndSettle();
+  await tester.tap(find.text(label).first);
+  await settleWithDatabase(tester);
+}
+
+/// Opens a screen that counts down (the surface scan) without settling: settling would run the whole
+/// 30 s countdown at once.
+Future<void> _open(WidgetTester tester, String label) async {
+  await tester.ensureVisible(find.text(label).first);
+  await tester.pumpAndSettle();
+  await tester.tap(find.text(label).first);
+  for (var i = 0; i < 5; i++) {
+    await tester.pump(const Duration(milliseconds: 50));
+  }
+}
+
+Future<(AppDatabase, SessionId)> _search(
+  WidgetTester tester, {
+  List<String> surface = const [],
+}) async {
+  final db = testDatabase();
+  addTearDown(db.close);
+  final id = await tester.runAsync(() async {
+    await DriftSettingsStore(db).write('disclaimer_accepted', '1');
+    final store = DriftSessionStore(db, nowMs: () => 1000, random: Random(1));
+    final id = await store.create(
+      title: 'Atatürk Cad. 12',
+      engineProfile: 'voided_pancake@1',
+      practice: false,
+    );
+    if (surface.isNotEmpty) {
+      await store.append(
+        id,
+        AmbientScanCompleted(
+          blacklisted: surface,
+          duration: const Duration(seconds: 30),
+        ),
+      );
+    }
+    return id;
+  });
+  return (db, id!);
+}
+
+Future<List<String>> _types(WidgetTester tester, AppDatabase db) async => [
+  for (final e in (await tester.runAsync(() => db.select(db.events).get()))!)
+    e.type,
+];
+
+void main() {
+  setUp(() => _clock = 0);
+
+  testWidgets(
+    'the surface scan sets strong phones aside and keeps faint ones',
+    (tester) async {
+      setPhoneSize(tester, 402, 874);
+      final (db, _) = await _search(tester);
+      final samples = StreamController<List<BleSample>>.broadcast();
+      // Not awaited: a paused subscription never receives the done event.
+      addTearDown(() => unawaited(samples.close()));
+      final scanner = FakeScanner();
+      await pumpRouterApp(
+        tester,
+        database: db,
+        samples: samples.stream,
+        scanner: scanner,
+      );
+      await settleWithDatabase(tester);
+      await _tap(tester, 'Start a search');
+      await _tap(tester, 'Atatürk Cad. 12');
+      await _open(tester, 'Find the phones on the surface');
+      expect(find.byType(AmbientScanScreen), findsOneWidget);
+      expect(scanner.calls, contains('start'));
+      samples
+        ..add(_heard('team', -60))
+        ..add(_heard('buried', -88));
+      for (var s = 0; s < 32; s++) {
+        await tester.pump(const Duration(seconds: 1));
+      }
+      await settleWithDatabase(tester);
+      expect(
+        find.text('1 surface phone set aside. It will not be suggested.'),
+        findsOneWidget,
+      );
+      final events = (await tester.runAsync(() => db.select(db.events).get()))!;
+      expect(events.last.type, 'AmbientScanCompleted');
+      expect(events.last.payload, contains('"team"'));
+      expect(events.last.payload, isNot(contains('"buried"')));
+      await _tap(tester, 'Back to the search');
+      expect(find.byType(SiteScreen), findsOneWidget);
+      expect(find.text('Done · 1 phone set aside'), findsOneWidget);
+      expect(scanner.calls.last, 'stop');
+    },
+  );
+
+  testWidgets('Bluetooth off pauses the surface scan and says so', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _search(tester);
+    final scanner = FakeScanner()..availability = BluetoothAvailability.off;
+    await pumpRouterApp(tester, database: db, scanner: scanner);
+    await settleWithDatabase(tester);
+    await _tap(tester, 'Start a search');
+    await _tap(tester, 'Atatürk Cad. 12');
+    await _open(tester, 'Find the phones on the surface');
+    await tester.pump(const Duration(seconds: 2));
+    expect(
+      find.text("Bluetooth is off. Turn it on in your phone's settings."),
+      findsWidgets,
+    );
+    final events = await _types(tester, db);
+    expect(events, isNot(contains('AmbientScanCompleted')));
+  });
+
+  testWidgets(
+    'candidates: Find My first, exclude sets one aside, track follows one',
+    (tester) async {
+      setPhoneSize(tester, 402, 874);
+      final (db, _) = await _search(tester, surface: ['team']);
+      final samples = StreamController<List<BleSample>>.broadcast();
+      // Not awaited: a paused subscription never receives the done event.
+      addTearDown(() => unawaited(samples.close()));
+      await pumpRouterApp(tester, database: db, samples: samples.stream);
+      await settleWithDatabase(tester);
+      await _tap(tester, 'Start a search');
+      await _tap(tester, 'Atatürk Cad. 12');
+      await _tap(tester, 'Choose the phone to search for');
+      expect(find.byType(TargetsScreen), findsOneWidget);
+      expect(
+        find.text('No phones heard yet. Keep this screen open.'),
+        findsOneWidget,
+      );
+      samples
+        ..add(_heard('team', -60))
+        ..add(_heard('other', -85))
+        ..add(_heard('apple', -88, findMy: true));
+      await tester.pump();
+      await tester.pump(); // the stream event, then the rebuild
+      final titles = tester
+          .widgetList<Text>(
+            find.textContaining(RegExp('Apple · Find My|Unknown device')),
+          )
+          .map((t) => t.data)
+          .toList();
+      expect(titles.first, 'Apple · Find My');
+      expect(
+        find.text('Not moving · weak signal · not seen on the surface'),
+        findsNWidgets(2),
+      );
+      expect(find.text('Signal −88 dBm'), findsOneWidget);
+      // The surface phone is not offered.
+      expect(find.text('Signal −60 dBm'), findsNothing);
+      await _tap(tester, 'Exclude — it is on the surface');
+      expect(find.text('Apple · Find My'), findsNothing);
+      await _tap(tester, 'Track this phone');
+      expect(find.byType(SiteScreen), findsOneWidget);
+      // No manufacturer data: an unknown device.
+      expect(find.text('Done · Unknown device'), findsOneWidget);
+      expect(await _types(tester, db), [
+        'SiteCreated',
+        'AmbientScanCompleted',
+        'BlacklistEdited',
+        'TargetSelected',
+      ]);
+    },
+  );
+
+  testWidgets('without a surface scan the list says so and offers it', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _search(tester);
+    await pumpRouterApp(tester, database: db);
+    await settleWithDatabase(tester);
+    await _tap(tester, 'Start a search');
+    await _tap(tester, 'Atatürk Cad. 12');
+    await _tap(tester, 'Choose the phone to search for');
+    await _open(
+      tester,
+      "No surface scan yet: rescuers' phones may be listed. Tap to scan first.",
+    );
+    expect(find.byType(AmbientScanScreen), findsOneWidget);
+  });
+
+  testWidgets('Turkish at 200 % on a small phone: a candidate stays readable', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 375, 667);
+    final (db, _) = await _search(tester, surface: ['team']);
+    final samples = StreamController<List<BleSample>>.broadcast();
+    // Not awaited: a paused subscription never receives the done event.
+    addTearDown(() => unawaited(samples.close()));
+    await pumpRouterApp(
+      tester,
+      database: db,
+      samples: samples.stream,
+      locale: const Locale('tr'),
+      textScale: 2,
+    );
+    await settleWithDatabase(tester);
+    await _tap(tester, 'Aramayı başlat');
+    await _tap(tester, 'Atatürk Cad. 12');
+    await _tap(tester, 'Aranacak telefonu seçin');
+    samples.add(_heard('apple', -88, findMy: true));
+    await tester.pump();
+    await tester.pump(); // the stream event, then the rebuild
+    expect(tester.takeException(), isNull);
+    await expectFullyReadable(
+      tester,
+      find.text('Hareketsiz · zayıf sinyal · yüzeyde görülmedi'),
+    );
+    await expectFullyReadable(tester, find.text('Hariç tut — yüzeyde'));
+  });
+}

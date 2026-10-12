@@ -979,6 +979,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Draw the outline first.'**
   String get scaleNoOutline;
+
+  /// No description provided for @ambientTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Surface phones'**
+  String get ambientTitle;
+
+  /// No description provided for @ambientHeard.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No phone heard yet} =1{1 phone heard so far} other{{count} phones heard so far}}'**
+  String ambientHeard(int count);
+
+  /// No description provided for @ambientDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No phone close by: nothing was set aside.} =1{1 surface phone set aside. It will not be suggested.} other{{count} surface phones set aside. They will not be suggested.}}'**
+  String ambientDone(int count);
+
+  /// No description provided for @ambientNotSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'The scan could not be saved. Scan again.'**
+  String get ambientNotSaved;
+
+  /// No description provided for @ambientAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan again'**
+  String get ambientAgain;
+
+  /// No description provided for @ambientChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the phone'**
+  String get ambientChoose;
+
+  /// No description provided for @ambientBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to the search'**
+  String get ambientBack;
+
+  /// No description provided for @targetsHintExclude.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold a rescuer\'s phone next to yours: it shows as very strong — exclude it.'**
+  String get targetsHintExclude;
+
+  /// No description provided for @targetsNoSurfaceScan.
+  ///
+  /// In en, this message translates to:
+  /// **'No surface scan yet: rescuers\' phones may be listed. Tap to scan first.'**
+  String get targetsNoSurfaceScan;
+
+  /// No description provided for @targetsNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No phones heard yet. Keep this screen open.'**
+  String get targetsNone;
+
+  /// No description provided for @reasonNotMoving.
+  ///
+  /// In en, this message translates to:
+  /// **'Not moving'**
+  String get reasonNotMoving;
+
+  /// No description provided for @reasonWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'weak signal'**
+  String get reasonWeak;
+
+  /// No description provided for @reasonMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'medium signal'**
+  String get reasonMedium;
+
+  /// No description provided for @reasonNotOnSurface.
+  ///
+  /// In en, this message translates to:
+  /// **'not seen on the surface'**
+  String get reasonNotOnSurface;
+
+  /// No description provided for @reasonVeryStrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Very strong — probably right next to you'**
+  String get reasonVeryStrong;
+
+  /// No description provided for @targetSignal.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal {value} dBm'**
+  String targetSignal(String value);
+
+  /// No description provided for @targetExclude.
+  ///
+  /// In en, this message translates to:
+  /// **'Exclude — it is on the surface'**
+  String get targetExclude;
+
+  /// No description provided for @targetNotSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not be saved. Try again in a moment.'**
+  String get targetNotSaved;
+
+  /// No description provided for @kindFindMy.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple · Find My'**
+  String get kindFindMy;
+
+  /// No description provided for @kindApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple device'**
+  String get kindApple;
+
+  /// No description provided for @kindWindows.
+  ///
+  /// In en, this message translates to:
+  /// **'Windows device'**
+  String get kindWindows;
+
+  /// No description provided for @kindGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Android device (Google)'**
+  String get kindGoogle;
+
+  /// No description provided for @kindOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth device'**
+  String get kindOther;
+
+  /// No description provided for @siteAmbientDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Done · nothing set aside} =1{Done · 1 phone set aside} other{Done · {count} phones set aside}}'**
+  String siteAmbientDone(int count);
+
+  /// No description provided for @siteTargetDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done · {label}'**
+  String siteTargetDone(String label);
 }
 
 class _AppLocalizationsDelegate

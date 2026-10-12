@@ -70,9 +70,18 @@ class SiteScreen extends ConsumerWidget
               ))
                 SiteStepRow(
                   step: step,
-                  onTap: step.opensDrawing
-                      ? () => DrawOutlineRoute(sessionId: sessionId).go(context)
-                      : null,
+                  onTap: switch (step.action) {
+                    SiteStepAction.draw => () => DrawOutlineRoute(
+                      sessionId: sessionId,
+                    ).go(context),
+                    SiteStepAction.ambient => () => AmbientRoute(
+                      sessionId: sessionId,
+                    ).go(context),
+                    SiteStepAction.target => () => TargetsRoute(
+                      sessionId: sessionId,
+                    ).go(context),
+                    null => null,
+                  },
                 ),
               if (search.closedAt == null) ...[
                 const SizedBox(height: BeneathSpacing.xl),
