@@ -1,6 +1,6 @@
 import 'package:beneathsos_app/core/router/app_router.dart';
-import 'package:beneathsos_app/core/theme/app_theme.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
+import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,8 +12,8 @@ class BeneathSosApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => MaterialApp.router(
     onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-    theme: AppTheme.light(),
-    darkTheme: AppTheme.dark(),
+    theme: BeneathTheme.light(),
+    darkTheme: BeneathTheme.dark(),
     routerConfig: ref.watch(appRouterProvider),
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,

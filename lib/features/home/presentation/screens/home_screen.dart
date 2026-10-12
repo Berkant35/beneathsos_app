@@ -1,6 +1,6 @@
 import 'package:beneathsos_app/core/l10n_extension.dart';
-import 'package:beneathsos_app/core/theme/app_theme.dart';
 import 'package:beneathsos_app/core/widgets/app_scaffold.dart';
+import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 
 /// Temporary home while the design system (roadmap phase 1) is built.
@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(l10n.homeUnderConstructionTitle, style: text.headlineSmall),
-            const SizedBox(height: AppSpacing.s),
+            const SizedBox(height: BeneathSpacing.s),
             Text(
               l10n.homeUnderConstructionBody,
               textAlign: TextAlign.center,

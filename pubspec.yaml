@@ -12,6 +12,10 @@ dependencies:
     git:
       url: https://github.com/Berkant35/ble_scanner.git
       ref: v0.1.0
+  beneathsos_ui:
+    git:
+      url: https://github.com/Berkant35/beneathsos_ui.git
+      ref: v0.1.0
   flutter:
     sdk: flutter
   flutter_localizations:
