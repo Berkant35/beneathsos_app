@@ -753,11 +753,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get probLowInfo =>
-      'Low information: fewer than 3 points with a signal. Measure more points around the rubble.';
+  String probLowInfo(int count) {
+    return 'Not enough information: fewer than $count places with a signal. Measure more points around the rubble.';
+  }
 
   @override
-  String get probNeedsPoint => 'Measure at least one point first.';
+  String get probNeedsPoint =>
+      'Measure at least one point around the rubble first.';
 
   @override
   String get probCalculating => 'Calculating the map…';
@@ -771,7 +773,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get probLegend =>
-      'Dark: most likely 50 % · Light: 90 % · Orange ring: suggested next point';
+      'Strong colour: most likely 50 % · Faint colour: 90 % · Ring: suggested next point';
 
   @override
   String get probRule =>
@@ -779,4 +781,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get siteOpenMap => 'Open the probability map';
+
+  @override
+  String probOnRubble(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count points on the rubble are not used',
+      one: '1 point on the rubble is not used',
+    );
+    return '$_temp0: the map works from points around it.';
+  }
 }

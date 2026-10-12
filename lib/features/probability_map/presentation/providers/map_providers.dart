@@ -1,6 +1,7 @@
 import 'dart:isolate';
 
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
+import 'package:beneathsos_app/features/probability_map/domain/map_memo.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rubble_core/rubble_core.dart';
@@ -15,8 +16,13 @@ typedef MapEngine = Future<MapResult> Function(MapRequest request);
 MapEngine mapEngine(Ref ref) =>
     (request) => Isolate.run(() => computeMap(request));
 
-/// What the map screen shows for one target.
-typedef TargetMap = ({MapResult result, bool lowInformation});
+/// The engine behind a memory of recent runs: an unchanged request is not run again.
+@Riverpod(keepAlive: true)
+MapMemo mapMemo(Ref ref) => MapMemo(ref.watch(mapEngineProvider));
+
+/// What the map screen shows for one target: the map, whether it rests on too few places with a
+/// signal, and how many points on the rubble were left out.
+typedef TargetMap = ({MapResult result, bool lowInformation, int onRubble});
 
 /// The probability map of [targetId] in [sessionId]; null until there is an outline and a point.
 @riverpod
@@ -25,13 +31,15 @@ Future<TargetMap?> probabilityMap(
   String sessionId,
   String targetId,
 ) async {
+  final memo = ref.watch(mapMemoProvider);
   final search = await ref.watch(sessionStateProvider(sessionId).future);
-  final request = requestFor(search, TargetId(targetId));
+  final target = TargetId(targetId);
+  final request = requestFor(search, target);
   if (request == null) return null;
-  final result = await ref.watch(mapEngineProvider)(request);
   return (
-    result: result,
+    result: await memo(request),
     lowInformation: isLowInformation(request.observations),
+    onRubble: pointsOnRubble(search, target),
   );
 }
 

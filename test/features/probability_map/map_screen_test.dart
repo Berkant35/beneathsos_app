@@ -4,6 +4,7 @@ import 'package:beneathsos_app/core/database/app_database.dart';
 import 'package:beneathsos_app/core/sessions/data/drift_session_store.dart';
 import 'package:beneathsos_app/core/settings/data/drift_settings_store.dart';
 import 'package:beneathsos_app/features/measurement/presentation/screens/measure_screen.dart';
+import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/screens/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -26,7 +27,11 @@ Future<void> _tap(WidgetTester tester, String label) async {
 
 /// A 10 × 10 m search with two targets; [measured] adds three points: the phone heard at two of
 /// them, the watch at one.
-Future<AppDatabase> _search(WidgetTester tester, {bool measured = true}) async {
+Future<AppDatabase> _search(
+  WidgetTester tester, {
+  bool measured = true,
+  bool onRubble = false,
+}) async {
   final db = testDatabase();
   addTearDown(db.close);
   await tester.runAsync(() async {
@@ -79,6 +84,12 @@ Future<AppDatabase> _search(WidgetTester tester, {bool measured = true}) async {
       SignalHeard(_phone, median: const Dbm(-85), samples: 20),
       const NoSignal(_watch),
     ]);
+    if (onRubble) {
+      await point('d', p(5, 5), [
+        SignalHeard(_phone, median: const Dbm(-70), samples: 20),
+        const NoSignal(_watch),
+      ]);
+    }
   });
   return db;
 }
@@ -119,8 +130,22 @@ void main() {
         ),
         findsOneWidget,
       );
-      // Heard at 2 points only.
-      expect(find.textContaining('Low information'), findsOneWidget);
+      // Heard at 2 places only.
+      expect(
+        find.text(
+          'Not enough information: fewer than 3 places with a signal. '
+          'Measure more points around the rubble.',
+        ),
+        findsOneWidget,
+      );
+      // The colours read the same in light and dark mode.
+      expect(
+        find.text(
+          'Strong colour: most likely 50 % · Faint colour: 90 % · '
+          'Ring: suggested next point',
+        ),
+        findsOneWidget,
+      );
       final map = tester.widget<SiteMap>(find.byType(SiteMap));
       final heat = map.heat!;
       final core = [
@@ -208,5 +233,51 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(find.byType(SiteMap), findsOneWidget);
     await expectFullyReadable(tester, find.text('Sonraki noktayı ölç'));
+  });
+
+  testWidgets('a point on the rubble is left out of the map, and it says so', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final db = await _search(tester, onRubble: true);
+    await pumpRouterApp(tester, database: db);
+    await settleWithDatabase(tester);
+    await _openMap(tester);
+    expect(
+      find.text(
+        '1 point on the rubble is not used: the map works from points around it.',
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('an event that does not change the readings runs no new map', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final db = await _search(tester);
+    var runs = 0;
+    await pumpRouterApp(
+      tester,
+      database: db,
+      engine: (request) async {
+        runs++;
+        return computeMap(request);
+      },
+    );
+    await settleWithDatabase(tester);
+    await _openMap(tester);
+    expect(runs, 1);
+    // A new point is placed (measuring starts): nothing the engine sees has changed.
+    await tester.runAsync(() async {
+      final store = DriftSessionStore(db, nowMs: () => 9000, random: Random(5));
+      final id = (await store.watchSearches().first).single.id;
+      await store.append(
+        id,
+        MeasurementPointPlaced(point: const PointId('e'), at: p(-1, 11)),
+      );
+    });
+    await settleWithDatabase(tester);
+    expect(runs, 1);
   });
 }

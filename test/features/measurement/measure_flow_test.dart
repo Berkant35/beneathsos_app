@@ -86,9 +86,11 @@ Future<List<String>> _types(WidgetTester tester, AppDatabase db) async => [
     e.type,
 ];
 
-/// Taps the middle of the map (the middle of the outline: 5, 5 m), then Measure here.
-Future<void> _placePoint(WidgetTester tester) async {
-  await tester.tap(find.byType(SiteMap));
+/// Taps the middle of the map (the middle of the outline: 5, 5 m) — or, with [outside], a spot near
+/// the map's corner, around the rubble — then Measure here.
+Future<void> _placePoint(WidgetTester tester, {bool outside = false}) async {
+  final map = tester.getRect(find.byType(SiteMap));
+  await tester.tapAt(outside ? map.topLeft + const Offset(24, 24) : map.center);
   await tester.pump();
   await tester.ensureVisible(find.text('Measure here'));
   await tester.pump();
@@ -204,7 +206,7 @@ void main() {
         if (m.kind == MapPointKind.suggested) m,
     ];
     expect(suggested(), isEmpty, reason: 'no map before the first point');
-    await _placePoint(tester);
+    await _placePoint(tester, outside: true);
     await _seconds(tester, 16, each: () => samples.add(_heard('apple-1', -80)));
     expect(suggested(), hasLength(1));
     // Outside the 10 × 10 m rubble.

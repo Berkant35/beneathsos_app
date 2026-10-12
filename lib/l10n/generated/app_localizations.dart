@@ -1313,13 +1313,13 @@ abstract class AppLocalizations {
   /// No description provided for @probLowInfo.
   ///
   /// In en, this message translates to:
-  /// **'Low information: fewer than 3 points with a signal. Measure more points around the rubble.'**
-  String get probLowInfo;
+  /// **'Not enough information: fewer than {count} places with a signal. Measure more points around the rubble.'**
+  String probLowInfo(int count);
 
   /// No description provided for @probNeedsPoint.
   ///
   /// In en, this message translates to:
-  /// **'Measure at least one point first.'**
+  /// **'Measure at least one point around the rubble first.'**
   String get probNeedsPoint;
 
   /// No description provided for @probCalculating.
@@ -1343,7 +1343,7 @@ abstract class AppLocalizations {
   /// No description provided for @probLegend.
   ///
   /// In en, this message translates to:
-  /// **'Dark: most likely 50 % · Light: 90 % · Orange ring: suggested next point'**
+  /// **'Strong colour: most likely 50 % · Faint colour: 90 % · Ring: suggested next point'**
   String get probLegend;
 
   /// No description provided for @probRule.
@@ -1357,6 +1357,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open the probability map'**
   String get siteOpenMap;
+
+  /// No description provided for @probOnRubble.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 point on the rubble is not used} other{{count} points on the rubble are not used}}: the map works from points around it.'**
+  String probOnRubble(int count);
 }
 
 class _AppLocalizationsDelegate

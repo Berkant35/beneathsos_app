@@ -54,6 +54,52 @@ final class MapEngineProvider
 
 String _$mapEngineHash() => r'5b990dbd913c725540ae77e80604a3ae051bc767';
 
+/// The engine behind a memory of recent runs: an unchanged request is not run again.
+
+@ProviderFor(mapMemo)
+final mapMemoProvider = MapMemoProvider._();
+
+/// The engine behind a memory of recent runs: an unchanged request is not run again.
+
+final class MapMemoProvider
+    extends $FunctionalProvider<MapMemo, MapMemo, MapMemo>
+    with $Provider<MapMemo> {
+  /// The engine behind a memory of recent runs: an unchanged request is not run again.
+  MapMemoProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'mapMemoProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$mapMemoHash();
+
+  @$internal
+  @override
+  $ProviderElement<MapMemo> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  MapMemo create(Ref ref) {
+    return mapMemo(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(MapMemo value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<MapMemo>(value),
+    );
+  }
+}
+
+String _$mapMemoHash() => r'dbec94d1a5e5490ef945cc522cbb5e058cc92675';
+
 /// The probability map of [targetId] in [sessionId]; null until there is an outline and a point.
 
 @ProviderFor(probabilityMap)
@@ -113,7 +159,7 @@ final class ProbabilityMapProvider
   }
 }
 
-String _$probabilityMapHash() => r'9570df2e7800b4de88468412f9bc12f86400b9a0';
+String _$probabilityMapHash() => r'c228c699a8060a805846f42b9464202c5253a51a';
 
 /// The probability map of [targetId] in [sessionId]; null until there is an outline and a point.
 

@@ -744,11 +744,12 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get probLowInfo =>
-      'Az bilgi: sinyal olan nokta 3\'ten az. Enkazın çevresinde daha fazla nokta ölçün.';
+  String probLowInfo(int count) {
+    return 'Bilgi yetersiz: sinyal alınan yer $count\'ten az. Enkazın çevresinde daha fazla nokta ölçün.';
+  }
 
   @override
-  String get probNeedsPoint => 'Önce en az bir nokta ölçün.';
+  String get probNeedsPoint => 'Önce enkazın çevresinde en az bir nokta ölçün.';
 
   @override
   String get probCalculating => 'Harita hesaplanıyor…';
@@ -761,7 +762,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get probLegend =>
-      'Koyu: en olası %50 · Açık: %90 · Turuncu halka: önerilen sonraki nokta';
+      'Yoğun renk: en olası %50 · Soluk renk: %90 · Halka: önerilen sonraki nokta';
 
   @override
   String get probRule =>
@@ -769,4 +770,15 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get siteOpenMap => 'Olasılık haritasını aç';
+
+  @override
+  String probOnRubble(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Enkazın üstündeki $count nokta kullanılmadı',
+      one: 'Enkazın üstündeki 1 nokta kullanılmadı',
+    );
+    return '$_temp0: harita, çevresinde ölçülen noktalarla çalışır.';
+  }
 }

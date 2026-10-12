@@ -70,7 +70,7 @@ packages:
       path: "../../packages/ble_scanner"
       relative: true
     source: path
-    version: "0.1.0"
+    version: "0.2.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -537,7 +537,7 @@ packages:
       path: "../../packages/locator_engine"
       relative: true
     source: path
-    version: "0.1.0"
+    version: "0.1.1"
   logging:
     dependency: transitive
     description:
