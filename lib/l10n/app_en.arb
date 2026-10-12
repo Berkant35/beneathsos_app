@@ -18,5 +18,6 @@
   "readinessPermissionInSettings": "Bluetooth permission is off. Tap to turn it on in Settings.",
   "readinessBluetoothOff": "Bluetooth is off. Turn it on in your phone's settings.",
   "readinessUnsupported": "This phone does not support Bluetooth LE. Search with another phone.",
-  "preparingCardTitle": "Being prepared"
+  "preparingCardTitle": "Being prepared",
+  "readinessFailed": "Could not check Bluetooth. Tap to try again."
 }

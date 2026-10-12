@@ -211,6 +211,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Being prepared'**
   String get preparingCardTitle;
+
+  /// No description provided for @readinessFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not check Bluetooth. Tap to try again.'**
+  String get readinessFailed;
 }
 
 class _AppLocalizationsDelegate

@@ -16,7 +16,7 @@ final class CheckReadiness {
   Future<DeviceReadiness> call({required bool askForPermission}) async {
     final preconditions = [
       PermissionPrecondition(_permissions, ask: askForPermission),
-      BluetoothPrecondition(_scanner),
+      BluetoothPrecondition(_scanner, unknownBlocks: true),
     ];
     for (final precondition in preconditions) {
       final blocked = await precondition.check();
@@ -25,14 +25,17 @@ final class CheckReadiness {
     return const ReadinessReady();
   }
 
-  static DeviceReadiness _readiness(StartScanResult blocked) =>
-      switch (blocked) {
-        PermissionMissing(permanent: false) => const ReadinessNeedsPermission(),
-        PermissionMissing(permanent: true) =>
-          const ReadinessPermissionInSettings(),
-        BluetoothUnavailable(unsupported: true) => const ReadinessUnsupported(),
-        BluetoothUnavailable() => const ReadinessBluetoothOff(),
-        // Preconditions only block with the two results above.
-        ScanStarted() || StartFailed() => const ReadinessReady(),
-      };
+  static DeviceReadiness _readiness(
+    StartScanResult blocked,
+  ) => switch (blocked) {
+    PermissionMissing(permanent: false) => const ReadinessNeedsPermission(),
+    PermissionMissing(permanent: true) => const ReadinessPermissionInSettings(),
+    BluetoothUnavailable(:final reason) => switch (reason) {
+      BluetoothUnavailableReason.off => const ReadinessBluetoothOff(),
+      BluetoothUnavailableReason.unsupported => const ReadinessUnsupported(),
+      BluetoothUnavailableReason.notReady => const ReadinessChecking(),
+    },
+    // Preconditions only block with the two results above.
+    ScanStarted() || StartFailed() => const ReadinessReady(),
+  };
 }

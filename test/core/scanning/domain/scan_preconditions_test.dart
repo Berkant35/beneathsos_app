@@ -93,17 +93,17 @@ void main() {
       expect(
         await checkWith(BluetoothAvailability.off),
         isA<BluetoothUnavailable>().having(
-          (r) => r.unsupported,
-          'unsupported',
-          false,
+          (r) => r.reason,
+          'reason',
+          BluetoothUnavailableReason.off,
         ),
       );
       expect(
         await checkWith(BluetoothAvailability.unsupported),
         isA<BluetoothUnavailable>().having(
-          (r) => r.unsupported,
-          'unsupported',
-          true,
+          (r) => r.reason,
+          'reason',
+          BluetoothUnavailableReason.unsupported,
         ),
       );
     });
@@ -114,5 +114,21 @@ void main() {
         isA<PermissionMissing>().having((r) => r.permanent, 'permanent', true),
       );
     });
+  });
+
+  test('BluetoothPrecondition with unknownBlocks: a still-unknown adapter is not ready yet', () async {
+    final scanner = FakeScanner()..availability = BluetoothAvailability.unknown;
+    expect(
+      await BluetoothPrecondition(scanner, unknownBlocks: true).check(),
+      isA<BluetoothUnavailable>().having(
+        (r) => r.reason,
+        'reason',
+        BluetoothUnavailableReason.notReady,
+      ),
+    );
+    expect(
+      await BluetoothPrecondition(scanner).check(),
+      isNull,
+    ); // scanning still tries anyway
   });
 }

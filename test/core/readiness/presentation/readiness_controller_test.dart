@@ -23,6 +23,39 @@ class _SlowScanner extends FakeScanner {
   }
 }
 
+/// Permissions whose check fails like a platform error.
+class _BrokenPermissions extends FakePermissions {
+  _BrokenPermissions() : super(checkResult: ScanPermission.granted);
+
+  bool broken = true;
+
+  @override
+  Future<ScanPermission> check() async {
+    calls.add('check');
+    if (broken) throw Exception('platform error');
+    return checkResult;
+  }
+}
+
+/// Permissions whose request waits for the test (a system dialog that is still open).
+class _SlowRequestPermissions extends FakePermissions {
+  _SlowRequestPermissions()
+    : super(
+        checkResult: ScanPermission.denied,
+        requestResult: ScanPermission.denied,
+      );
+
+  final pending = <Completer<ScanPermission>>[];
+
+  @override
+  Future<ScanPermission> request() {
+    calls.add('request');
+    final answer = Completer<ScanPermission>();
+    pending.add(answer);
+    return answer.future;
+  }
+}
+
 void main() {
   late FakeScanner scanner;
   late FakePermissions permissions;
@@ -152,4 +185,49 @@ void main() {
     await pumpEventQueue();
     expect(state(), isA<ReadinessReady>());
   });
+
+  test(
+    'a failing port shows "could not check" instead of hanging on checking',
+    () async {
+      permissions = _BrokenPermissions();
+      start(FakeScanner());
+      await pumpEventQueue();
+      expect(state(), isA<ReadinessFailed>());
+    },
+  );
+
+  test('after a failure, resume re-checks', () async {
+    final broken = _BrokenPermissions();
+    permissions = broken;
+    start(FakeScanner());
+    await pumpEventQueue();
+    broken.broken = false;
+    lifecycle.add(AppLifecycleState.resumed);
+    await pumpEventQueue();
+    expect(state(), isA<ReadinessReady>());
+  });
+
+  test(
+    'a second tap while the permission dialog is open does not ask twice',
+    () async {
+      final slow = _SlowRequestPermissions();
+      permissions = slow;
+      start(FakeScanner());
+      await pumpEventQueue();
+      slow.pending
+          .removeAt(0)
+          .complete(ScanPermission.denied); // the launch request
+      await pumpEventQueue();
+      final notifier = container.read(readinessControllerProvider.notifier);
+      unawaited(notifier.requestPermission());
+      unawaited(notifier.requestPermission()); // gloved double tap
+      await pumpEventQueue();
+      expect(
+        slow.calls.where((c) => c == 'request'),
+        hasLength(2),
+      ); // launch + one tap
+      slow.pending.single.complete(ScanPermission.denied);
+      await pumpEventQueue();
+    },
+  );
 }

@@ -70,4 +70,9 @@ void main() {
     scanner.availability = BluetoothAvailability.off;
     expect(await check(), isA<ReadinessNeedsPermission>());
   });
+
+  test('Bluetooth still unknown (iOS permission prompt open) → checking, never ready', () async {
+    scanner.availability = BluetoothAvailability.unknown;
+    expect(await check(), isA<ReadinessChecking>());
+  });
 }

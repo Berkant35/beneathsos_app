@@ -18,13 +18,25 @@ final class PermissionMissing extends StartScanResult {
   final bool permanent;
 }
 
-/// Bluetooth is off ([unsupported] false) or the device has no Bluetooth LE ([unsupported] true).
+/// Why Bluetooth cannot be used.
+enum BluetoothUnavailableReason {
+  /// Turned off.
+  off,
+
+  /// The device has no Bluetooth LE.
+  unsupported,
+
+  /// Not reported yet (iOS while its permission prompt is open, or CoreBluetooth resetting).
+  notReady,
+}
+
+/// Bluetooth cannot be used right now; [reason] says why.
 final class BluetoothUnavailable extends StartScanResult {
   /// Creates the result.
-  const BluetoothUnavailable({this.unsupported = false});
+  const BluetoothUnavailable([this.reason = BluetoothUnavailableReason.off]);
 
-  /// Whether the device cannot do Bluetooth LE at all.
-  final bool unsupported;
+  /// Why Bluetooth cannot be used.
+  final BluetoothUnavailableReason reason;
 }
 
 /// Starting failed unexpectedly.

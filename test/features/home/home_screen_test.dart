@@ -245,4 +245,33 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(NewSiteScreen), findsOneWidget);
   });
+
+  testWidgets('a failed check says so and tapping tries again', (tester) async {
+    final permissions = _FailingOncePermissions();
+    await pumpWith(tester, permissions: permissions);
+    expect(
+      find.text('Could not check Bluetooth. Tap to try again.'),
+      findsOneWidget,
+    );
+    await tester.tap(find.byType(StatusBanner));
+    await tester.pumpAndSettle();
+    expect(find.text('Bluetooth is on and ready.'), findsOneWidget);
+  });
+}
+
+/// Fails the first permission check like a platform error, then works.
+class _FailingOncePermissions extends FakePermissions {
+  _FailingOncePermissions() : super(checkResult: ScanPermission.granted);
+
+  bool _failed = false;
+
+  @override
+  Future<ScanPermission> check() async {
+    calls.add('check');
+    if (!_failed) {
+      _failed = true;
+      throw Exception('platform error');
+    }
+    return checkResult;
+  }
 }

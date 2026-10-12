@@ -53,6 +53,12 @@ mixin ReadinessBannerMixin {
       icon: null,
       onTap: null,
     ),
+    ReadinessFailed() => (
+      kind: StatusKind.blocked,
+      message: l10n.readinessFailed,
+      icon: null,
+      onTap: () => unawaited(controller.recheck()),
+    ),
     ReadinessUnsupported() => (
       kind: StatusKind.blocked,
       message: l10n.readinessUnsupported,

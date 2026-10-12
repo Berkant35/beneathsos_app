@@ -73,4 +73,8 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get preparingCardTitle => 'Hazırlanıyor';
+
+  @override
+  String get readinessFailed =>
+      'Bluetooth durumu okunamadı. Tekrar denemek için dokunun.';
 }

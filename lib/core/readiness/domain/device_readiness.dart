@@ -33,6 +33,12 @@ final class ReadinessBluetoothOff extends DeviceReadiness {
   const ReadinessBluetoothOff();
 }
 
+/// Checking failed (a platform error); the user can try again.
+final class ReadinessFailed extends DeviceReadiness {
+  /// Creates the state.
+  const ReadinessFailed();
+}
+
 /// The phone has no Bluetooth LE.
 final class ReadinessUnsupported extends DeviceReadiness {
   /// Creates the state.

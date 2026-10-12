@@ -38,10 +38,14 @@ final class PermissionPrecondition implements ScanPrecondition {
 
 /// Bluetooth must be on and authorised.
 final class BluetoothPrecondition implements ScanPrecondition {
-  /// Creates the precondition.
-  const BluetoothPrecondition(this._scanner);
+  /// Creates the precondition. With [unknownBlocks], a still-unknown adapter blocks (readiness must
+  /// not reassure); without it, scanning tries anyway and the platform reports failures.
+  const BluetoothPrecondition(this._scanner, {this.unknownBlocks = false});
 
   final ScannerPort _scanner;
+
+  /// Whether `unknown` (not reported yet) counts as not ready.
+  final bool unknownBlocks;
 
   @override
   Future<StartScanResult?> check() async =>
@@ -51,9 +55,10 @@ final class BluetoothPrecondition implements ScanPrecondition {
         ),
         BluetoothAvailability.off => const BluetoothUnavailable(),
         BluetoothAvailability.unsupported => const BluetoothUnavailable(
-          unsupported: true,
+          BluetoothUnavailableReason.unsupported,
         ),
-        // `unknown` after the settle timeout: try anyway, the platform reports failures.
+        BluetoothAvailability.unknown when unknownBlocks =>
+          const BluetoothUnavailable(BluetoothUnavailableReason.notReady),
         BluetoothAvailability.on || BluetoothAvailability.unknown => null,
       };
 }

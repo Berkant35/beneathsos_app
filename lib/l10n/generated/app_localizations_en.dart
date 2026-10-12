@@ -73,4 +73,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get preparingCardTitle => 'Being prepared';
+
+  @override
+  String get readinessFailed => 'Could not check Bluetooth. Tap to try again.';
 }

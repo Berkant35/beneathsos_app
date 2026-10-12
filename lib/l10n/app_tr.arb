@@ -18,5 +18,6 @@
   "readinessPermissionInSettings": "Bluetooth izni kapalı. Ayarlarda açmak için dokunun.",
   "readinessBluetoothOff": "Bluetooth kapalı. Telefonun ayarlarından açın.",
   "readinessUnsupported": "Bu telefon Bluetooth LE desteklemiyor. Başka bir telefonla arayın.",
-  "preparingCardTitle": "Hazırlanıyor"
+  "preparingCardTitle": "Hazırlanıyor",
+  "readinessFailed": "Bluetooth durumu okunamadı. Tekrar denemek için dokunun."
 }
