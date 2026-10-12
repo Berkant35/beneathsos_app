@@ -256,4 +256,108 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get finishConfirmNo => 'Keep it open';
+
+  @override
+  String get sitesTitle => 'Searches';
+
+  @override
+  String get sitesNew => 'New search';
+
+  @override
+  String get sitesEmpty => 'No searches yet.';
+
+  @override
+  String get sitesPractice => 'Practice with sample data';
+
+  @override
+  String get sitesLoadFailed =>
+      'The searches could not be loaded. Nothing was deleted.';
+
+  @override
+  String searchTileBody(int count, String started) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count points measured',
+      one: '1 point measured',
+      zero: 'no point measured yet',
+    );
+    return '$_temp0 · started $started';
+  }
+
+  @override
+  String searchTileUnreadable(String started) {
+    return 'some of its data could not be read · started $started';
+  }
+
+  @override
+  String get searchFinished => 'Finished';
+
+  @override
+  String get newSiteTitle => 'New search';
+
+  @override
+  String get newSiteLabel => 'Name of the site';
+
+  @override
+  String get newSiteHint => 'e.g. Atatürk Cad. 12, Antakya';
+
+  @override
+  String get newSiteEmpty => 'Enter a name so you can find this search later.';
+
+  @override
+  String get newSiteTooLong => 'Use at most 80 characters.';
+
+  @override
+  String get newSiteCreate => 'Create search';
+
+  @override
+  String get searchTitle => 'Search';
+
+  @override
+  String siteStarted(String started) {
+    return 'Started $started';
+  }
+
+  @override
+  String get siteStepOutline => 'Draw the rubble outline';
+
+  @override
+  String get siteStepAmbient => 'Find the phones on the surface';
+
+  @override
+  String get siteStepTarget => 'Choose the phone to search for';
+
+  @override
+  String get siteStepMeasure => 'Measure at points around the rubble';
+
+  @override
+  String get siteStepDone => 'Done';
+
+  @override
+  String get siteStepNext => 'Coming in the next update';
+
+  @override
+  String siteMeasuredCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count points measured',
+      one: '1 point measured',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get siteFinished => 'This search is finished. Its data stays saved.';
+
+  @override
+  String get siteUnreadable =>
+      'Some of this search\'s data could not be read. Nothing was deleted.';
+
+  @override
+  String get siteNotFound => 'This search could not be opened.';
+
+  @override
+  String get siteBackToList => 'Back to searches';
 }

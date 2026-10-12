@@ -256,4 +256,105 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get finishConfirmNo => 'Açık kalsın';
+
+  @override
+  String get sitesTitle => 'Aramalar';
+
+  @override
+  String get sitesNew => 'Yeni arama';
+
+  @override
+  String get sitesEmpty => 'Henüz arama yok.';
+
+  @override
+  String get sitesPractice => 'Örnek verilerle alıştırma yap';
+
+  @override
+  String get sitesLoadFailed => 'Aramalar yüklenemedi. Hiçbir şey silinmedi.';
+
+  @override
+  String searchTileBody(int count, String started) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nokta ölçüldü',
+      zero: 'henüz ölçülen nokta yok',
+    );
+    return '$_temp0 · başlangıç $started';
+  }
+
+  @override
+  String searchTileUnreadable(String started) {
+    return 'verilerinin bir kısmı okunamadı · başlangıç $started';
+  }
+
+  @override
+  String get searchFinished => 'Bitti';
+
+  @override
+  String get newSiteTitle => 'Yeni arama';
+
+  @override
+  String get newSiteLabel => 'Alanın adı';
+
+  @override
+  String get newSiteHint => 'ör. Atatürk Cad. 12, Antakya';
+
+  @override
+  String get newSiteEmpty => 'Bu aramayı sonra bulabilmek için bir ad girin.';
+
+  @override
+  String get newSiteTooLong => 'En fazla 80 karakter kullanın.';
+
+  @override
+  String get newSiteCreate => 'Aramayı oluştur';
+
+  @override
+  String get searchTitle => 'Arama';
+
+  @override
+  String siteStarted(String started) {
+    return 'Başlangıç: $started';
+  }
+
+  @override
+  String get siteStepOutline => 'Enkazın sınırını çizin';
+
+  @override
+  String get siteStepAmbient => 'Yüzeydeki telefonları bulun';
+
+  @override
+  String get siteStepTarget => 'Aranacak telefonu seçin';
+
+  @override
+  String get siteStepMeasure => 'Enkazın çevresinde noktalarda ölçüm yapın';
+
+  @override
+  String get siteStepDone => 'Tamam';
+
+  @override
+  String get siteStepNext => 'Sonraki güncellemede';
+
+  @override
+  String siteMeasuredCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nokta ölçüldü',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get siteFinished => 'Bu arama bitti. Verileri saklanıyor.';
+
+  @override
+  String get siteUnreadable =>
+      'Bu aramanın verilerinin bir kısmı okunamadı. Hiçbir şey silinmedi.';
+
+  @override
+  String get siteNotFound => 'Bu arama açılamadı.';
+
+  @override
+  String get siteBackToList => 'Aramalara dön';
 }

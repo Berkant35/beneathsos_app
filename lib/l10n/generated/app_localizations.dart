@@ -535,6 +535,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Keep it open'**
   String get finishConfirmNo;
+
+  /// No description provided for @sitesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Searches'**
+  String get sitesTitle;
+
+  /// No description provided for @sitesNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New search'**
+  String get sitesNew;
+
+  /// No description provided for @sitesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No searches yet.'**
+  String get sitesEmpty;
+
+  /// No description provided for @sitesPractice.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice with sample data'**
+  String get sitesPractice;
+
+  /// No description provided for @sitesLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The searches could not be loaded. Nothing was deleted.'**
+  String get sitesLoadFailed;
+
+  /// No description provided for @searchTileBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{no point measured yet} =1{1 point measured} other{{count} points measured}} · started {started}'**
+  String searchTileBody(int count, String started);
+
+  /// No description provided for @searchTileUnreadable.
+  ///
+  /// In en, this message translates to:
+  /// **'some of its data could not be read · started {started}'**
+  String searchTileUnreadable(String started);
+
+  /// No description provided for @searchFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'Finished'**
+  String get searchFinished;
+
+  /// No description provided for @newSiteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New search'**
+  String get newSiteTitle;
+
+  /// No description provided for @newSiteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name of the site'**
+  String get newSiteLabel;
+
+  /// No description provided for @newSiteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Atatürk Cad. 12, Antakya'**
+  String get newSiteHint;
+
+  /// No description provided for @newSiteEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a name so you can find this search later.'**
+  String get newSiteEmpty;
+
+  /// No description provided for @newSiteTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at most 80 characters.'**
+  String get newSiteTooLong;
+
+  /// No description provided for @newSiteCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create search'**
+  String get newSiteCreate;
+
+  /// No description provided for @searchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchTitle;
+
+  /// No description provided for @siteStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Started {started}'**
+  String siteStarted(String started);
+
+  /// No description provided for @siteStepOutline.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw the rubble outline'**
+  String get siteStepOutline;
+
+  /// No description provided for @siteStepAmbient.
+  ///
+  /// In en, this message translates to:
+  /// **'Find the phones on the surface'**
+  String get siteStepAmbient;
+
+  /// No description provided for @siteStepTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the phone to search for'**
+  String get siteStepTarget;
+
+  /// No description provided for @siteStepMeasure.
+  ///
+  /// In en, this message translates to:
+  /// **'Measure at points around the rubble'**
+  String get siteStepMeasure;
+
+  /// No description provided for @siteStepDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get siteStepDone;
+
+  /// No description provided for @siteStepNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming in the next update'**
+  String get siteStepNext;
+
+  /// No description provided for @siteMeasuredCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 point measured} other{{count} points measured}}'**
+  String siteMeasuredCount(int count);
+
+  /// No description provided for @siteFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'This search is finished. Its data stays saved.'**
+  String get siteFinished;
+
+  /// No description provided for @siteUnreadable.
+  ///
+  /// In en, this message translates to:
+  /// **'Some of this search\'s data could not be read. Nothing was deleted.'**
+  String get siteUnreadable;
+
+  /// No description provided for @siteNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'This search could not be opened.'**
+  String get siteNotFound;
+
+  /// No description provided for @siteBackToList.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to searches'**
+  String get siteBackToList;
 }
 
 class _AppLocalizationsDelegate

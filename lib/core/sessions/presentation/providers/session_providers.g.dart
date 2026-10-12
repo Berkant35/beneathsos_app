@@ -97,3 +97,49 @@ final class LatestOpenSessionProvider
 }
 
 String _$latestOpenSessionHash() => r'bff7c6e53d4554fd700b14a6843b71fa3dc705c2';
+
+/// Finishes a search.
+
+@ProviderFor(finishSearch)
+final finishSearchProvider = FinishSearchProvider._();
+
+/// Finishes a search.
+
+final class FinishSearchProvider
+    extends $FunctionalProvider<FinishSearch, FinishSearch, FinishSearch>
+    with $Provider<FinishSearch> {
+  /// Finishes a search.
+  FinishSearchProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'finishSearchProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$finishSearchHash();
+
+  @$internal
+  @override
+  $ProviderElement<FinishSearch> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  FinishSearch create(Ref ref) {
+    return finishSearch(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FinishSearch value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FinishSearch>(value),
+    );
+  }
+}
+
+String _$finishSearchHash() => r'1653fb52755997da34e588d755d1cb68dab3d8eb';

@@ -1,6 +1,6 @@
 import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
 import 'package:beneathsos_app/features/home/presentation/screens/home_screen.dart';
-import 'package:beneathsos_app/features/preview/presentation/screens/preview_notice_screen.dart';
+import 'package:beneathsos_app/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:beneathsos_app/features/victim/presentation/screens/victim_screen.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
@@ -51,13 +51,13 @@ void main() {
     expect(find.text('Powered by Socrepho'), findsOneWidget);
   });
 
-  testWidgets('Start a search opens the new-site screen; Back returns home', (
+  testWidgets('Start a search opens the disclaimer first; Back returns home', (
     tester,
   ) async {
     await pumpRouterApp(tester);
     await tester.tap(find.text('Start a search'));
     await tester.pumpAndSettle();
-    expect(find.byType(PreviewNoticeScreen), findsOneWidget);
+    expect(find.byType(OnboardingScreen), findsOneWidget);
     await tester.pageBack();
     await tester.pumpAndSettle();
     expect(find.byType(HomeScreen), findsOneWidget);
@@ -243,7 +243,7 @@ void main() {
     await pumpWith(tester, bluetooth: BluetoothAvailability.off);
     await tester.tap(find.text('Start a search'));
     await tester.pumpAndSettle();
-    expect(find.byType(PreviewNoticeScreen), findsOneWidget);
+    expect(find.byType(OnboardingScreen), findsOneWidget);
   });
 
   testWidgets('a failed check says so and tapping tries again', (tester) async {

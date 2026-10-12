@@ -1,10 +1,12 @@
 import 'package:beneathsos_app/core/router/app_router.dart';
+import 'package:beneathsos_app/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_map_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_measure_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_notice_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_scan_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_site_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_target_screen.dart';
+import 'package:beneathsos_app/features/sites/presentation/screens/sites_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,7 +21,9 @@ Future<void> _tap(WidgetTester tester, String label) async {
 
 void main() {
   const steps = [
-    ('Start a search', PreviewNoticeScreen),
+    ('Start a search', OnboardingScreen),
+    ('I understand', SitesScreen),
+    ('Practice with sample data', PreviewNoticeScreen),
     ('I understand', PreviewSiteScreen),
     ('Outline done', PreviewScanScreen),
     ('Continue', PreviewTargetScreen),
@@ -36,7 +40,11 @@ void main() {
         await _tap(tester, button);
         expect(find.byType(screen), findsOneWidget, reason: 'after "$button"');
         expect(tester.takeException(), isNull);
-        if (screen != PreviewNoticeScreen) {
+        if (!const [
+          OnboardingScreen,
+          SitesScreen,
+          PreviewNoticeScreen,
+        ].contains(screen)) {
           expect(
             find.text('Preview — sample data, no real measurement.'),
             findsOneWidget,
@@ -75,6 +83,8 @@ void main() {
     await pumpRouterApp(tester, locale: const Locale('tr'));
     for (final label in [
       'Aramayı başlat',
+      'Anladım',
+      'Örnek verilerle alıştırma yap',
       'Anladım',
       'Çizim tamam',
       'Devam et',

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:beneathsos_app/core/database/database_provider.dart';
 import 'package:beneathsos_app/core/services/clock.dart';
 import 'package:beneathsos_app/core/sessions/data/drift_session_store.dart';
+import 'package:beneathsos_app/core/sessions/domain/finish_search.dart';
 import 'package:beneathsos_app/core/sessions/domain/session_store.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -23,3 +24,8 @@ SessionStore sessionStore(Ref ref) {
 @riverpod
 Stream<SessionSummary?> latestOpenSession(Ref ref) =>
     ref.watch(sessionStoreProvider).watchLatestOpen();
+
+/// Finishes a search.
+@Riverpod(keepAlive: true)
+FinishSearch finishSearch(Ref ref) =>
+    FinishSearch(ref.watch(sessionStoreProvider));

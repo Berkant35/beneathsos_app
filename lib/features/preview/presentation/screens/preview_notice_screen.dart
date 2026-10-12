@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
+import 'package:beneathsos_app/features/onboarding/presentation/widgets/disclaimer_content.dart';
 import 'package:beneathsos_app/features/preview/presentation/providers/practice_session.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
@@ -15,26 +16,13 @@ class PreviewNoticeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final text = Theme.of(context).textTheme;
     return BeneathScaffold(
       title: l10n.noticeTitle,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            BeneathCard(
-              title: l10n.noticeDoesTitle,
-              icon: Icons.info_outline_rounded,
-              child: Text(l10n.noticeDoesBody, style: text.bodyLarge),
-            ),
-            const SizedBox(height: BeneathSpacing.m),
-            BeneathCard(
-              title: l10n.noticeDoesNotTitle,
-              icon: Icons.warning_amber_rounded,
-              child: Text(l10n.noticeDoesNotBody, style: text.bodyLarge),
-            ),
-            const SizedBox(height: BeneathSpacing.m),
-            Text(l10n.homeIndependence, style: text.bodySmall),
+            const DisclaimerContent(),
             const SizedBox(height: BeneathSpacing.xl),
             PrimaryButton(
               label: l10n.noticeAccept,

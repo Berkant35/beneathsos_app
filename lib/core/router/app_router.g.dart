@@ -14,6 +14,28 @@ RouteBase get $homeRoute => GoRouteData.$route(
   factory: $HomeRoute._fromState,
   routes: [
     GoRouteData.$route(
+      path: 'onboarding',
+      hasOverriddenOnExit: false,
+      factory: $OnboardingRoute._fromState,
+    ),
+    GoRouteData.$route(
+      path: 'sites',
+      hasOverriddenOnExit: false,
+      factory: $SitesRoute._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: 'new',
+          hasOverriddenOnExit: false,
+          factory: $NewSiteRoute._fromState,
+        ),
+        GoRouteData.$route(
+          path: ':sessionId',
+          hasOverriddenOnExit: false,
+          factory: $SiteRoute._fromState,
+        ),
+      ],
+    ),
+    GoRouteData.$route(
       path: 'preview',
       hasOverriddenOnExit: false,
       factory: $PreviewNoticeRoute._fromState,
@@ -66,6 +88,91 @@ mixin $HomeRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $OnboardingRoute on GoRouteData {
+  static OnboardingRoute _fromState(GoRouterState state) =>
+      const OnboardingRoute();
+
+  @override
+  String get location => GoRouteData.$location('/onboarding');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $SitesRoute on GoRouteData {
+  static SitesRoute _fromState(GoRouterState state) => const SitesRoute();
+
+  @override
+  String get location => GoRouteData.$location('/sites');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $NewSiteRoute on GoRouteData {
+  static NewSiteRoute _fromState(GoRouterState state) => const NewSiteRoute();
+
+  @override
+  String get location => GoRouteData.$location('/sites/new');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $SiteRoute on GoRouteData {
+  static SiteRoute _fromState(GoRouterState state) =>
+      SiteRoute(sessionId: state.pathParameters['sessionId']!);
+
+  SiteRoute get _self => this as SiteRoute;
+
+  @override
+  String get location =>
+      GoRouteData.$location('/sites/${Uri.encodeComponent(_self.sessionId)}');
 
   @override
   void go(BuildContext context) => context.go(location);

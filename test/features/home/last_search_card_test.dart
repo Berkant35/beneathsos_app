@@ -154,16 +154,6 @@ void main() {
     expect(find.text('Continue the search'), findsOneWidget);
   });
 
-  testWidgets('a real search is not continued in the preview', (tester) async {
-    setPhoneSize(tester, 402, 874);
-    final (db, _) = await _leftBehind(tester, practice: false);
-    await pumpRouterApp(tester, database: db);
-    await _settle(tester);
-    expect(find.text('Last search'), findsOneWidget);
-    expect(find.text('Continue the search'), findsNothing);
-    expect(find.text('Finish this search'), findsOneWidget);
-  });
-
   testWidgets('Continue opens the map and resumes that search', (tester) async {
     setPhoneSize(tester, 402, 874);
     final (db, id) = await _leftBehind(tester);

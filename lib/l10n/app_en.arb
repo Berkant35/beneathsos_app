@@ -116,5 +116,65 @@
   "finishConfirmTitle": "Finish this search?",
   "finishConfirmBody": "You will not be able to continue it. Everything recorded stays saved.",
   "finishConfirmYes": "Finish",
-  "finishConfirmNo": "Keep it open"
+  "finishConfirmNo": "Keep it open",
+  "sitesTitle": "Searches",
+  "sitesNew": "New search",
+  "sitesEmpty": "No searches yet.",
+  "sitesPractice": "Practice with sample data",
+  "sitesLoadFailed": "The searches could not be loaded. Nothing was deleted.",
+  "searchTileBody": "{count, plural, =0{no point measured yet} =1{1 point measured} other{{count} points measured}} · started {started}",
+  "@searchTileBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "started": {
+        "type": "String",
+        "example": "Oct 12, 14:05"
+      }
+    }
+  },
+  "searchTileUnreadable": "some of its data could not be read · started {started}",
+  "@searchTileUnreadable": {
+    "placeholders": {
+      "started": {
+        "type": "String"
+      }
+    }
+  },
+  "searchFinished": "Finished",
+  "newSiteTitle": "New search",
+  "newSiteLabel": "Name of the site",
+  "newSiteHint": "e.g. Atatürk Cad. 12, Antakya",
+  "newSiteEmpty": "Enter a name so you can find this search later.",
+  "newSiteTooLong": "Use at most 80 characters.",
+  "newSiteCreate": "Create search",
+  "searchTitle": "Search",
+  "siteStarted": "Started {started}",
+  "@siteStarted": {
+    "placeholders": {
+      "started": {
+        "type": "String",
+        "example": "Oct 12, 14:05"
+      }
+    }
+  },
+  "siteStepOutline": "Draw the rubble outline",
+  "siteStepAmbient": "Find the phones on the surface",
+  "siteStepTarget": "Choose the phone to search for",
+  "siteStepMeasure": "Measure at points around the rubble",
+  "siteStepDone": "Done",
+  "siteStepNext": "Coming in the next update",
+  "siteMeasuredCount": "{count, plural, =1{1 point measured} other{{count} points measured}}",
+  "@siteMeasuredCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "siteFinished": "This search is finished. Its data stays saved.",
+  "siteUnreadable": "Some of this search's data could not be read. Nothing was deleted.",
+  "siteNotFound": "This search could not be opened.",
+  "siteBackToList": "Back to searches"
 }
