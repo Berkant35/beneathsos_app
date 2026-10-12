@@ -58,6 +58,11 @@ RouteBase get $homeRoute => GoRouteData.$route(
               hasOverriddenOnExit: false,
               factory: $MeasureRoute._fromState,
             ),
+            GoRouteData.$route(
+              path: 'map',
+              hasOverriddenOnExit: false,
+              factory: $MapRoute._fromState,
+            ),
           ],
         ),
       ],
@@ -329,6 +334,31 @@ mixin $MeasureRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
     '/sites/${Uri.encodeComponent(_self.sessionId)}/measure',
+  );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $MapRoute on GoRouteData {
+  static MapRoute _fromState(GoRouterState state) =>
+      MapRoute(sessionId: state.pathParameters['sessionId']!);
+
+  MapRoute get _self => this as MapRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/sites/${Uri.encodeComponent(_self.sessionId)}/map',
   );
 
   @override

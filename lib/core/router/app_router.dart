@@ -8,6 +8,7 @@ import 'package:beneathsos_app/features/preview/presentation/screens/preview_not
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_scan_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_site_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_target_screen.dart';
+import 'package:beneathsos_app/features/probability_map/presentation/screens/map_screen.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/screens/draw_outline_screen.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/screens/scale_screen.dart';
 import 'package:beneathsos_app/features/sites/presentation/screens/new_site_screen.dart';
@@ -43,6 +44,7 @@ part 'app_router.g.dart';
             TypedGoRoute<AmbientRoute>(path: 'ambient'),
             TypedGoRoute<TargetsRoute>(path: 'targets'),
             TypedGoRoute<MeasureRoute>(path: 'measure'),
+            TypedGoRoute<MapRoute>(path: 'map'),
           ],
         ),
       ],
@@ -218,6 +220,19 @@ class MeasureRoute extends GoRouteData with $MeasureRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       MeasureScreen(sessionId: sessionId);
+}
+
+/// The probability map of a search (`/sites/:sessionId/map`).
+class MapRoute extends GoRouteData with $MapRoute {
+  /// Route to the map of [sessionId].
+  const MapRoute({required this.sessionId});
+
+  /// The search.
+  final String sessionId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      MapScreen(sessionId: sessionId);
 }
 
 /// Preview 1 (`/preview`): first-run notice.

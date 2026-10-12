@@ -734,4 +734,39 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get relinkNo => 'Hayır, bu değil';
+
+  @override
+  String get probTitle => 'Olasılık haritası';
+
+  @override
+  String probAreas(String area50, String area90) {
+    return 'En olası alan: $area50 (%50) · $area90 (%90)';
+  }
+
+  @override
+  String get probLowInfo =>
+      'Az bilgi: sinyal olan nokta 3\'ten az. Enkazın çevresinde daha fazla nokta ölçün.';
+
+  @override
+  String get probNeedsPoint => 'Önce en az bir nokta ölçün.';
+
+  @override
+  String get probCalculating => 'Harita hesaplanıyor…';
+
+  @override
+  String get probFailed => 'Harita hesaplanamadı. Hiçbir şey silinmedi.';
+
+  @override
+  String get probMeasureNext => 'Sonraki noktayı ölç';
+
+  @override
+  String get probLegend =>
+      'Koyu: en olası %50 · Açık: %90 · Turuncu halka: önerilen sonraki nokta';
+
+  @override
+  String get probRule =>
+      'Bu, telefonun büyük olasılıkla bulunduğu bir alandır — asla kesin bir nokta değil.';
+
+  @override
+  String get siteOpenMap => 'Olasılık haritasını aç';
 }

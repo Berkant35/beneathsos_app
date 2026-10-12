@@ -5,8 +5,14 @@ import 'package:rubble_core/rubble_core.dart';
 
 /// Map points and words of the measuring screen.
 mixin MeasureMixin {
-  /// Measured points (heard when any target was heard there) and the point being measured.
-  List<MapPoint> mapPoints(SessionState search, MeasurementState state) => [
+  /// Measured points (heard when any target was heard there), the point being measured and the
+  /// map's suggested [next] point (on the drawing).
+  List<MapPoint> mapPoints(
+    SessionState search,
+    MeasurementState state, {
+    SitePoint? next,
+  }) => [
+    if (next != null) MapPoint(at: next, kind: MapPointKind.suggested),
     for (final point in search.measuredPoints)
       if (point.at case final at?)
         MapPoint(

@@ -429,5 +429,25 @@
   "pointStart": "Measure here",
   "pointMoveHint": "Tap the map again to move the point.",
   "pointSaving": "Saving the point…",
-  "relinkNo": "No, not this one"
+  "relinkNo": "No, not this one",
+  "probTitle": "Probability map",
+  "probAreas": "Most likely area: {area50} (50 %) · {area90} (90 %)",
+  "@probAreas": {
+    "placeholders": {
+      "area50": {
+        "type": "String"
+      },
+      "area90": {
+        "type": "String"
+      }
+    }
+  },
+  "probLowInfo": "Low information: fewer than 3 points with a signal. Measure more points around the rubble.",
+  "probNeedsPoint": "Measure at least one point first.",
+  "probCalculating": "Calculating the map…",
+  "probFailed": "The map could not be calculated. Nothing was deleted.",
+  "probMeasureNext": "Measure next point",
+  "probLegend": "Dark: most likely 50 % · Light: 90 % · Orange ring: suggested next point",
+  "probRule": "This is an area where the phone most likely is — never an exact spot.",
+  "siteOpenMap": "Open the probability map"
 }

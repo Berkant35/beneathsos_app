@@ -199,5 +199,15 @@
   "pointStart": "Burada ölç",
   "pointMoveHint": "Noktayı taşımak için haritaya yeniden dokunun.",
   "pointSaving": "Nokta kaydediliyor…",
-  "relinkNo": "Hayır, bu değil"
+  "relinkNo": "Hayır, bu değil",
+  "probTitle": "Olasılık haritası",
+  "probAreas": "En olası alan: {area50} (%50) · {area90} (%90)",
+  "probLowInfo": "Az bilgi: sinyal olan nokta 3'ten az. Enkazın çevresinde daha fazla nokta ölçün.",
+  "probNeedsPoint": "Önce en az bir nokta ölçün.",
+  "probCalculating": "Harita hesaplanıyor…",
+  "probFailed": "Harita hesaplanamadı. Hiçbir şey silinmedi.",
+  "probMeasureNext": "Sonraki noktayı ölç",
+  "probLegend": "Koyu: en olası %50 · Açık: %90 · Turuncu halka: önerilen sonraki nokta",
+  "probRule": "Bu, telefonun büyük olasılıkla bulunduğu bir alandır — asla kesin bir nokta değil.",
+  "siteOpenMap": "Olasılık haritasını aç"
 }

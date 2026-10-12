@@ -743,4 +743,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get relinkNo => 'No, not this one';
+
+  @override
+  String get probTitle => 'Probability map';
+
+  @override
+  String probAreas(String area50, String area90) {
+    return 'Most likely area: $area50 (50 %) · $area90 (90 %)';
+  }
+
+  @override
+  String get probLowInfo =>
+      'Low information: fewer than 3 points with a signal. Measure more points around the rubble.';
+
+  @override
+  String get probNeedsPoint => 'Measure at least one point first.';
+
+  @override
+  String get probCalculating => 'Calculating the map…';
+
+  @override
+  String get probFailed =>
+      'The map could not be calculated. Nothing was deleted.';
+
+  @override
+  String get probMeasureNext => 'Measure next point';
+
+  @override
+  String get probLegend =>
+      'Dark: most likely 50 % · Light: 90 % · Orange ring: suggested next point';
+
+  @override
+  String get probRule =>
+      'This is an area where the phone most likely is — never an exact spot.';
+
+  @override
+  String get siteOpenMap => 'Open the probability map';
 }

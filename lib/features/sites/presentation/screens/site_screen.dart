@@ -86,6 +86,15 @@ class SiteScreen extends ConsumerWidget
                     null => null,
                   },
                 ),
+              if ((state.value?.measuredPoints.isNotEmpty ?? false) &&
+                  (state.value?.targets.isNotEmpty ?? false)) ...[
+                const SizedBox(height: BeneathSpacing.m),
+                PrimaryButton(
+                  label: l10n.siteOpenMap,
+                  icon: Icons.map_rounded,
+                  onPressed: () => MapRoute(sessionId: sessionId).go(context),
+                ),
+              ],
               if (search.closedAt == null) ...[
                 const SizedBox(height: BeneathSpacing.xl),
                 SecondaryButton(

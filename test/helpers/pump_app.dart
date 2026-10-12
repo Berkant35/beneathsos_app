@@ -8,6 +8,8 @@ import 'package:beneathsos_app/core/sensors/domain/motion_port.dart';
 import 'package:beneathsos_app/core/services/app_lifecycle.dart';
 import 'package:beneathsos_app/core/services/ble_service.dart';
 import 'package:beneathsos_app/core/services/motion_service.dart';
+import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
+import 'package:beneathsos_app/features/probability_map/presentation/providers/map_providers.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:drift/drift.dart' show DatabaseConnection;
@@ -27,8 +29,9 @@ AppDatabase testDatabase() => AppDatabase(
   DatabaseConnection(NativeDatabase.memory(), closeStreamsSynchronously: true),
 );
 
-/// Fake hardware ports for widget tests (a real BleService needs the platform plugin) and an
-/// in-memory database ([database], or a fresh one closed with the scope).
+/// Fake hardware ports for widget tests (a real BleService needs the platform plugin), an
+/// in-memory database ([database], or a fresh one closed with the scope) and the map [engine] (by
+/// default the real one in place: an isolate does not finish under the fake clock).
 List<Override> fakePortOverrides({
   FakeScanner? scanner,
   FakePermissions? permissions,
@@ -36,7 +39,11 @@ List<Override> fakePortOverrides({
   Stream<List<BleSample>>? samples,
   Stream<AppLifecycleState>? lifecycle,
   Stream<double>? motion,
+  MapEngine? engine,
 }) => [
+  mapEngineProvider.overrideWithValue(
+    engine ?? (request) async => computeMap(request),
+  ),
   motionPortProvider.overrideWithValue(_FakeMotion(motion)),
   bleSamplesProvider.overrideWith((ref) => samples ?? const Stream.empty()),
   screenAwakePortProvider.overrideWithValue(FakeScreen()),
@@ -106,6 +113,7 @@ Future<void> pumpRouterApp(
   Stream<List<BleSample>>? samples,
   Stream<AppLifecycleState>? lifecycle,
   Stream<double>? motion,
+  MapEngine? engine,
   List<Override> overrides = const [],
 }) async {
   final router = GoRouter(routes: $appRoutes);
@@ -120,6 +128,7 @@ Future<void> pumpRouterApp(
           samples: samples,
           lifecycle: lifecycle,
           motion: motion,
+          engine: engine,
         ),
         ...overrides,
       ],

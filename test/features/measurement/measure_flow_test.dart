@@ -192,6 +192,29 @@ void main() {
     },
   );
 
+  testWidgets('after a point, the map suggests where to measure next', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _search(tester);
+    // ignore: close_sinks, closed by _open's tear-down
+    final samples = await _open(tester, db);
+    List<MapPoint> suggested() => [
+      for (final m in tester.widget<SiteMap>(find.byType(SiteMap)).points)
+        if (m.kind == MapPointKind.suggested) m,
+    ];
+    expect(suggested(), isEmpty, reason: 'no map before the first point');
+    await _placePoint(tester);
+    await _seconds(tester, 16, each: () => samples.add(_heard('apple-1', -80)));
+    expect(suggested(), hasLength(1));
+    // Outside the 10 × 10 m rubble.
+    final at = suggested().single.at;
+    expect(
+      at.x.value < 0 || at.x.value > 10 || at.y.value < 0 || at.y.value > 10,
+      isTrue,
+    );
+  });
+
   testWidgets('moving pauses the countdown and says why', (tester) async {
     setPhoneSize(tester, 402, 874);
     final (db, _) = await _search(tester);

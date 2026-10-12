@@ -1297,6 +1297,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No, not this one'**
   String get relinkNo;
+
+  /// No description provided for @probTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Probability map'**
+  String get probTitle;
+
+  /// No description provided for @probAreas.
+  ///
+  /// In en, this message translates to:
+  /// **'Most likely area: {area50} (50 %) · {area90} (90 %)'**
+  String probAreas(String area50, String area90);
+
+  /// No description provided for @probLowInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Low information: fewer than 3 points with a signal. Measure more points around the rubble.'**
+  String get probLowInfo;
+
+  /// No description provided for @probNeedsPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Measure at least one point first.'**
+  String get probNeedsPoint;
+
+  /// No description provided for @probCalculating.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculating the map…'**
+  String get probCalculating;
+
+  /// No description provided for @probFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The map could not be calculated. Nothing was deleted.'**
+  String get probFailed;
+
+  /// No description provided for @probMeasureNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Measure next point'**
+  String get probMeasureNext;
+
+  /// No description provided for @probLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark: most likely 50 % · Light: 90 % · Orange ring: suggested next point'**
+  String get probLegend;
+
+  /// No description provided for @probRule.
+  ///
+  /// In en, this message translates to:
+  /// **'This is an area where the phone most likely is — never an exact spot.'**
+  String get probRule;
+
+  /// No description provided for @siteOpenMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the probability map'**
+  String get siteOpenMap;
 }
 
 class _AppLocalizationsDelegate

@@ -10,6 +10,7 @@ import 'package:beneathsos_app/features/measurement/domain/measurement_state.dar
 import 'package:beneathsos_app/features/measurement/presentation/mixins/measure_mixin.dart';
 import 'package:beneathsos_app/features/measurement/presentation/providers/measurement_providers.dart';
 import 'package:beneathsos_app/features/measurement/presentation/widgets/measure_panel.dart';
+import 'package:beneathsos_app/features/probability_map/presentation/providers/map_providers.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,6 +39,9 @@ class MeasureScreen extends ConsumerWidget with MeasureMixin {
     // Only read when measuring is possible: reading creates the controller.
     MeasurementController controller() =>
         ref.read(measurementControllerProvider(sessionId).notifier);
+    final next = ready
+        ? ref.watch(suggestedPointProvider(sessionId)).value
+        : null;
     final page = BeneathSpacing.pageFor(MediaQuery.sizeOf(context).width);
     return BeneathScaffold(
       title: l10n.pointTitle,
@@ -64,7 +68,7 @@ class MeasureScreen extends ConsumerWidget with MeasureMixin {
                   Expanded(
                     child: SiteMap(
                       outline: outline,
-                      points: mapPoints(search, state),
+                      points: mapPoints(search, state, next: next),
                       style: canvasStyleOf(Theme.of(context)),
                       semanticLabel: summary(l10n, search),
                       onTap: state is ChoosingPoint
