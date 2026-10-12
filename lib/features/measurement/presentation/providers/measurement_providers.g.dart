@@ -199,15 +199,15 @@ final class RelinkTargetProvider
 
 String _$relinkTargetHash() => r'23d297973dd293af031abb45a9c5dc5fc1fbe28f';
 
-/// Measuring at points of one search: place, 15 s of still time, store; pauses while moving.
+/// Measuring at points of one search: choose a spot, start, 15 s of still time while scanning, store.
 
 @ProviderFor(MeasurementController)
 final measurementControllerProvider = MeasurementControllerFamily._();
 
-/// Measuring at points of one search: place, 15 s of still time, store; pauses while moving.
+/// Measuring at points of one search: choose a spot, start, 15 s of still time while scanning, store.
 final class MeasurementControllerProvider
     extends $NotifierProvider<MeasurementController, MeasurementState> {
-  /// Measuring at points of one search: place, 15 s of still time, store; pauses while moving.
+  /// Measuring at points of one search: choose a spot, start, 15 s of still time while scanning, store.
   MeasurementControllerProvider._({
     required MeasurementControllerFamily super.from,
     required String super.argument,
@@ -253,9 +253,9 @@ final class MeasurementControllerProvider
 }
 
 String _$measurementControllerHash() =>
-    r'd3a70851a047ed744ea6bf3ada927d42189d52b3';
+    r'8be599ca1c3e3db31a83eab2bae2d2763ccf8df9';
 
-/// Measuring at points of one search: place, 15 s of still time, store; pauses while moving.
+/// Measuring at points of one search: choose a spot, start, 15 s of still time while scanning, store.
 
 final class MeasurementControllerFamily extends $Family
     with
@@ -275,7 +275,7 @@ final class MeasurementControllerFamily extends $Family
         isAutoDispose: true,
       );
 
-  /// Measuring at points of one search: place, 15 s of still time, store; pauses while moving.
+  /// Measuring at points of one search: choose a spot, start, 15 s of still time while scanning, store.
 
   MeasurementControllerProvider call(String sessionId) =>
       MeasurementControllerProvider._(argument: sessionId, from: this);
@@ -284,7 +284,7 @@ final class MeasurementControllerFamily extends $Family
   String toString() => r'measurementControllerProvider';
 }
 
-/// Measuring at points of one search: place, 15 s of still time, store; pauses while moving.
+/// Measuring at points of one search: choose a spot, start, 15 s of still time while scanning, store.
 
 abstract class _$MeasurementController extends $Notifier<MeasurementState> {
   late final _$args = ref.$arg as String;

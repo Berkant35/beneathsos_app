@@ -15,7 +15,10 @@ mixin MeasureMixin {
               ? MapPointKind.heard
               : MapPointKind.notHeard,
         ),
-    if (state case Measuring(:final at))
+    if (state
+        case Measuring(:final at) ||
+            SavingMeasurement(:final at) ||
+            ChoosingPoint(pending: final at?))
       MapPoint(at: at, kind: MapPointKind.measuring),
   ];
 
@@ -52,5 +55,16 @@ mixin MeasureMixin {
           null => l10n.pointSavedNotHeard,
         },
         PointNotSaved() => l10n.pointNotSaved,
+        PointRadioSilent() => l10n.pointRadioSilent,
       };
+
+  /// The relink question, naming the target.
+  String relinkText(
+    AppLocalizations l10n,
+    SessionState search,
+    RelinkSuggestion relink,
+  ) {
+    final target = search.targets[relink.target];
+    return l10n.relinkQuestion(target?.label ?? relink.from, relink.gapSeconds);
+  }
 }

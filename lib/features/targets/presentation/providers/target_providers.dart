@@ -43,16 +43,6 @@ SelectTarget selectTarget(Ref ref) {
   return SelectTarget(ref.watch(sessionStoreProvider), () => ids.next().value);
 }
 
-/// Scans while a screen that needs it is open (surface scan, candidates); shared, so moving from one
-/// to the other never stops the scan in between.
-@riverpod
-Future<void> scanWhileOpen(Ref ref) async {
-  final scanner = ref.read(scanControllerProvider.notifier);
-  // Stopping touches other providers, which a dispose callback may not do: stop right after it.
-  ref.onDispose(() => unawaited(Future.microtask(scanner.stop)));
-  await scanner.start();
-}
-
 /// Track, Exclude and Put back for one search; the state is true while a choice is being stored, so
 /// a double tap stores one choice.
 @riverpod

@@ -199,47 +199,6 @@ final class SelectTargetProvider
 
 String _$selectTargetHash() => r'b4af15ddc9b765c35085bf3b3daf42fd073549f0';
 
-/// Scans while a screen that needs it is open (surface scan, candidates); shared, so moving from one
-/// to the other never stops the scan in between.
-
-@ProviderFor(scanWhileOpen)
-final scanWhileOpenProvider = ScanWhileOpenProvider._();
-
-/// Scans while a screen that needs it is open (surface scan, candidates); shared, so moving from one
-/// to the other never stops the scan in between.
-
-final class ScanWhileOpenProvider
-    extends $FunctionalProvider<AsyncValue<void>, void, FutureOr<void>>
-    with $FutureModifier<void>, $FutureProvider<void> {
-  /// Scans while a screen that needs it is open (surface scan, candidates); shared, so moving from one
-  /// to the other never stops the scan in between.
-  ScanWhileOpenProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'scanWhileOpenProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$scanWhileOpenHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<void> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<void> create(Ref ref) {
-    return scanWhileOpen(ref);
-  }
-}
-
-String _$scanWhileOpenHash() => r'273d95c152f382c8407cb9066b47c723e73d1a3f';
-
 /// Track, Exclude and Put back for one search; the state is true while a choice is being stored, so
 /// a double tap stores one choice.
 

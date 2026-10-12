@@ -1,14 +1,15 @@
-import 'dart:async';
-
 import 'package:beneathsos_app/core/canvas/canvas_style.dart';
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
+import 'package:beneathsos_app/core/scanning/presentation/providers/scan_controller.dart';
+import 'package:beneathsos_app/core/scanning/presentation/providers/scan_state.dart';
+import 'package:beneathsos_app/core/scanning/presentation/providers/scan_while_open.dart';
+import 'package:beneathsos_app/core/scanning/presentation/widgets/scan_blocked_banner.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
 import 'package:beneathsos_app/features/measurement/domain/measurement_state.dart';
 import 'package:beneathsos_app/features/measurement/presentation/mixins/measure_mixin.dart';
 import 'package:beneathsos_app/features/measurement/presentation/providers/measurement_providers.dart';
 import 'package:beneathsos_app/features/measurement/presentation/widgets/measure_panel.dart';
-import 'package:beneathsos_app/features/targets/presentation/providers/target_providers.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,6 +31,7 @@ class MeasureScreen extends ConsumerWidget with MeasureMixin {
     final outline = search?.outline;
     final ready = outline != null && search!.targets.isNotEmpty;
     if (ready) ref.watch(scanWhileOpenProvider);
+    final scan = ref.watch(scanControllerProvider);
     final state = ready
         ? ref.watch(measurementControllerProvider(sessionId))
         : const ChoosingPoint();
@@ -66,7 +68,7 @@ class MeasureScreen extends ConsumerWidget with MeasureMixin {
                       style: canvasStyleOf(Theme.of(context)),
                       semanticLabel: summary(l10n, search),
                       onTap: state is ChoosingPoint
-                          ? (at) => unawaited(controller().place(at))
+                          ? (at) => controller().choose(at)
                           : null,
                     ),
                   ),
@@ -76,11 +78,23 @@ class MeasureScreen extends ConsumerWidget with MeasureMixin {
                     ),
                     child: SingleChildScrollView(
                       padding: page.copyWith(top: BeneathSpacing.m),
-                      child: MeasurePanel(
-                        search: search,
-                        state: state,
-                        onDiscard: () => controller().discard(),
-                        onRelink: (relink) => controller().relink(relink),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if (scan is! ScanRunning && scan is! ScanIdle) ...[
+                            ScanBlockedBanner(scan: scan),
+                            const SizedBox(height: BeneathSpacing.sm),
+                          ],
+                          MeasurePanel(
+                            search: search,
+                            state: state,
+                            onStart: () => controller().start(),
+                            onDiscard: () => controller().discard(),
+                            onRelink: (relink) => controller().relink(relink),
+                            onRejectRelink: (relink) =>
+                                controller().rejectRelink(relink),
+                          ),
+                        ],
                       ),
                     ),
                   ),

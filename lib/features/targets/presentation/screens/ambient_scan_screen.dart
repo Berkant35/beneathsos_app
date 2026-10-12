@@ -1,9 +1,10 @@
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
+import 'package:beneathsos_app/core/scanning/presentation/providers/scan_while_open.dart';
+import 'package:beneathsos_app/core/scanning/presentation/widgets/scan_blocked_banner.dart';
 import 'package:beneathsos_app/features/targets/domain/ambient_state.dart';
 import 'package:beneathsos_app/features/targets/domain/candidates.dart';
 import 'package:beneathsos_app/features/targets/presentation/providers/target_providers.dart';
-import 'package:beneathsos_app/features/targets/presentation/widgets/scan_blocked_banner.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

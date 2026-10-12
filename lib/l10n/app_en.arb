@@ -412,14 +412,22 @@
   "pointNotSaved": "The point could not be saved. Measure again.",
   "pointNeedsOutline": "Draw the rubble outline first.",
   "pointNeedsTarget": "Choose the phone to search for first.",
-  "relinkQuestion": "The phone may have changed its Bluetooth identity: a new one appeared {seconds} s later with a similar signal. Is it the same phone?",
+  "relinkQuestion": "{label} may have changed its Bluetooth identity: a new one appeared {seconds} s after it went silent, with a similar signal. Is it the same phone?",
   "@relinkQuestion": {
     "placeholders": {
+      "label": {
+        "type": "String"
+      },
       "seconds": {
         "type": "int"
       }
     }
   },
   "relinkYes": "Yes, the same phone",
-  "mapLegend": "Filled: signal heard · Ring: not heard · Orange: measuring now"
+  "mapLegend": "Filled: signal heard · Ring: not heard · Orange: measuring now",
+  "pointRadioSilent": "No Bluetooth device was heard at all — scanning was not working. The point was not stored; measure again.",
+  "pointStart": "Measure here",
+  "pointMoveHint": "Tap the map again to move the point.",
+  "pointSaving": "Saving the point…",
+  "relinkNo": "No, not this one"
 }

@@ -1253,8 +1253,8 @@ abstract class AppLocalizations {
   /// No description provided for @relinkQuestion.
   ///
   /// In en, this message translates to:
-  /// **'The phone may have changed its Bluetooth identity: a new one appeared {seconds} s later with a similar signal. Is it the same phone?'**
-  String relinkQuestion(int seconds);
+  /// **'{label} may have changed its Bluetooth identity: a new one appeared {seconds} s after it went silent, with a similar signal. Is it the same phone?'**
+  String relinkQuestion(String label, int seconds);
 
   /// No description provided for @relinkYes.
   ///
@@ -1267,6 +1267,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Filled: signal heard · Ring: not heard · Orange: measuring now'**
   String get mapLegend;
+
+  /// No description provided for @pointRadioSilent.
+  ///
+  /// In en, this message translates to:
+  /// **'No Bluetooth device was heard at all — scanning was not working. The point was not stored; measure again.'**
+  String get pointRadioSilent;
+
+  /// No description provided for @pointStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Measure here'**
+  String get pointStart;
+
+  /// No description provided for @pointMoveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the map again to move the point.'**
+  String get pointMoveHint;
+
+  /// No description provided for @pointSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving the point…'**
+  String get pointSaving;
+
+  /// No description provided for @relinkNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No, not this one'**
+  String get relinkNo;
 }
 
 class _AppLocalizationsDelegate

@@ -13,13 +13,17 @@ sealed class MeasurementState {
   const MeasurementState();
 }
 
-/// Waiting for the rescuer to tap where they stand; [last] says how the previous point went.
+/// Waiting for the rescuer to tap where they stand ([pending], not stored yet: it can be moved by
+/// tapping elsewhere) and start; [last] says how the previous point went.
 final class ChoosingPoint extends MeasurementState {
   /// Creates the state.
-  const ChoosingPoint({this.last});
+  const ChoosingPoint({this.last, this.pending});
 
   /// The previous point's result, if one was just measured.
   final MeasurementOutcome? last;
+
+  /// Where the next point will be, once the rescuer starts.
+  final SitePoint? pending;
 }
 
 /// Measuring at [at]: [remaining] still time, [moving] pauses it, [heard] readings per target so far.
@@ -53,6 +57,15 @@ final class Measuring extends MeasurementState {
   final RelinkSuggestion? relink;
 }
 
+/// The point is being stored; it can no longer be discarded.
+final class SavingMeasurement extends MeasurementState {
+  /// Creates the state.
+  const SavingMeasurement({required this.at});
+
+  /// Where the point is.
+  final SitePoint at;
+}
+
 /// What the last point recorded, or that it could not be stored.
 sealed class MeasurementOutcome {
   const MeasurementOutcome();
@@ -71,4 +84,11 @@ final class PointSaved extends MeasurementOutcome {
 final class PointNotSaved extends MeasurementOutcome {
   /// Creates the outcome.
   const PointNotSaved();
+}
+
+/// No Bluetooth device at all was heard during the point: the scan was not working, so the point
+/// was thrown away instead of storing a false "not heard".
+final class PointRadioSilent extends MeasurementOutcome {
+  /// Creates the outcome.
+  const PointRadioSilent();
 }

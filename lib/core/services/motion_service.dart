@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:beneathsos_app/features/measurement/domain/motion_port.dart';
+import 'package:beneathsos_app/core/sensors/domain/motion_port.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 

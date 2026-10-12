@@ -1,4 +1,3 @@
-import 'package:beneathsos_app/core/scanning/presentation/providers/scan_state.dart';
 import 'package:beneathsos_app/features/targets/domain/candidates.dart';
 import 'package:beneathsos_app/features/targets/domain/device_kind.dart';
 import 'package:beneathsos_app/features/targets/domain/tracker_snapshot.dart';
@@ -63,15 +62,4 @@ mixin TargetsMixin {
         candidate.device.median?.value.round() ?? candidate.device.lastRssi;
     return l10n.targetSignal(value.toString().replaceFirst('-', '−'));
   }
-
-  /// What to tell the rescuer while scanning cannot run.
-  String blockedMessage(AppLocalizations l10n, ScanState scan) =>
-      switch (scan) {
-        ScanNeedsPermission(permanent: false) => l10n.readinessNeedsPermission,
-        ScanNeedsPermission(permanent: true) =>
-          l10n.readinessPermissionInSettings,
-        ScanBluetoothOff() => l10n.readinessBluetoothOff,
-        ScanFailed() => l10n.scanFailed,
-        ScanIdle() || ScanRunning() => l10n.readinessChecking,
-      };
 }

@@ -717,8 +717,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pointNeedsTarget => 'Choose the phone to search for first.';
 
   @override
-  String relinkQuestion(int seconds) {
-    return 'The phone may have changed its Bluetooth identity: a new one appeared $seconds s later with a similar signal. Is it the same phone?';
+  String relinkQuestion(String label, int seconds) {
+    return '$label may have changed its Bluetooth identity: a new one appeared $seconds s after it went silent, with a similar signal. Is it the same phone?';
   }
 
   @override
@@ -727,4 +727,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get mapLegend =>
       'Filled: signal heard · Ring: not heard · Orange: measuring now';
+
+  @override
+  String get pointRadioSilent =>
+      'No Bluetooth device was heard at all — scanning was not working. The point was not stored; measure again.';
+
+  @override
+  String get pointStart => 'Measure here';
+
+  @override
+  String get pointMoveHint => 'Tap the map again to move the point.';
+
+  @override
+  String get pointSaving => 'Saving the point…';
+
+  @override
+  String get relinkNo => 'No, not this one';
 }

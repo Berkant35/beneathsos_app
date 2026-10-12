@@ -708,8 +708,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get pointNeedsTarget => 'Önce aranacak telefonu seçin.';
 
   @override
-  String relinkQuestion(int seconds) {
-    return 'Telefon Bluetooth kimliğini değiştirmiş olabilir: $seconds sn sonra benzer sinyalli yeni bir kimlik çıktı. Aynı telefon mu?';
+  String relinkQuestion(String label, int seconds) {
+    return '$label Bluetooth kimliğini değiştirmiş olabilir: susmasından $seconds sn sonra benzer sinyalli yeni bir kimlik çıktı. Aynı telefon mu?';
   }
 
   @override
@@ -718,4 +718,20 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get mapLegend =>
       'Dolu: sinyal var · Halka: duyulmadı · Turuncu: şimdi ölçülüyor';
+
+  @override
+  String get pointRadioSilent =>
+      'Hiçbir Bluetooth cihazı duyulmadı — tarama çalışmıyordu. Nokta kaydedilmedi; yeniden ölçün.';
+
+  @override
+  String get pointStart => 'Burada ölç';
+
+  @override
+  String get pointMoveHint => 'Noktayı taşımak için haritaya yeniden dokunun.';
+
+  @override
+  String get pointSaving => 'Nokta kaydediliyor…';
+
+  @override
+  String get relinkNo => 'Hayır, bu değil';
 }
