@@ -2,6 +2,7 @@ import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/widgets/app_scaffold.dart';
 import 'package:beneathsos_app/features/home/presentation/widgets/home_actions.dart';
 import 'package:beneathsos_app/features/home/presentation/widgets/home_footer.dart';
+import 'package:beneathsos_app/features/home/presentation/widgets/readiness_banner.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -41,6 +42,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   const SizedBox(height: BeneathSpacing.xl),
+                  const ReadinessBanner(),
+                  const SizedBox(height: BeneathSpacing.m),
                   const HomeActions(),
                   const SizedBox(height: BeneathSpacing.l),
                   const HomeFooter(),

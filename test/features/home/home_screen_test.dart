@@ -1,3 +1,4 @@
+import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
 import 'package:beneathsos_app/features/home/presentation/screens/home_screen.dart';
 import 'package:beneathsos_app/features/sites/presentation/screens/new_site_screen.dart';
 import 'package:beneathsos_app/features/victim/presentation/screens/victim_screen.dart';
@@ -5,6 +6,7 @@ import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../core/scanning/fakes.dart';
 import '../../helpers/pump_app.dart';
 
 void _smallPhone(WidgetTester tester) {
@@ -143,5 +145,104 @@ void main() {
       );
     }
     handle.dispose();
+  });
+
+  Future<void> pumpWith(
+    WidgetTester tester, {
+    BluetoothAvailability bluetooth = BluetoothAvailability.on,
+    Locale locale = const Locale('en'),
+    FakePermissions? permissions,
+  }) => pumpRouterApp(
+    tester,
+    locale: locale,
+    scanner: FakeScanner()..availability = bluetooth,
+    permissions:
+        permissions ?? FakePermissions(checkResult: ScanPermission.granted),
+  );
+
+  StatusBanner banner(WidgetTester tester) =>
+      tester.widget<StatusBanner>(find.byType(StatusBanner));
+
+  testWidgets('ready: calm banner above the actions', (tester) async {
+    await pumpWith(tester);
+    expect(find.text('Bluetooth is on and ready.'), findsOneWidget);
+    expect(banner(tester).kind, StatusKind.ready);
+    expect(
+      tester.getTopLeft(find.byType(StatusBanner)).dy,
+      lessThan(tester.getTopLeft(find.text('Start a search')).dy),
+    );
+  });
+
+  testWidgets('Bluetooth off: red banner with the instruction, no tap action', (
+    tester,
+  ) async {
+    await pumpWith(tester, bluetooth: BluetoothAvailability.off);
+    expect(
+      find.text("Bluetooth is off. Turn it on in your phone's settings."),
+      findsOneWidget,
+    );
+    expect(banner(tester).kind, StatusKind.blocked);
+    expect(banner(tester).onTap, isNull);
+  });
+
+  testWidgets('unsupported: tells the user to search with another phone', (
+    tester,
+  ) async {
+    await pumpWith(tester, bluetooth: BluetoothAvailability.unsupported);
+    expect(find.textContaining('Search with another phone'), findsOneWidget);
+  });
+
+  testWidgets('permission needed: tapping the banner asks again', (
+    tester,
+  ) async {
+    final permissions = FakePermissions(
+      checkResult: ScanPermission.denied,
+      requestResult: ScanPermission.denied,
+    );
+    await pumpWith(tester, permissions: permissions);
+    expect(
+      find.text('Bluetooth permission is needed. Tap to allow it.'),
+      findsOneWidget,
+    );
+    await tester.tap(find.byType(StatusBanner));
+    await tester.pumpAndSettle();
+    expect(permissions.calls.where((c) => c == 'request'), hasLength(2));
+  });
+
+  testWidgets('permission in Settings: tapping opens the settings', (
+    tester,
+  ) async {
+    final permissions = FakePermissions(
+      checkResult: ScanPermission.permanentlyDenied,
+    );
+    await pumpWith(tester, permissions: permissions);
+    expect(
+      find.textContaining('Tap to turn it on in Settings'),
+      findsOneWidget,
+    );
+    await tester.tap(find.byType(StatusBanner));
+    await tester.pumpAndSettle();
+    expect(permissions.calls, contains('openSettings'));
+  });
+
+  testWidgets('Turkish banner texts', (tester) async {
+    await pumpWith(tester, locale: const Locale('tr'));
+    expect(find.text('Bluetooth açık ve hazır.'), findsOneWidget);
+    await pumpWith(
+      tester,
+      locale: const Locale('tr'),
+      bluetooth: BluetoothAvailability.off,
+    );
+    expect(
+      find.text('Bluetooth kapalı. Telefonun ayarlarından açın.'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('Start a search stays enabled while blocked', (tester) async {
+    await pumpWith(tester, bluetooth: BluetoothAvailability.off);
+    await tester.tap(find.text('Start a search'));
+    await tester.pumpAndSettle();
+    expect(find.byType(NewSiteScreen), findsOneWidget);
   });
 }

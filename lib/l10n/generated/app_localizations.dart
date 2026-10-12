@@ -169,6 +169,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This mode is not ready yet. In an emergency, call 112.'**
   String get victimPreparing;
+
+  /// No description provided for @readinessChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking Bluetooth…'**
+  String get readinessChecking;
+
+  /// No description provided for @readinessReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth is on and ready.'**
+  String get readinessReady;
+
+  /// No description provided for @readinessNeedsPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth permission is needed. Tap to allow it.'**
+  String get readinessNeedsPermission;
+
+  /// No description provided for @readinessPermissionInSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth permission is off. Tap to turn it on in Settings.'**
+  String get readinessPermissionInSettings;
+
+  /// No description provided for @readinessBluetoothOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth is off. Turn it on in your phone\'s settings.'**
+  String get readinessBluetoothOff;
+
+  /// No description provided for @readinessUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone does not support Bluetooth LE. Search with another phone.'**
+  String get readinessUnsupported;
+
+  /// No description provided for @preparingCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Being prepared'**
+  String get preparingCardTitle;
 }
 
 class _AppLocalizationsDelegate

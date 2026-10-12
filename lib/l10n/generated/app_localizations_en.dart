@@ -48,4 +48,29 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get victimPreparing =>
       'This mode is not ready yet. In an emergency, call 112.';
+
+  @override
+  String get readinessChecking => 'Checking Bluetooth…';
+
+  @override
+  String get readinessReady => 'Bluetooth is on and ready.';
+
+  @override
+  String get readinessNeedsPermission =>
+      'Bluetooth permission is needed. Tap to allow it.';
+
+  @override
+  String get readinessPermissionInSettings =>
+      'Bluetooth permission is off. Tap to turn it on in Settings.';
+
+  @override
+  String get readinessBluetoothOff =>
+      'Bluetooth is off. Turn it on in your phone\'s settings.';
+
+  @override
+  String get readinessUnsupported =>
+      'This phone does not support Bluetooth LE. Search with another phone.';
+
+  @override
+  String get preparingCardTitle => 'Being prepared';
 }

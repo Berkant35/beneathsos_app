@@ -11,5 +11,12 @@
   "newSiteTitle": "Yeni arama",
   "newSitePreparing": "Bu adım hazırlanıyor. Burada enkaz alanının sınırlarını çizeceksiniz.",
   "victimTitle": "Enkaz altındayım",
-  "victimPreparing": "Bu mod henüz hazır değil. Acil durumda 112'yi arayın."
+  "victimPreparing": "Bu mod henüz hazır değil. Acil durumda 112'yi arayın.",
+  "readinessChecking": "Bluetooth kontrol ediliyor…",
+  "readinessReady": "Bluetooth açık ve hazır.",
+  "readinessNeedsPermission": "Bluetooth izni gerekli. İzin vermek için dokunun.",
+  "readinessPermissionInSettings": "Bluetooth izni kapalı. Ayarlarda açmak için dokunun.",
+  "readinessBluetoothOff": "Bluetooth kapalı. Telefonun ayarlarından açın.",
+  "readinessUnsupported": "Bu telefon Bluetooth LE desteklemiyor. Başka bir telefonla arayın.",
+  "preparingCardTitle": "Hazırlanıyor"
 }

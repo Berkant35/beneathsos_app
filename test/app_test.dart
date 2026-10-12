@@ -5,9 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'helpers/pump_app.dart';
+
 void main() {
   testWidgets('the app uses the BeneathSOS theme', (tester) async {
-    await tester.pumpWidget(const ProviderScope(child: BeneathSosApp()));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: fakePortOverrides(),
+        child: const BeneathSosApp(),
+      ),
+    );
     await tester.pumpAndSettle();
     final theme = Theme.of(tester.element(find.byType(HomeScreen)));
     expect(theme.colorScheme.primary, BeneathColors.primaryLight);
@@ -19,7 +26,12 @@ void main() {
   ) async {
     tester.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
     addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
-    await tester.pumpWidget(const ProviderScope(child: BeneathSosApp()));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: fakePortOverrides(),
+        child: const BeneathSosApp(),
+      ),
+    );
     await tester.pumpAndSettle();
     final theme = Theme.of(tester.element(find.byType(HomeScreen)));
     expect(theme.colorScheme.primary, BeneathColors.primaryDark);

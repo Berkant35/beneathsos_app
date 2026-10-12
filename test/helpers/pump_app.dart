@@ -1,10 +1,29 @@
 import 'package:beneathsos_app/core/router/app_router.dart';
+import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
+import 'package:beneathsos_app/core/scanning/presentation/providers/scanning_providers.dart';
+import 'package:beneathsos_app/core/services/app_lifecycle.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+
+import '../core/scanning/fakes.dart';
+
+/// Fake hardware ports for widget tests (a real BleService needs the platform plugin).
+List<Override> fakePortOverrides({
+  FakeScanner? scanner,
+  FakePermissions? permissions,
+}) => [
+  scannerPortProvider.overrideWithValue(scanner ?? FakeScanner()),
+  scanPermissionPortProvider.overrideWithValue(
+    permissions ?? FakePermissions(checkResult: ScanPermission.granted),
+  ),
+  appLifecycleProvider.overrideWith((ref) => const Stream.empty()),
+];
 
 /// Pumps [home] with the BeneathSOS light theme and localisations.
 Future<void> pumpLocalized(
@@ -13,12 +32,15 @@ Future<void> pumpLocalized(
   Locale locale = const Locale('en'),
 }) async {
   await tester.pumpWidget(
-    MaterialApp(
-      locale: locale,
-      theme: BeneathTheme.light(),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: home,
+    ProviderScope(
+      overrides: fakePortOverrides(),
+      child: MaterialApp(
+        locale: locale,
+        theme: BeneathTheme.light(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: home,
+      ),
     ),
   );
   await tester.pumpAndSettle();
@@ -48,20 +70,25 @@ Future<void> pumpRouterApp(
   Locale locale = const Locale('en'),
   double textScale = 1,
   ThemeData? theme,
+  FakeScanner? scanner,
+  FakePermissions? permissions,
 }) async {
   final router = GoRouter(routes: $appRoutes);
   addTearDown(router.dispose);
   await tester.pumpWidget(
-    MaterialApp.router(
-      locale: locale,
-      theme: theme ?? BeneathTheme.light(),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      routerConfig: router,
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context)
-            .copyWith(textScaler: TextScaler.linear(textScale)),
-        child: child!,
+    ProviderScope(
+      overrides: fakePortOverrides(scanner: scanner, permissions: permissions),
+      child: MaterialApp.router(
+        locale: locale,
+        theme: theme ?? BeneathTheme.light(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        routerConfig: router,
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: TextScaler.linear(textScale)),
+          child: child!,
+        ),
       ),
     ),
   );

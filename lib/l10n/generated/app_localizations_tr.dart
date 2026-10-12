@@ -48,4 +48,29 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get victimPreparing =>
       'Bu mod henüz hazır değil. Acil durumda 112\'yi arayın.';
+
+  @override
+  String get readinessChecking => 'Bluetooth kontrol ediliyor…';
+
+  @override
+  String get readinessReady => 'Bluetooth açık ve hazır.';
+
+  @override
+  String get readinessNeedsPermission =>
+      'Bluetooth izni gerekli. İzin vermek için dokunun.';
+
+  @override
+  String get readinessPermissionInSettings =>
+      'Bluetooth izni kapalı. Ayarlarda açmak için dokunun.';
+
+  @override
+  String get readinessBluetoothOff =>
+      'Bluetooth kapalı. Telefonun ayarlarından açın.';
+
+  @override
+  String get readinessUnsupported =>
+      'Bu telefon Bluetooth LE desteklemiyor. Başka bir telefonla arayın.';
+
+  @override
+  String get preparingCardTitle => 'Hazırlanıyor';
 }

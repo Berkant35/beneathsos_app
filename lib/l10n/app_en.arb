@@ -11,5 +11,12 @@
   "newSiteTitle": "New search",
   "newSitePreparing": "This step is being prepared. Here you will draw the outline of the rubble site.",
   "victimTitle": "I am trapped",
-  "victimPreparing": "This mode is not ready yet. In an emergency, call 112."
+  "victimPreparing": "This mode is not ready yet. In an emergency, call 112.",
+  "readinessChecking": "Checking Bluetooth…",
+  "readinessReady": "Bluetooth is on and ready.",
+  "readinessNeedsPermission": "Bluetooth permission is needed. Tap to allow it.",
+  "readinessPermissionInSettings": "Bluetooth permission is off. Tap to turn it on in Settings.",
+  "readinessBluetoothOff": "Bluetooth is off. Turn it on in your phone's settings.",
+  "readinessUnsupported": "This phone does not support Bluetooth LE. Search with another phone.",
+  "preparingCardTitle": "Being prepared"
 }
