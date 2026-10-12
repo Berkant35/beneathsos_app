@@ -16,6 +16,8 @@ part 'scan_controller.g.dart';
 /// Rules live in `core/scanning/domain`.
 @Riverpod(keepAlive: true)
 class ScanController extends _$ScanController {
+  var _generation = 0;
+
   @override
   ScanState build() {
     final scanner = ref.watch(scannerPortProvider);
@@ -33,7 +35,14 @@ class ScanController extends _$ScanController {
 
   /// Checks preconditions and starts scanning.
   Future<void> start() async {
+    final generation = ++_generation;
     final result = await ref.read(startScanProvider)();
+    if (!ref.mounted) return;
+    if (generation != _generation) {
+      // Stopped while starting (the screen closed): do not leave the radio and keep-awake on.
+      if (result is ScanStarted) await ref.read(stopScanProvider)();
+      return;
+    }
     state = switch (result) {
       ScanStarted() => ScanRunning(ref.read(clockProvider)()),
       PermissionMissing(:final permanent) => ScanNeedsPermission(
@@ -48,6 +57,7 @@ class ScanController extends _$ScanController {
   Future<void> stop() async {
     // A screen that scanned may close after the whole scope is gone (app shut down).
     if (!ref.mounted) return;
+    _generation++;
     await ref.read(stopScanProvider)();
     state = const ScanIdle();
   }

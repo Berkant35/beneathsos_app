@@ -300,14 +300,14 @@
   "ambientAgain": "Scan again",
   "ambientChoose": "Choose the phone",
   "ambientBack": "Back to the search",
-  "targetsHintExclude": "Hold a rescuer's phone next to yours: it shows as very strong — exclude it.",
+  "targetsHintExclude": "Hold a team phone next to yours: the card that turns very strong is that phone — exclude it.",
   "targetsNoSurfaceScan": "No surface scan yet: rescuers' phones may be listed. Tap to scan first.",
   "targetsNone": "No phones heard yet. Keep this screen open.",
   "reasonNotMoving": "Not moving",
   "reasonWeak": "weak signal",
   "reasonMedium": "medium signal",
-  "reasonNotOnSurface": "not seen on the surface",
-  "reasonVeryStrong": "Very strong — probably right next to you",
+  "reasonNotOnSurface": "not strong in the surface scan",
+  "reasonVeryStrong": "Very strong signal — if this is a team phone, exclude it",
   "targetSignal": "Signal {value} dBm",
   "@targetSignal": {
     "placeholders": {
@@ -339,5 +339,35 @@
         "type": "String"
       }
     }
-  }
+  },
+  "reasonChanging": "Signal changing — it may be moving",
+  "reasonFewReadings": "Heard only a few times so far",
+  "targetsSurfaceScanOld": "Surface scan {minutes} min ago: phones change their Bluetooth identity about every 15 min. Tap to scan again.",
+  "@targetsSurfaceScanOld": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "excludeDone": "Set aside: {label}.",
+  "@excludeDone": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "setAsideTitle": "Set aside ({count})",
+  "@setAsideTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "putBack": "Put back",
+  "setAsideNotHeard": "Not heard now",
+  "sortAgain": "Sort again",
+  "scanFailed": "Scanning stopped. Tap to try again."
 }

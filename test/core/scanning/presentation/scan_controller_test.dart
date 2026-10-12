@@ -141,4 +141,20 @@ void main() {
     expect(scanner.calls, ['start', 'stop']);
     expect(screen.changes, [true, false]);
   });
+
+  test(
+    'a stop while the start is still pending leaves the radio and screen off',
+    () async {
+      scanner.startGate = Completer<void>();
+      final starting = controller().start();
+      await pumpEventQueue();
+      final stopping = controller().stop();
+      scanner.startGate!.complete();
+      await starting;
+      await stopping;
+      expect(state(), isA<ScanIdle>());
+      expect(scanner.calls.last, 'stop');
+      expect(screen.changes.last, isFalse);
+    },
+  );
 }

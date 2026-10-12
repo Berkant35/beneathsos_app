@@ -4,12 +4,15 @@ import 'dart:math';
 import 'package:beneathsos_app/core/logging/app_logger.dart';
 import 'package:beneathsos_app/core/scanning/presentation/providers/scan_controller.dart';
 import 'package:beneathsos_app/core/scanning/presentation/providers/scan_state.dart';
+import 'package:beneathsos_app/core/services/app_lifecycle.dart';
 import 'package:beneathsos_app/core/services/clock.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
 import 'package:beneathsos_app/features/targets/domain/ambient_state.dart';
 import 'package:beneathsos_app/features/targets/domain/candidates.dart';
+import 'package:beneathsos_app/features/targets/domain/choice_result.dart';
 import 'package:beneathsos_app/features/targets/domain/target_use_cases.dart';
 import 'package:beneathsos_app/features/targets/presentation/providers/tracked_devices.dart';
+import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rubble_core/rubble_core.dart';
 
@@ -24,6 +27,11 @@ CompleteAmbientScan completeAmbientScan(Ref ref) =>
 @Riverpod(keepAlive: true)
 ExcludeDevice excludeDevice(Ref ref) =>
     ExcludeDevice(ref.watch(sessionStoreProvider));
+
+/// Puts a device back.
+@Riverpod(keepAlive: true)
+PutBackDevice putBackDevice(Ref ref) =>
+    PutBackDevice(ref.watch(sessionStoreProvider));
 
 /// Selects a target.
 @Riverpod(keepAlive: true)
@@ -45,11 +53,49 @@ Future<void> scanWhileOpen(Ref ref) async {
   await scanner.start();
 }
 
+/// Track, Exclude and Put back for one search; the state is true while a choice is being stored, so
+/// a double tap stores one choice.
+@riverpod
+class TargetChoice extends _$TargetChoice {
+  @override
+  bool build(String sessionId) => false;
+
+  /// Follows [key] as a target, shown as [label].
+  Future<ChoiceResult> track(String key, String label) => _write(
+    () => ref.read(selectTargetProvider).call(SessionId(sessionId), key, label),
+  );
+
+  /// Sets [key] aside as a surface phone.
+  Future<ChoiceResult> exclude(String key) => _write(
+    () => ref.read(excludeDeviceProvider).call(SessionId(sessionId), key),
+  );
+
+  /// Puts [key] back among the candidates.
+  Future<ChoiceResult> putBack(String key) => _write(
+    () => ref.read(putBackDeviceProvider).call(SessionId(sessionId), key),
+  );
+
+  Future<ChoiceResult> _write(Future<void> Function() write) async {
+    if (state) return ChoiceResult.busy;
+    state = true;
+    try {
+      await write();
+      return ChoiceResult.done;
+    } on Exception catch (error, stack) {
+      AppLogger.error('targets', 'Could not store the choice', error, stack);
+      return ChoiceResult.failed;
+    } finally {
+      if (ref.mounted) state = false;
+    }
+  }
+}
+
 /// The 30 s surface scan of one search. Counts seconds while scanning (the countdown pauses while
 /// Bluetooth is off), then stores the surface phones.
 @riverpod
 class AmbientScanController extends _$AmbientScanController {
   var _seconds = 0;
+  var _foreground = true;
 
   @override
   AmbientState build(String sessionId) {
@@ -59,7 +105,13 @@ class AmbientScanController extends _$AmbientScanController {
     );
     // Listening (not reading) keeps the tracker running: Riverpod 3 pauses providers nobody listens
     // to, and a paused tracker hears nothing. It also updates the count as phones are heard.
-    ref.listen(trackedDevicesProvider, (_, _) => _refresh());
+    ref
+      ..listen(trackedDevicesProvider, (_, _) => _refresh())
+      // Scanning stops in the background (screen off): only foreground seconds count.
+      ..listen(appLifecycleProvider, (_, next) {
+        _foreground =
+            next.value == null || next.value == AppLifecycleState.resumed;
+      });
     final timer = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
     ref.onDispose(timer.cancel);
     return _scanning();
@@ -84,7 +136,9 @@ class AmbientScanController extends _$AmbientScanController {
 
   void _tick() {
     if (state is! AmbientScanning && state is! AmbientBlocked) return;
-    if (ref.read(scanControllerProvider) is ScanRunning) _seconds++;
+    if (_foreground && ref.read(scanControllerProvider) is ScanRunning) {
+      _seconds++;
+    }
     if (Duration(seconds: _seconds) < AmbientPolicy.duration) {
       state = _scanning();
       return;

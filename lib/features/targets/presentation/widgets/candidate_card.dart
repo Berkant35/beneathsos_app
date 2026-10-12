@@ -15,8 +15,12 @@ class CandidateCard extends StatelessWidget with TargetsMixin {
     required this.surfaceScanned,
     required this.onTrack,
     required this.onExclude,
+    required this.enabled,
     super.key,
   });
+
+  /// False while another choice is being stored.
+  final bool enabled;
 
   /// The device.
   final TargetCandidate candidate;
@@ -27,8 +31,8 @@ class CandidateCard extends StatelessWidget with TargetsMixin {
   /// Track this phone (receives the label shown).
   final Future<void> Function(String label) onTrack;
 
-  /// Exclude it as a surface phone.
-  final Future<void> Function() onExclude;
+  /// Exclude it as a surface phone (receives the label shown).
+  final Future<void> Function(String label) onExclude;
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +57,13 @@ class CandidateCard extends StatelessWidget with TargetsMixin {
           SecondaryButton(
             label: l10n.targetTrack,
             icon: Icons.track_changes_rounded,
-            onPressed: () => unawaited(onTrack(label)),
+            onPressed: enabled ? () => unawaited(onTrack(label)) : null,
           ),
           const SizedBox(height: BeneathSpacing.s),
           SecondaryButton(
             label: l10n.targetExclude,
             icon: Icons.block_rounded,
-            onPressed: () => unawaited(onExclude()),
+            onPressed: enabled ? () => unawaited(onExclude(label)) : null,
           ),
         ],
       ),

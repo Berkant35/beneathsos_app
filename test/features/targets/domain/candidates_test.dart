@@ -12,6 +12,7 @@ DeviceSummary device(
   double? median,
   double? spread,
   int samples = 10,
+  int? recent,
 }) => DeviceSummary(
   key: key,
   kind: kind,
@@ -21,6 +22,7 @@ DeviceSummary device(
   sampleCount: samples,
   median: median == null ? null : Dbm(median),
   spread: spread == null ? null : Decibels(spread),
+  recentCount: recent ?? samples,
 );
 
 void main() {
@@ -85,27 +87,66 @@ void main() {
     });
 
     test('reasons in plain flags', () {
-      final [still, moving, strong] = rankCandidates(
+      final [still, changing, strong] = rankCandidates(
         [
           device('still', median: -85, spread: 2),
-          device('moving', median: -70, spread: 9),
+          device('changing', median: -70, spread: 9),
           device('strong', median: -45, spread: 1),
         ],
         surface: const {},
         targets: const {},
       );
-      expect((still.still, still.strength), (true, SignalStrength.weak));
-      expect((moving.still, moving.strength), (false, SignalStrength.medium));
+      expect(
+        (still.movement, still.strength),
+        (Movement.still, SignalStrength.weak),
+      );
+      expect(
+        (changing.movement, changing.strength),
+        (Movement.changing, SignalStrength.medium),
+      );
       expect(strong.strength, SignalStrength.veryStrong);
     });
 
-    test('too few readings are not called still', () {
+    test('few recent readings are "not known yet", never "moving"', () {
       final [c] = rankCandidates(
-        [device('new', median: -85, spread: 1, samples: 3)],
+        [device('faint', median: -95, spread: 12, samples: 40, recent: 3)],
         surface: const {},
         targets: const {},
       );
-      expect(c.still, isFalse);
+      expect(c.movement, Movement.notKnownYet);
+    });
+
+    test('a faint device heard rarely ranks above a changing one', () {
+      final ranked = rankCandidates(
+        [
+          device('changing', median: -85, spread: 9),
+          device('faint', median: -95, recent: 2),
+        ],
+        surface: const {},
+        targets: const {},
+      );
+      expect(ranked.map((c) => c.device.key), ['faint', 'changing']);
+    });
+  });
+
+  group('stable order', () {
+    test('cards keep their place; new devices come last', () {
+      final ranked = rankCandidates(
+        [
+          device(
+            'new-findmy',
+            kind: DeviceKind.appleFindMy,
+            median: -85,
+            spread: 2,
+          ),
+          device('a', median: -85, spread: 2),
+          device('b', median: -70, spread: 9),
+        ],
+        surface: const {},
+        targets: const {},
+      );
+      final shown = keepOrder(['b', 'a', 'gone'], ranked);
+      expect(shown.map((c) => c.device.key), ['b', 'a', 'new-findmy']);
     });
   });
 }

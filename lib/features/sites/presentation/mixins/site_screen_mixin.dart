@@ -36,6 +36,8 @@ mixin SiteScreenMixin {
     final outline = state?.outline;
     final scale = state?.scale ?? 1;
     final surface = state?.blacklist.length ?? 0;
+    // A scan that set nothing aside is still done; a manual exclusion is not a scan.
+    final scanned = state?.lastSurfaceScan != null;
     final target = state?.targets.values.firstOrNull;
     final measured = state?.measuredPoints.length ?? 0;
     return [
@@ -54,8 +56,8 @@ mixin SiteScreenMixin {
       ),
       (
         label: l10n.siteStepAmbient,
-        status: surface > 0 ? l10n.siteAmbientDone(surface) : notDone(),
-        done: surface > 0,
+        status: scanned ? l10n.siteAmbientDone(surface) : notDone(),
+        done: scanned,
         action: canOpen ? SiteStepAction.ambient : null,
       ),
       (

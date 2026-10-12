@@ -1025,7 +1025,7 @@ abstract class AppLocalizations {
   /// No description provided for @targetsHintExclude.
   ///
   /// In en, this message translates to:
-  /// **'Hold a rescuer\'s phone next to yours: it shows as very strong — exclude it.'**
+  /// **'Hold a team phone next to yours: the card that turns very strong is that phone — exclude it.'**
   String get targetsHintExclude;
 
   /// No description provided for @targetsNoSurfaceScan.
@@ -1061,13 +1061,13 @@ abstract class AppLocalizations {
   /// No description provided for @reasonNotOnSurface.
   ///
   /// In en, this message translates to:
-  /// **'not seen on the surface'**
+  /// **'not strong in the surface scan'**
   String get reasonNotOnSurface;
 
   /// No description provided for @reasonVeryStrong.
   ///
   /// In en, this message translates to:
-  /// **'Very strong — probably right next to you'**
+  /// **'Very strong signal — if this is a team phone, exclude it'**
   String get reasonVeryStrong;
 
   /// No description provided for @targetSignal.
@@ -1129,6 +1129,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Done · {label}'**
   String siteTargetDone(String label);
+
+  /// No description provided for @reasonChanging.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal changing — it may be moving'**
+  String get reasonChanging;
+
+  /// No description provided for @reasonFewReadings.
+  ///
+  /// In en, this message translates to:
+  /// **'Heard only a few times so far'**
+  String get reasonFewReadings;
+
+  /// No description provided for @targetsSurfaceScanOld.
+  ///
+  /// In en, this message translates to:
+  /// **'Surface scan {minutes} min ago: phones change their Bluetooth identity about every 15 min. Tap to scan again.'**
+  String targetsSurfaceScanOld(int minutes);
+
+  /// No description provided for @excludeDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Set aside: {label}.'**
+  String excludeDone(String label);
+
+  /// No description provided for @setAsideTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set aside ({count})'**
+  String setAsideTitle(int count);
+
+  /// No description provided for @putBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Put back'**
+  String get putBack;
+
+  /// No description provided for @setAsideNotHeard.
+  ///
+  /// In en, this message translates to:
+  /// **'Not heard now'**
+  String get setAsideNotHeard;
+
+  /// No description provided for @sortAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort again'**
+  String get sortAgain;
+
+  /// No description provided for @scanFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning stopped. Tap to try again.'**
+  String get scanFailed;
 }
 
 class _AppLocalizationsDelegate

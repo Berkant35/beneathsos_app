@@ -188,7 +188,7 @@ void main() {
           .toList();
       expect(titles.first, 'Apple · Find My');
       expect(
-        find.text('Not moving · weak signal · not seen on the surface'),
+        find.text('Not moving · weak signal · not strong in the surface scan'),
         findsNWidgets(2),
       );
       expect(find.text('Signal −88 dBm'), findsOneWidget);
@@ -251,8 +251,167 @@ void main() {
     expect(tester.takeException(), isNull);
     await expectFullyReadable(
       tester,
-      find.text('Hareketsiz · zayıf sinyal · yüzeyde görülmedi'),
+      find.text('Hareketsiz · zayıf sinyal · yüzey taramasında güçlü değildi'),
     );
     await expectFullyReadable(tester, find.text('Hariç tut — yüzeyde'));
   });
+
+  Future<StreamController<List<BleSample>>> openTargets(
+    WidgetTester tester,
+    AppDatabase db,
+  ) async {
+    final samples = StreamController<List<BleSample>>.broadcast();
+    // Not awaited: a paused subscription never receives the done event.
+    addTearDown(() => unawaited(samples.close()));
+    await pumpRouterApp(tester, database: db, samples: samples.stream);
+    await settleWithDatabase(tester);
+    await _tap(tester, 'Start a search');
+    await _tap(tester, 'Atatürk Cad. 12');
+    await _tap(tester, 'Choose the phone to search for');
+    return samples;
+  }
+
+  Future<void> hear(
+    WidgetTester tester,
+    StreamController<List<BleSample>> samples,
+    List<BleSample> batch,
+  ) async {
+    samples.add(batch);
+    await tester.pump();
+    await tester.pump();
+  }
+
+  testWidgets('Exclude offers Undo; Undo puts the phone back', (tester) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _search(tester, surface: ['team']);
+    final samples = await openTargets(tester, db);
+    await hear(tester, samples, _heard('apple', -88, findMy: true));
+    await _tap(tester, 'Exclude — it is on the surface');
+    expect(find.text('Set aside: Apple · Find My.'), findsOneWidget);
+    expect(find.text('Track this phone'), findsNothing);
+    await _tap(tester, 'Undo');
+    expect(find.text('Track this phone'), findsOneWidget);
+    expect(await _types(tester, db), [
+      'SiteCreated',
+      'AmbientScanCompleted',
+      'BlacklistEdited',
+      'BlacklistEdited',
+    ]);
+  });
+
+  testWidgets('phones set aside are listed and can be put back', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _search(tester, surface: ['team']);
+    final samples = await openTargets(tester, db);
+    await hear(tester, samples, _heard('team', -60));
+    await _tap(tester, 'Set aside (1)');
+    expect(find.text('Unknown device · Signal −60 dBm'), findsOneWidget);
+    await _tap(tester, 'Put back');
+    expect(find.text('Track this phone'), findsOneWidget);
+  });
+
+  testWidgets('a phone heard only a few times is never called moving', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _search(tester, surface: ['team']);
+    final samples = await openTargets(tester, db);
+    await hear(tester, samples, _heard('faint', -96, count: 2));
+    expect(
+      find.text(
+        'Heard only a few times so far · weak signal · not strong in the surface scan',
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('cards keep their place; Sort again re-ranks', (tester) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _search(tester, surface: ['team']);
+    final samples = await openTargets(tester, db);
+    await hear(tester, samples, _heard('other', -85));
+    await hear(tester, samples, _heard('apple', -88, findMy: true));
+    List<String?> titles() => tester
+        .widgetList<Text>(
+          find.textContaining(RegExp(r'^(Apple · Find My|Unknown device)$')),
+        )
+        .map((t) => t.data)
+        .toList();
+    expect(titles(), ['Unknown device', 'Apple · Find My']);
+    await _tap(tester, 'Sort again');
+    expect(titles(), ['Apple · Find My', 'Unknown device']);
+  });
+
+  testWidgets('a double tap on Track follows one phone', (tester) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _search(tester, surface: ['team']);
+    final samples = await openTargets(tester, db);
+    await hear(tester, samples, _heard('apple', -88, findMy: true));
+    await tester.ensureVisible(find.text('Track this phone'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Track this phone'));
+    await tester.tap(find.text('Track this phone'), warnIfMissed: false);
+    await settleWithDatabase(tester);
+    final types = await _types(tester, db);
+    expect(types.where((t) => t == 'TargetSelected'), hasLength(1));
+  });
+
+  testWidgets('a surface scan that set nothing aside still counts as done', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _search(tester);
+    final scanner = FakeScanner();
+    await pumpRouterApp(tester, database: db, scanner: scanner);
+    await settleWithDatabase(tester);
+    await _tap(tester, 'Start a search');
+    await _tap(tester, 'Atatürk Cad. 12');
+    await _open(tester, 'Find the phones on the surface');
+    for (var s = 0; s < 32; s++) {
+      await tester.pump(const Duration(seconds: 1));
+    }
+    await settleWithDatabase(tester);
+    expect(
+      find.text('No phone close by: nothing was set aside.'),
+      findsOneWidget,
+    );
+    await _tap(tester, 'Back to the search');
+    expect(find.text('Done · nothing set aside'), findsOneWidget);
+    await _tap(tester, 'Choose the phone to search for');
+    expect(
+      find.text(
+        "No surface scan yet: rescuers' phones may be listed. Tap to scan first.",
+      ),
+      findsNothing,
+    );
+  });
+
+  testWidgets(
+    'the surface scan countdown waits while the app is in the background',
+    (tester) async {
+      setPhoneSize(tester, 402, 874);
+      final (db, _) = await _search(tester);
+      final lifecycle = StreamController<AppLifecycleState>.broadcast();
+      addTearDown(() => unawaited(lifecycle.close()));
+      await pumpRouterApp(tester, database: db, lifecycle: lifecycle.stream);
+      await settleWithDatabase(tester);
+      await _tap(tester, 'Start a search');
+      await _tap(tester, 'Atatürk Cad. 12');
+      await _open(tester, 'Find the phones on the surface');
+      lifecycle.add(AppLifecycleState.paused);
+      for (var s = 0; s < 40; s++) {
+        await tester.pump(const Duration(seconds: 1));
+      }
+      await settleWithDatabase(tester);
+      expect(await _types(tester, db), isNot(contains('AmbientScanCompleted')));
+      lifecycle.add(AppLifecycleState.resumed);
+      for (var s = 0; s < 32; s++) {
+        await tester.pump(const Duration(seconds: 1));
+      }
+      await settleWithDatabase(tester);
+      expect(await _types(tester, db), contains('AmbientScanCompleted'));
+    },
+  );
 }

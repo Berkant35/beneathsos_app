@@ -52,3 +52,17 @@ final class SelectTarget {
         ),
       );
 }
+
+/// Puts a set-aside device back among the candidates (a wrong exclusion is never permanent).
+final class PutBackDevice {
+  /// Creates the use case on [_store].
+  const PutBackDevice(this._store);
+
+  final SessionStore _store;
+
+  /// Removes [peripheralKey] from the surface phones of [search].
+  Future<void> call(SessionId search, String peripheralKey) => _store.append(
+    search,
+    BlacklistEdited(added: const [], removed: [peripheralKey]),
+  );
+}

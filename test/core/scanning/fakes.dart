@@ -8,6 +8,9 @@ import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
 class FakeScanner implements ScannerPort {
   BluetoothAvailability availability = BluetoothAvailability.on;
   Exception? startError;
+
+  /// When set, [start] waits for it (a slow platform start).
+  Completer<void>? startGate;
   final calls = <String>[];
   final _availability = StreamController<BluetoothAvailability>.broadcast();
   final _errors = StreamController<String>.broadcast();
@@ -36,6 +39,7 @@ class FakeScanner implements ScannerPort {
   @override
   Future<void> start() async {
     calls.add('start');
+    await startGate?.future;
     final error = startError;
     if (error != null) throw error;
   }

@@ -14,6 +14,7 @@ final class DeviceSummary {
     required this.sampleCount,
     this.median,
     this.spread,
+    this.recentCount = 0,
   });
 
   /// Platform identity (rotates on phones).
@@ -40,6 +41,9 @@ final class DeviceSummary {
   /// Sample standard deviation over the same window; null with fewer than two readings. Small means
   /// the device and the rescuer are not moving.
   final Decibels? spread;
+
+  /// Readings within the same 30 s window ([sampleCount] counts all of them).
+  final int recentCount;
 }
 
 /// Immutable view of everything the tracker knows.

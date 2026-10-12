@@ -41,7 +41,7 @@ abstract final class CandidatePolicy {
   /// Still when the spread stays within this.
   static const maxStillSpread = Decibels(4);
 
-  /// Still needs at least this many readings.
+  /// Still (or changing) needs at least this many readings in the last 30 s.
   static const minStillSamples = 5;
 
   /// Weaker than this is weak.
@@ -51,27 +51,43 @@ abstract final class CandidatePolicy {
   static const veryStrongFrom = Dbm(-55);
 }
 
+/// What the signal of a device says about movement.
+enum Movement {
+  /// Steady: it does not move (a buried phone does not).
+  still,
+
+  /// Changing a lot: it may be moving (or the rescuer is).
+  changing,
+
+  /// Too few recent readings to tell — common for a faint, buried phone; never called "moving".
+  notKnownYet,
+}
+
 /// A device that could be the trapped phone, with the facts behind its rank.
 final class TargetCandidate {
   /// Creates a candidate.
   const TargetCandidate({
     required this.device,
-    required this.still,
+    required this.movement,
     required this.strength,
   });
 
   /// The device.
   final DeviceSummary device;
 
-  /// Its signal hardly changes (a buried phone does not move).
-  final bool still;
+  /// What its signal says about movement.
+  final Movement movement;
 
   /// How strong its signal is.
   final SignalStrength strength;
 
   int get _score =>
       (device.kind == DeviceKind.appleFindMy ? 3 : 0) +
-      (still ? 2 : 0) +
+      switch (movement) {
+        Movement.still => 2,
+        Movement.notKnownYet => 1, // a faint phone heard rarely must not sink
+        Movement.changing => 0,
+      } +
       switch (strength) {
         SignalStrength.weak => 1,
         SignalStrength.medium => 0,
@@ -91,10 +107,7 @@ List<TargetCandidate> rankCandidates(
       if (!surface.contains(d.key) && !targets.contains(d.key))
         TargetCandidate(
           device: d,
-          still:
-              d.sampleCount >= CandidatePolicy.minStillSamples &&
-              d.spread != null &&
-              d.spread!.value <= CandidatePolicy.maxStillSpread.value,
+          movement: _movement(d),
           strength: _strength(d.median ?? Dbm(d.lastRssi.toDouble())),
         ),
   ];
@@ -105,6 +118,26 @@ List<TargetCandidate> rankCandidates(
       return byScore != 0 ? byScore : a.$1.compareTo(b.$1);
     });
   return [for (final (_, c) in indexed) c];
+}
+
+Movement _movement(DeviceSummary d) {
+  final spread = d.spread;
+  if (d.recentCount < CandidatePolicy.minStillSamples || spread == null) {
+    return Movement.notKnownYet;
+  }
+  return spread.value <= CandidatePolicy.maxStillSpread.value
+      ? Movement.still
+      : Movement.changing;
+}
+
+/// [ranked] in the order already shown ([shown] keys, gone ones dropped), new devices last — so cards
+/// never move under the rescuer's finger. Ranking again is the rescuer's choice ("Sort again").
+List<TargetCandidate> keepOrder(
+  List<String> shown,
+  List<TargetCandidate> ranked,
+) {
+  final byKey = {for (final c in ranked) c.device.key: c};
+  return [for (final key in shown) ?byKey.remove(key), ...byKey.values];
 }
 
 SignalStrength _strength(Dbm median) {

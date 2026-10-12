@@ -32,6 +32,7 @@ List<Override> fakePortOverrides({
   FakePermissions? permissions,
   AppDatabase? database,
   Stream<List<BleSample>>? samples,
+  Stream<AppLifecycleState>? lifecycle,
 }) => [
   bleSamplesProvider.overrideWith((ref) => samples ?? const Stream.empty()),
   screenAwakePortProvider.overrideWithValue(FakeScreen()),
@@ -47,7 +48,7 @@ List<Override> fakePortOverrides({
   scanPermissionPortProvider.overrideWithValue(
     permissions ?? FakePermissions(checkResult: ScanPermission.granted),
   ),
-  appLifecycleProvider.overrideWith((ref) => const Stream.empty()),
+  appLifecycleProvider.overrideWith((ref) => lifecycle ?? const Stream.empty()),
 ];
 
 /// Pumps [home] with the BeneathSOS light theme and localisations.
@@ -99,6 +100,7 @@ Future<void> pumpRouterApp(
   FakePermissions? permissions,
   AppDatabase? database,
   Stream<List<BleSample>>? samples,
+  Stream<AppLifecycleState>? lifecycle,
   List<Override> overrides = const [],
 }) async {
   final router = GoRouter(routes: $appRoutes);
@@ -111,6 +113,7 @@ Future<void> pumpRouterApp(
           permissions: permissions,
           database: database,
           samples: samples,
+          lifecycle: lifecycle,
         ),
         ...overrides,
       ],

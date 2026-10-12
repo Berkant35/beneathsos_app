@@ -564,7 +564,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get targetsHintExclude =>
-      'Hold a rescuer\'s phone next to yours: it shows as very strong — exclude it.';
+      'Hold a team phone next to yours: the card that turns very strong is that phone — exclude it.';
 
   @override
   String get targetsNoSurfaceScan =>
@@ -583,10 +583,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reasonMedium => 'medium signal';
 
   @override
-  String get reasonNotOnSurface => 'not seen on the surface';
+  String get reasonNotOnSurface => 'not strong in the surface scan';
 
   @override
-  String get reasonVeryStrong => 'Very strong — probably right next to you';
+  String get reasonVeryStrong =>
+      'Very strong signal — if this is a team phone, exclude it';
 
   @override
   String targetSignal(String value) {
@@ -630,4 +631,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String siteTargetDone(String label) {
     return 'Done · $label';
   }
+
+  @override
+  String get reasonChanging => 'Signal changing — it may be moving';
+
+  @override
+  String get reasonFewReadings => 'Heard only a few times so far';
+
+  @override
+  String targetsSurfaceScanOld(int minutes) {
+    return 'Surface scan $minutes min ago: phones change their Bluetooth identity about every 15 min. Tap to scan again.';
+  }
+
+  @override
+  String excludeDone(String label) {
+    return 'Set aside: $label.';
+  }
+
+  @override
+  String setAsideTitle(int count) {
+    return 'Set aside ($count)';
+  }
+
+  @override
+  String get putBack => 'Put back';
+
+  @override
+  String get setAsideNotHeard => 'Not heard now';
+
+  @override
+  String get sortAgain => 'Sort again';
+
+  @override
+  String get scanFailed => 'Scanning stopped. Tap to try again.';
 }

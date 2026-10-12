@@ -244,7 +244,8 @@ void main() {
     expect(find.text('Done · 40 m²'), findsOneWidget);
     expect(find.text('1 point measured'), findsOneWidget);
     expect(find.text('Tap to start'), findsNWidgets(2)); // surface scan, target
-    expect(find.text('Coming in the next update'), findsNothing); // measured: 1 point
+    // Measured: 1 point.
+    expect(find.text('Coming in the next update'), findsNothing);
     expect(id, isNotNull);
   });
 

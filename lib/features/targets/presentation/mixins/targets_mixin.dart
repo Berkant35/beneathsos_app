@@ -32,8 +32,9 @@ mixin TargetsMixin {
     DeviceKind.unknown => l10n.targetUnknown,
   };
 
-  /// "Not moving · weak signal · not seen on the surface", "Moving — probably on the surface" or
-  /// "Very strong — probably right next to you". [surfaceScanned] adds "not seen on the surface".
+  /// "Not moving · weak signal · not strong in the surface scan", "Heard only a few times so far ·
+  /// weak signal", "Signal changing — it may be moving · …" or the very-strong advice. Never a
+  /// distance (rule 2). [surfaceScanned] adds the surface-scan part.
   String reason(
     AppLocalizations l10n,
     TargetCandidate candidate, {
@@ -42,9 +43,12 @@ mixin TargetsMixin {
     if (candidate.strength == SignalStrength.veryStrong) {
       return l10n.reasonVeryStrong;
     }
-    if (!candidate.still) return l10n.targetReasonMoving;
     return [
-      l10n.reasonNotMoving,
+      switch (candidate.movement) {
+        Movement.still => l10n.reasonNotMoving,
+        Movement.changing => l10n.reasonChanging,
+        Movement.notKnownYet => l10n.reasonFewReadings,
+      },
       if (candidate.strength == SignalStrength.weak)
         l10n.reasonWeak
       else
@@ -67,7 +71,7 @@ mixin TargetsMixin {
         ScanNeedsPermission(permanent: true) =>
           l10n.readinessPermissionInSettings,
         ScanBluetoothOff() => l10n.readinessBluetoothOff,
-        ScanFailed() => l10n.readinessFailed,
+        ScanFailed() => l10n.scanFailed,
         ScanIdle() || ScanRunning() => l10n.readinessChecking,
       };
 }

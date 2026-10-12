@@ -557,7 +557,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get targetsHintExclude =>
-      'Bir kurtarıcının telefonunu sizinkinin yanına tutun: çok güçlü görünür — onu hariç tutun.';
+      'Bir ekip telefonunu sizinkinin yanına tutun: çok güçlü olan kart o telefondur — onu hariç tutun.';
 
   @override
   String get targetsNoSurfaceScan =>
@@ -576,10 +576,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get reasonMedium => 'orta sinyal';
 
   @override
-  String get reasonNotOnSurface => 'yüzeyde görülmedi';
+  String get reasonNotOnSurface => 'yüzey taramasında güçlü değildi';
 
   @override
-  String get reasonVeryStrong => 'Çok güçlü — büyük olasılıkla hemen yanınızda';
+  String get reasonVeryStrong =>
+      'Çok güçlü sinyal — bir ekip telefonuysa hariç tutun';
 
   @override
   String targetSignal(String value) {
@@ -593,7 +594,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get targetNotSaved => 'Kaydedilemedi. Biraz sonra yeniden deneyin.';
 
   @override
-  String get kindFindMy => 'Apple · Find My';
+  String get kindFindMy => 'Apple · Bul';
 
   @override
   String get kindApple => 'Apple cihazı';
@@ -622,4 +623,37 @@ class AppLocalizationsTr extends AppLocalizations {
   String siteTargetDone(String label) {
     return 'Tamamlandı · $label';
   }
+
+  @override
+  String get reasonChanging => 'Sinyal değişiyor — hareket ediyor olabilir';
+
+  @override
+  String get reasonFewReadings => 'Şimdiye kadar az duyuldu';
+
+  @override
+  String targetsSurfaceScanOld(int minutes) {
+    return 'Yüzey taraması $minutes dk önce yapıldı: telefonlar Bluetooth kimliklerini yaklaşık 15 dakikada bir değiştirir. Yeniden taramak için dokunun.';
+  }
+
+  @override
+  String excludeDone(String label) {
+    return 'Ayrıldı: $label.';
+  }
+
+  @override
+  String setAsideTitle(int count) {
+    return 'Ayrılanlar ($count)';
+  }
+
+  @override
+  String get putBack => 'Geri koy';
+
+  @override
+  String get setAsideNotHeard => 'Şu an duyulmuyor';
+
+  @override
+  String get sortAgain => 'Yeniden sırala';
+
+  @override
+  String get scanFailed => 'Tarama durdu. Yeniden denemek için dokunun.';
 }
