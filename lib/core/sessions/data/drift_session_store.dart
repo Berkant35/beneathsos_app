@@ -147,15 +147,80 @@ final class DriftSessionStore implements SessionStore {
   }
 
   @override
-  Stream<SessionState> watch(SessionId session) => throw UnimplementedError();
+  Stream<SessionState> watch(SessionId session) =>
+      (_db.select(_db.events)..where((e) => e.sessionId.equals(session.value)))
+          .watch()
+          .map((rows) => SessionProjection.replay(rows.map(_decode)));
 
   @override
-  Stream<SessionSummary?> watchLatestOpen() => throw UnimplementedError();
+  Stream<SessionSummary?> watchLatestOpen() => _db
+      .customSelect(
+        'SELECT id FROM sessions WHERE closed_at IS NULL '
+        'ORDER BY created_at DESC, id DESC LIMIT 1',
+        readsFrom: {_db.sessions, _db.events},
+      )
+      .watch()
+      .asyncMap(
+        (rows) => rows.isEmpty
+            ? Future<SessionSummary?>.value()
+            : _summary(rows.single.read<String>('id')),
+      );
+
+  Future<SessionSummary> _summary(String id) async {
+    final session = await (_db.select(
+      _db.sessions,
+    )..where((s) => s.id.equals(id))).getSingle();
+    final events = await (_db.select(
+      _db.events,
+    )..where((e) => e.sessionId.equals(id))).get();
+    final state = SessionProjection.replay(events.map(_decode));
+    return SessionSummary(
+      id: SessionId(id),
+      title: session.title,
+      practice: session.practice,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(session.createdAt),
+      measuredPoints: state.measuredPoints.length,
+    );
+  }
+
+  /// Rebuilds the envelope of a stored row; a row that no longer decodes is an [UnreadableEvent].
+  static EventEnvelope _decode(EventRow row) {
+    try {
+      return EventEnvelope.fromJson({
+        'schema': row.schema,
+        'id': row.id,
+        'session': row.sessionId,
+        'seq': row.seq,
+        'hlc': row.hlc,
+        'type': row.type,
+        'payload': jsonDecode(row.payload),
+      });
+    } on FormatException catch (e) {
+      throw UnreadableEvent(EventId(row.id), e.message);
+    } on ArgumentError catch (e) {
+      // A value the event's constructor rejects (for example a scale factor of 0).
+      throw UnreadableEvent(EventId(row.id), '${e.message}');
+    }
+  }
 
   @override
   Future<void> addSamples(
     SessionId session,
     PointId? point,
     List<BleSample> samples,
-  ) => throw UnimplementedError();
+  ) => _db.batch(
+    (batch) => batch.insertAll(_db.rssiSamples, [
+      for (final s in samples)
+        RssiSamplesCompanion.insert(
+          sessionId: session.value,
+          pointId: Value(point?.value),
+          peripheralKey: s.key,
+          rssi: s.rssi,
+          txPower: Value(s.txPower),
+          companyId: Value(s.companyId),
+          tMonoNs: s.monotonicNanos,
+          tWall: s.wallClockMillis,
+        ),
+    ]),
+  );
 }
