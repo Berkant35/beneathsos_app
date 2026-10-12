@@ -1,8 +1,6 @@
 {
   "@@locale": "en",
   "appTitle": "BeneathSOS",
-  "homeUnderConstructionTitle": "Under construction",
-  "homeUnderConstructionBody": "The rescuer and victim flows are being designed. Follow the public roadmap for progress.",
   "logoLabel": "BeneathSOS",
   "homeHeadline": "Search for a phone under rubble",
   "homeBody": "Measure the phone's Bluetooth signal at a few points; the app shows the most likely area.",

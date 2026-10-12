@@ -104,18 +104,6 @@ abstract class AppLocalizations {
   /// **'BeneathSOS'**
   String get appTitle;
 
-  /// No description provided for @homeUnderConstructionTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Under construction'**
-  String get homeUnderConstructionTitle;
-
-  /// No description provided for @homeUnderConstructionBody.
-  ///
-  /// In en, this message translates to:
-  /// **'The rescuer and victim flows are being designed. Follow the public roadmap for progress.'**
-  String get homeUnderConstructionBody;
-
   /// No description provided for @logoLabel.
   ///
   /// In en, this message translates to:

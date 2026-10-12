@@ -1,8 +1,6 @@
 {
   "@@locale": "tr",
   "appTitle": "BeneathSOS",
-  "homeUnderConstructionTitle": "Yapım aşamasında",
-  "homeUnderConstructionBody": "Kurtarıcı ve kurban akışları tasarlanıyor. İlerlemeyi herkese açık yol haritasından takip edebilirsiniz.",
   "logoLabel": "BeneathSOS",
   "homeHeadline": "Enkaz altındaki bir telefonu arayın",
   "homeBody": "Telefonun Bluetooth sinyalini birkaç noktadan ölçün; uygulama en olası bölgeyi gösterir.",

@@ -1,9 +1,11 @@
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/widgets/app_scaffold.dart';
+import 'package:beneathsos_app/features/home/presentation/widgets/home_actions.dart';
+import 'package:beneathsos_app/features/home/presentation/widgets/home_footer.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 
-/// Temporary home while the design system (roadmap phase 1) is built.
+/// Entry point: logo, one message, "Start a search" and "I am trapped". Scrolls at large text.
 class HomeScreen extends StatelessWidget {
   /// Creates the home screen.
   const HomeScreen({super.key});
@@ -13,19 +15,39 @@ class HomeScreen extends StatelessWidget {
     final l10n = context.l10n;
     final text = Theme.of(context).textTheme;
     return AppScaffold(
-      title: l10n.appTitle,
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(l10n.homeUnderConstructionTitle, style: text.headlineSmall),
-            const SizedBox(height: BeneathSpacing.s),
-            Text(
-              l10n.homeUnderConstructionBody,
-              textAlign: TextAlign.center,
-              style: text.bodyMedium,
+      body: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: BeneathSpacing.l),
+                  Center(
+                    child: BeneathLogo.lockup(semanticLabel: l10n.logoLabel),
+                  ),
+                  const Spacer(),
+                  Text(
+                    l10n.homeHeadline,
+                    style: text.displaySmall,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: BeneathSpacing.m),
+                  Text(
+                    l10n.homeBody,
+                    style: text.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                  const Spacer(),
+                  const SizedBox(height: BeneathSpacing.xl),
+                  const HomeActions(),
+                  const SizedBox(height: BeneathSpacing.l),
+                  const HomeFooter(),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       ),
     );

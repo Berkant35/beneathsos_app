@@ -13,13 +13,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'BeneathSOS';
 
   @override
-  String get homeUnderConstructionTitle => 'Under construction';
-
-  @override
-  String get homeUnderConstructionBody =>
-      'The rescuer and victim flows are being designed. Follow the public roadmap for progress.';
-
-  @override
   String get logoLabel => 'BeneathSOS';
 
   @override

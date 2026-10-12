@@ -13,13 +13,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get appTitle => 'BeneathSOS';
 
   @override
-  String get homeUnderConstructionTitle => 'Yapım aşamasında';
-
-  @override
-  String get homeUnderConstructionBody =>
-      'Kurtarıcı ve kurban akışları tasarlanıyor. İlerlemeyi herkese açık yol haritasından takip edebilirsiniz.';
-
-  @override
   String get logoLabel => 'BeneathSOS';
 
   @override

@@ -8,6 +8,9 @@ and appear only in TestFlight.
 
 ### Added
 
+- Branded home screen: logo, "Start a search" and "I am trapped" (both open "being prepared"
+  screens; the victim screen says to call 112), independence note, "Powered by Socrepho".
+- BeneathSOS theme from `beneathsos_ui` (light and dark, Atkinson Hyperlegible Next).
 - App icon (iOS light, dark and tinted; Android adaptive and themed) and launch screen in the
   BeneathSOS brand.
 
