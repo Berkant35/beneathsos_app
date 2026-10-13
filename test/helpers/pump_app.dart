@@ -5,6 +5,7 @@ import 'package:beneathsos_app/core/router/app_router.dart';
 import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
 import 'package:beneathsos_app/core/scanning/presentation/providers/scanning_providers.dart';
 import 'package:beneathsos_app/core/sensors/domain/motion_port.dart';
+import 'package:beneathsos_app/core/services/app_info_service.dart';
 import 'package:beneathsos_app/core/services/app_lifecycle.dart';
 import 'package:beneathsos_app/core/services/barometer_service.dart';
 import 'package:beneathsos_app/core/services/battery_service.dart';
@@ -14,6 +15,8 @@ import 'package:beneathsos_app/core/services/motion_service.dart';
 import 'package:beneathsos_app/core/services/permission_service.dart';
 import 'package:beneathsos_app/core/services/share_service.dart';
 import 'package:beneathsos_app/core/services/sos_sound_service.dart';
+import 'package:beneathsos_app/core/settings/domain/app_locale.dart';
+import 'package:beneathsos_app/core/settings/presentation/providers/settings_providers.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/providers/map_providers.dart';
 import 'package:beneathsos_app/features/victim/presentation/providers/victim_providers.dart';
@@ -53,6 +56,7 @@ List<Override> fakePortOverrides({
   FakeShare? share,
 }) => [
   shareProvider.overrideWithValue(share ?? FakeShare()),
+  appVersionProvider.overrideWith((ref) async => '1.0.0 (64)'),
   ...beaconOverrides(beacon ?? BeaconFakes(), clock: beacon != null),
   mapEngineProvider.overrideWithValue(
     engine ?? (request) async => computeMap(request),
@@ -163,16 +167,19 @@ Future<void> pumpRouterApp(
         ),
         ...overrides,
       ],
-      child: MaterialApp.router(
-        locale: locale,
-        theme: theme ?? BeneathTheme.light(),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        routerConfig: router,
-        builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context)
-              .copyWith(textScaler: TextScaler.linear(textScale)),
-          child: child!,
+      // A language chosen in Settings wins over the test's, as in the app.
+      child: Consumer(
+        builder: (context, ref, _) => MaterialApp.router(
+          locale: localeOf(ref.watch(appSettingsProvider).language) ?? locale,
+          theme: theme ?? BeneathTheme.light(),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context)
+                .copyWith(textScaler: TextScaler.linear(textScale)),
+            child: child!,
+          ),
         ),
       ),
     ),

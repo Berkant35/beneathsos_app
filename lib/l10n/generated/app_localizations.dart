@@ -1769,8 +1769,8 @@ abstract class AppLocalizations {
   /// No description provided for @probDepthUnset.
   ///
   /// In en, this message translates to:
-  /// **'Depth not given: the map assumes 4 m of rubble. Set it on the overview.'**
-  String get probDepthUnset;
+  /// **'Depth not given: the map assumes {height} of rubble. Set it on the overview.'**
+  String probDepthUnset(String height);
 
   /// No description provided for @baroLine.
   ///
@@ -1801,6 +1801,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'more than 3 floors below you'**
   String get baroDeep;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// No description provided for @settingsLanguageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The app speaks'**
+  String get settingsLanguageHint;
+
+  /// No description provided for @languageSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone\'s language'**
+  String get languageSystem;
+
+  /// No description provided for @languageTurkish.
+  ///
+  /// In en, this message translates to:
+  /// **'Türkçe'**
+  String get languageTurkish;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @settingsSearches.
+  ///
+  /// In en, this message translates to:
+  /// **'Searches'**
+  String get settingsSearches;
+
+  /// No description provided for @settingsRubbleType.
+  ///
+  /// In en, this message translates to:
+  /// **'Default rubble type for new searches'**
+  String get settingsRubbleType;
+
+  /// No description provided for @rubbleVoided.
+  ///
+  /// In en, this message translates to:
+  /// **'Voided (pancake)'**
+  String get rubbleVoided;
+
+  /// No description provided for @rubbleDense.
+  ///
+  /// In en, this message translates to:
+  /// **'Dense'**
+  String get rubbleDense;
+
+  /// No description provided for @settingsHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Rubble height when a search has none'**
+  String get settingsHeight;
+
+  /// No description provided for @settingsHeightChip.
+  ///
+  /// In en, this message translates to:
+  /// **'{metres} m'**
+  String settingsHeightChip(int metres);
+
+  /// No description provided for @settingsMeasure.
+  ///
+  /// In en, this message translates to:
+  /// **'Still time per measuring point'**
+  String get settingsMeasure;
+
+  /// No description provided for @settingsSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} s'**
+  String settingsSeconds(int seconds);
+
+  /// No description provided for @settingsData.
+  ///
+  /// In en, this message translates to:
+  /// **'Data on this phone'**
+  String get settingsData;
+
+  /// No description provided for @settingsDeletePractice.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete practice searches'**
+  String get settingsDeletePractice;
+
+  /// No description provided for @settingsDeleteAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all searches'**
+  String get settingsDeleteAll;
+
+  /// No description provided for @settingsDeletePracticeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete practice searches?'**
+  String get settingsDeletePracticeTitle;
+
+  /// No description provided for @settingsDeletePracticeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Searches made with sample data are deleted; real searches stay.'**
+  String get settingsDeletePracticeBody;
+
+  /// No description provided for @settingsDeleteAllTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all searches?'**
+  String get settingsDeleteAllTitle;
+
+  /// No description provided for @settingsDeleteAllBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Every search, its points and readings leave this phone. This cannot be undone — export what you need first.'**
+  String get settingsDeleteAllBody;
+
+  /// No description provided for @settingsDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get settingsDeleteConfirm;
+
+  /// No description provided for @settingsDeleteKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep them'**
+  String get settingsDeleteKeep;
+
+  /// No description provided for @settingsDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted.'**
+  String get settingsDeleted;
+
+  /// No description provided for @settingsAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get settingsAbout;
+
+  /// No description provided for @settingsVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String settingsVersion(String version);
+
+  /// No description provided for @settingsDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the disclaimer again'**
+  String get settingsDisclaimer;
+
+  /// No description provided for @settingsPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get settingsPrivacy;
+
+  /// No description provided for @settingsLicences.
+  ///
+  /// In en, this message translates to:
+  /// **'Open-source licences'**
+  String get settingsLicences;
+
+  /// No description provided for @privacyNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'BeneathSOS collects nothing: no account, no server, no analytics. It never connects to the internet by itself.'**
+  String get privacyNothing;
+
+  /// No description provided for @privacyOnPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Searches — the site name, the drawing, targets, points and signal readings — stay in the app on this phone. Deleting the app or a search deletes them.'**
+  String get privacyOnPhone;
+
+  /// No description provided for @privacyExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Only when you export a search do two files go to the share sheet, and you choose where. Phones that are not your targets appear in them only as codes that cannot be traced back.'**
+  String get privacyExport;
+
+  /// No description provided for @privacyBeacon.
+  ///
+  /// In en, this message translates to:
+  /// **'\"I am trapped\" sends a Bluetooth help signal phones nearby can read: a random number, the battery, how long since the phone was moved or touched, and the air pressure. It stops when you leave that screen.'**
+  String get privacyBeacon;
 }
 
 class _AppLocalizationsDelegate

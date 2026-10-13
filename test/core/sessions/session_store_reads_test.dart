@@ -251,6 +251,22 @@ void main() {
     expect(samples.map((r) => r.sessionId), [kept.value]);
   });
 
+  test('deleting all practice searches keeps the real ones; deleting all leaves none', () async {
+    final s = store();
+    final practice = await create(s, 'Practice search');
+    final real = await s.create(
+      title: 'Atatürk Cad. 12',
+      engineProfile: 'voided_pancake@1',
+      practice: false,
+    );
+    await measure(s, practice, 'p1');
+    await s.deleteAll(practiceOnly: true);
+    expect((await db.select(db.sessions).get()).map((r) => r.id), [real.value]);
+    await s.deleteAll();
+    expect(await db.select(db.sessions).get(), isEmpty);
+    expect(await db.select(db.events).get(), isEmpty);
+  });
+
   test('a session survives closing and reopening the database file', () async {
     final dir = await Directory.systemTemp.createTemp('beneathsos_db');
     addTearDown(() => dir.delete(recursive: true));

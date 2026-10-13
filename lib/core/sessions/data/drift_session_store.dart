@@ -250,6 +250,14 @@ final class DriftSessionStore implements SessionStore {
   });
 
   @override
+  Future<void> deleteAll({bool practiceOnly = false}) =>
+      _db.transaction(() async {
+        final rows = _db.delete(_db.sessions);
+        if (practiceOnly) rows.where((s) => s.practice.equals(true));
+        await rows.go();
+      });
+
+  @override
   Future<SearchRecord> record(SessionId session) => _db.transaction(() async {
     final row = await (_db.select(
       _db.sessions,

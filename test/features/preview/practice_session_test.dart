@@ -21,6 +21,10 @@ final class _FlakyStore implements SessionStore {
 
   @override
   Future<void> delete(SessionId session) => inner.delete(session);
+
+  @override
+  Future<void> deleteAll({bool practiceOnly = false}) =>
+      inner.deleteAll(practiceOnly: practiceOnly);
   final Object error;
   int failures = 1;
 
@@ -76,6 +80,10 @@ final class _BrokenStore implements SessionStore {
 
   @override
   Future<void> delete(SessionId session) =>
+      Future.error(const FormatException('disk full'));
+
+  @override
+  Future<void> deleteAll({bool practiceOnly = false}) =>
       Future.error(const FormatException('disk full'));
 
   @override

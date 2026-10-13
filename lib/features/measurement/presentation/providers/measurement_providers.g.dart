@@ -253,7 +253,7 @@ final class MeasurementControllerProvider
 }
 
 String _$measurementControllerHash() =>
-    r'8be599ca1c3e3db31a83eab2bae2d2763ccf8df9';
+    r'3be8e146c1d0c8471c6e986765d3fe675a54c37c';
 
 /// Measuring at points of one search: choose a spot, start, 15 s of still time while scanning, store.
 

@@ -20,6 +20,13 @@ class SitesScreen extends ConsumerWidget with SitesScreenMixin {
     final searches = ref.watch(searchesProvider);
     return BeneathScaffold(
       title: l10n.sitesTitle,
+      actions: [
+        IconButton(
+          tooltip: l10n.settingsTitle,
+          icon: const Icon(Icons.settings_rounded),
+          onPressed: () => const SettingsRoute().go(context),
+        ),
+      ],
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

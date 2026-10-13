@@ -9,6 +9,7 @@ import 'package:beneathsos_app/core/services/ble_service.dart';
 import 'package:beneathsos_app/core/services/clock.dart';
 import 'package:beneathsos_app/core/services/motion_service.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
+import 'package:beneathsos_app/core/settings/presentation/providers/settings_providers.dart';
 import 'package:beneathsos_app/features/measurement/domain/measurement_rules.dart';
 import 'package:beneathsos_app/features/measurement/domain/measurement_state.dart';
 import 'package:beneathsos_app/features/measurement/domain/measurement_use_cases.dart';
@@ -139,7 +140,9 @@ class MeasurementController extends _$MeasurementController {
           .read(placePointProvider)
           .call(SessionId(sessionId), at);
       if (!ref.mounted) return;
-      _window = MeasurementWindow();
+      _window = MeasurementWindow(
+        duration: ref.read(appSettingsProvider).measureDuration,
+      );
       _measuring = point;
       state = _measuringState(point, at, moving: false);
     } on Exception catch (error, stack) {
@@ -237,7 +240,7 @@ class MeasurementController extends _$MeasurementController {
           .call(
             SessionId(sessionId),
             current.point,
-            duration: MeasurementPolicy.duration,
+            duration: _window.duration,
             readings: readings,
             samples: kept,
           );

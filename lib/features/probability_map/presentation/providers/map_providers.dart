@@ -1,6 +1,7 @@
 import 'dart:isolate';
 
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
+import 'package:beneathsos_app/core/settings/presentation/providers/settings_providers.dart';
 import 'package:beneathsos_app/features/probability_map/domain/likely_spot.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_memo.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
@@ -42,7 +43,11 @@ Future<TargetMap?> probabilityMap(
   final memo = ref.watch(mapMemoProvider);
   final search = await ref.watch(sessionStateProvider(sessionId).future);
   final target = TargetId(targetId);
-  final request = requestFor(search, target);
+  final request = requestFor(
+    search,
+    target,
+    defaultHeight: ref.watch(appSettingsProvider).defaultRubbleHeight,
+  );
   if (request == null) return null;
   final result = await memo(request);
   return (
@@ -68,12 +73,14 @@ Future<SitePoint?> suggestedPoint(Ref ref, String sessionId) async {
   return next == null ? null : toDrawn(next, search.scale);
 }
 
-/// Whether the signal circles (a rough guide) are shown, on the map and while measuring.
+/// Whether the signal circles (a rough guide) are shown, on the map and while measuring — kept in
+/// Settings.
 @Riverpod(keepAlive: true)
 class SignalCircles extends _$SignalCircles {
   @override
-  bool build() => true;
+  bool build() => ref.watch(appSettingsProvider).signalCircles;
 
-  /// Shows or hides them.
-  void toggle() => state = !state;
+  /// Shows or hides them (and remembers it).
+  Future<void> toggle() =>
+      ref.read(updateSettingsProvider).signalCircles(shown: !state);
 }

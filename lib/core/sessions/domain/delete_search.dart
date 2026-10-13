@@ -10,4 +10,8 @@ final class DeleteSearch {
 
   /// Deletes [search].
   Future<void> call(SessionId search) => _store.delete(search);
+
+  /// Deletes every search, or with [practiceOnly] only the practice ones.
+  Future<void> all({bool practiceOnly = false}) =>
+      _store.deleteAll(practiceOnly: practiceOnly);
 }

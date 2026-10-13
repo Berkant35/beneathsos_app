@@ -1,4 +1,5 @@
 import 'package:beneathsos_app/core/l10n_extension.dart';
+import 'package:beneathsos_app/core/router/app_router.dart';
 import 'package:beneathsos_app/features/home/presentation/widgets/home_actions.dart';
 import 'package:beneathsos_app/features/home/presentation/widgets/home_footer.dart';
 import 'package:beneathsos_app/features/home/presentation/widgets/last_search_card.dart';
@@ -25,7 +26,15 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: BeneathSpacing.l),
+                  // The branded home has no app bar: Settings sits in the corner.
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: IconButton(
+                      tooltip: l10n.settingsTitle,
+                      icon: const Icon(Icons.settings_rounded),
+                      onPressed: () => const SettingsRoute().go(context),
+                    ),
+                  ),
                   Center(
                     child: BeneathLogo.lockup(semanticLabel: l10n.logoLabel),
                   ),

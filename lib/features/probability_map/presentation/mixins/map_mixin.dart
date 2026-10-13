@@ -124,12 +124,15 @@ mixin MapMixin {
       );
 
   /// "Depth: 6.0 m of rubble · Ground floor (bottom)." — or that none was given (4 m assumed).
-  String depthLine(AppLocalizations l10n, RubbleDepth? depth) =>
-      switch (depth) {
-        final depth? => l10n.probDepth(
-          metresLabel(l10n, depth.height),
-          levelLabel(l10n, depth.level),
-        ),
-        null => l10n.probDepthUnset,
-      };
+  String depthLine(
+    AppLocalizations l10n,
+    RubbleDepth? depth,
+    Meters defaultHeight,
+  ) => switch (depth) {
+    final depth? => l10n.probDepth(
+      metresLabel(l10n, depth.height),
+      levelLabel(l10n, depth.level),
+    ),
+    null => l10n.probDepthUnset(metresLabel(l10n, defaultHeight)),
+  };
 }

@@ -157,4 +157,15 @@ void main() {
       );
     });
   });
+
+  test('the measuring time is the one chosen in Settings', () {
+    final window = MeasurementWindow(duration: const Duration(seconds: 10));
+    for (var i = 0; i < 9; i++) {
+      window.tick(scanning: true, foreground: true);
+    }
+    expect(window.complete, isFalse);
+    window.tick(scanning: true, foreground: true);
+    expect(window.complete, isTrue);
+    expect(MeasurementWindow().duration, MeasurementPolicy.duration);
+  });
 }

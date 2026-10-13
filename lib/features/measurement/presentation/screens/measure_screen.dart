@@ -6,6 +6,7 @@ import 'package:beneathsos_app/core/scanning/presentation/providers/scan_state.d
 import 'package:beneathsos_app/core/scanning/presentation/providers/scan_while_open.dart';
 import 'package:beneathsos_app/core/scanning/presentation/widgets/scan_blocked_banner.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
+import 'package:beneathsos_app/core/settings/presentation/providers/settings_providers.dart';
 import 'package:beneathsos_app/features/measurement/domain/measurement_state.dart';
 import 'package:beneathsos_app/features/measurement/presentation/mixins/measure_mixin.dart';
 import 'package:beneathsos_app/features/measurement/presentation/providers/measurement_providers.dart';
@@ -53,6 +54,7 @@ class MeasureScreen extends ConsumerWidget
             search,
             search.targets.keys.firstOrNull,
             visible: ref.watch(signalCirclesProvider),
+            defaultHeight: ref.watch(appSettingsProvider).defaultRubbleHeight,
           );
     final page = BeneathSpacing.pageFor(MediaQuery.sizeOf(context).width);
     return BeneathScaffold(
@@ -112,6 +114,9 @@ class MeasureScreen extends ConsumerWidget
                           MeasurePanel(
                             search: search,
                             state: state,
+                            total: ref
+                                .watch(appSettingsProvider)
+                                .measureDuration,
                             onStart: () => controller().start(),
                             onDiscard: () => controller().discard(),
                             onRelink: (relink) => controller().relink(relink),

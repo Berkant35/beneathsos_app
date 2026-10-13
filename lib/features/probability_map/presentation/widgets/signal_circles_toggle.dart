@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/providers/map_providers.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,8 @@ class SignalCirclesToggle extends ConsumerWidget {
       contentPadding: EdgeInsets.zero,
       controlAffinity: ListTileControlAffinity.leading,
       value: on,
-      onChanged: (_) => ref.read(signalCirclesProvider.notifier).toggle(),
+      onChanged: (_) =>
+          unawaited(ref.read(signalCirclesProvider.notifier).toggle()),
       title: Text(context.l10n.circlesToggle),
       subtitle: on && note != null ? Text(note!) : null,
     );

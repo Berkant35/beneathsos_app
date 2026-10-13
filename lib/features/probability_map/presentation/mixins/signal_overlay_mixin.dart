@@ -26,6 +26,7 @@ mixin SignalOverlayMixin {
     SessionState search,
     TargetId? target, {
     required bool visible,
+    Meters? defaultHeight,
   }) {
     const none = (
       circles: <MapCircle>[],
@@ -35,7 +36,10 @@ mixin SignalOverlayMixin {
     );
     final outline = realOutline(search);
     if (!visible || target == null || outline == null) return none;
-    final profile = withDepth(profileFor(search), search.depth);
+    final profile = withDepth(
+      profileFor(search),
+      depthOrDefault(search, defaultHeight),
+    );
     final height = phoneHeight(profile);
     final scale = search.scale;
     final heard = [

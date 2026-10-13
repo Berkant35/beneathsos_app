@@ -122,6 +122,28 @@ RouteBase get $homeRoute => GoRouteData.$route(
       hasOverriddenOnExit: false,
       factory: $VictimRoute._fromState,
     ),
+    GoRouteData.$route(
+      path: 'settings',
+      hasOverriddenOnExit: false,
+      factory: $SettingsRoute._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: 'disclaimer',
+          hasOverriddenOnExit: false,
+          factory: $AboutDisclaimerRoute._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'privacy',
+          hasOverriddenOnExit: false,
+          factory: $PrivacyRoute._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'licences',
+          hasOverriddenOnExit: false,
+          factory: $LicencesRoute._fromState,
+        ),
+      ],
+    ),
   ],
 );
 
@@ -568,6 +590,87 @@ mixin $VictimRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/victim');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $SettingsRoute on GoRouteData {
+  static SettingsRoute _fromState(GoRouterState state) => const SettingsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $AboutDisclaimerRoute on GoRouteData {
+  static AboutDisclaimerRoute _fromState(GoRouterState state) =>
+      const AboutDisclaimerRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/disclaimer');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $PrivacyRoute on GoRouteData {
+  static PrivacyRoute _fromState(GoRouterState state) => const PrivacyRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/privacy');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $LicencesRoute on GoRouteData {
+  static LicencesRoute _fromState(GoRouterState state) => const LicencesRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/licences');
 
   @override
   void go(BuildContext context) => context.go(location);

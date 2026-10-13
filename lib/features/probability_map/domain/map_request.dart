@@ -47,7 +47,12 @@ const onRubbleFromM = 0.5;
 /// What the engine needs for the map of [target], or null before there is an outline and a point
 /// around the rubble. The outline and points are drawn lengths; the engine gets real metres
 /// (× `ScaleSet`), points on the rubble left out and readings at one place merged.
-MapRequest? requestFor(SessionState search, TargetId target) {
+/// [defaultHeight] (Settings) stands in for a depth the rescuers did not give.
+MapRequest? requestFor(
+  SessionState search,
+  TargetId target, {
+  Meters? defaultHeight,
+}) {
   final outline = realOutline(search);
   if (outline == null) return null;
   final around = [
@@ -59,7 +64,7 @@ MapRequest? requestFor(SessionState search, TargetId target) {
     outline: outline,
     observations: _places(around),
     profileId: profileFor(search).id,
-    depth: search.depth,
+    depth: depthOrDefault(search, defaultHeight),
   );
 }
 
@@ -173,3 +178,11 @@ MapResult computeMap(MapRequest request) {
     ),
   );
 }
+
+/// The depth of [search], or [defaultHeight] at an unknown level when none was given.
+RubbleDepth? depthOrDefault(SessionState search, Meters? defaultHeight) =>
+    search.depth ??
+    switch (defaultHeight) {
+      final height? => (height: height, level: TrappedLevel.unknown),
+      null => null,
+    };

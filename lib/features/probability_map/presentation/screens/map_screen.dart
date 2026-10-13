@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:beneathsos_app/core/canvas/canvas_style.dart';
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
+import 'package:beneathsos_app/core/settings/presentation/providers/settings_providers.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/mixins/map_mixin.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/mixins/signal_overlay_mixin.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/providers/map_providers.dart';
@@ -57,6 +58,7 @@ class _MapScreenState extends ConsumerState<MapScreen>
             search,
             target,
             visible: ref.watch(signalCirclesProvider),
+            defaultHeight: ref.watch(appSettingsProvider).defaultRubbleHeight,
           );
     final page = BeneathSpacing.pageFor(MediaQuery.sizeOf(context).width);
     final map = target == null
@@ -129,7 +131,11 @@ class _MapScreenState extends ConsumerState<MapScreen>
                       map: result,
                       choosing: found is FoundChoosing,
                       circlesNote: overlay.note,
-                      depthNote: depthLine(l10n, search.depth),
+                      depthNote: depthLine(
+                        l10n,
+                        search.depth,
+                        ref.watch(appSettingsProvider).defaultRubbleHeight,
+                      ),
                       onRecordFound: recorder.start,
                       onCancelFound: recorder.cancel,
                       note: foundNote(

@@ -37,6 +37,10 @@ final class _FailingStore implements SessionStore {
 
   @override
   Future<void> delete(SessionId session) => inner.delete(session);
+
+  @override
+  Future<void> deleteAll({bool practiceOnly = false}) =>
+      inner.deleteAll(practiceOnly: practiceOnly);
   final bool failCreate;
   final bool failAppend;
   final bool failSummary;

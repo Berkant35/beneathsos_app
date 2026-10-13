@@ -159,7 +159,7 @@ final class ProbabilityMapProvider
   }
 }
 
-String _$probabilityMapHash() => r'f0e48d6a4480f738928885ee14fa5335f2b7f91a';
+String _$probabilityMapHash() => r'7005e82a58413f54fee707e04be61941d6f97e3e';
 
 /// The probability map of [targetId] in [sessionId]; null until there is an outline and a point.
 
@@ -271,15 +271,18 @@ final class SuggestedPointFamily extends $Family
   String toString() => r'suggestedPointProvider';
 }
 
-/// Whether the signal circles (a rough guide) are shown, on the map and while measuring.
+/// Whether the signal circles (a rough guide) are shown, on the map and while measuring — kept in
+/// Settings.
 
 @ProviderFor(SignalCircles)
 final signalCirclesProvider = SignalCirclesProvider._();
 
-/// Whether the signal circles (a rough guide) are shown, on the map and while measuring.
+/// Whether the signal circles (a rough guide) are shown, on the map and while measuring — kept in
+/// Settings.
 final class SignalCirclesProvider
     extends $NotifierProvider<SignalCircles, bool> {
-  /// Whether the signal circles (a rough guide) are shown, on the map and while measuring.
+  /// Whether the signal circles (a rough guide) are shown, on the map and while measuring — kept in
+  /// Settings.
   SignalCirclesProvider._()
     : super(
         from: null,
@@ -307,9 +310,10 @@ final class SignalCirclesProvider
   }
 }
 
-String _$signalCirclesHash() => r'8f0fb39e7c1554650d7f4415b2cc7a0ee8e465f7';
+String _$signalCirclesHash() => r'89f1fbf212526b2602dbccde783d989f33d0769a';
 
-/// Whether the signal circles (a rough guide) are shown, on the map and while measuring.
+/// Whether the signal circles (a rough guide) are shown, on the map and while measuring — kept in
+/// Settings.
 
 abstract class _$SignalCircles extends $Notifier<bool> {
   bool build();

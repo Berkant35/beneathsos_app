@@ -1044,8 +1044,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get probDepthUnset =>
-      'Depth not given: the map assumes 4 m of rubble. Set it on the overview.';
+  String probDepthUnset(String height) {
+    return 'Depth not given: the map assumes $height of rubble. Set it on the overview.';
+  }
 
   @override
   String baroLine(String where) {
@@ -1063,4 +1064,115 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get baroDeep => 'more than 3 floors below you';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsLanguageHint => 'The app speaks';
+
+  @override
+  String get languageSystem => 'Phone\'s language';
+
+  @override
+  String get languageTurkish => 'Türkçe';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get settingsSearches => 'Searches';
+
+  @override
+  String get settingsRubbleType => 'Default rubble type for new searches';
+
+  @override
+  String get rubbleVoided => 'Voided (pancake)';
+
+  @override
+  String get rubbleDense => 'Dense';
+
+  @override
+  String get settingsHeight => 'Rubble height when a search has none';
+
+  @override
+  String settingsHeightChip(int metres) {
+    return '$metres m';
+  }
+
+  @override
+  String get settingsMeasure => 'Still time per measuring point';
+
+  @override
+  String settingsSeconds(int seconds) {
+    return '$seconds s';
+  }
+
+  @override
+  String get settingsData => 'Data on this phone';
+
+  @override
+  String get settingsDeletePractice => 'Delete practice searches';
+
+  @override
+  String get settingsDeleteAll => 'Delete all searches';
+
+  @override
+  String get settingsDeletePracticeTitle => 'Delete practice searches?';
+
+  @override
+  String get settingsDeletePracticeBody =>
+      'Searches made with sample data are deleted; real searches stay.';
+
+  @override
+  String get settingsDeleteAllTitle => 'Delete all searches?';
+
+  @override
+  String get settingsDeleteAllBody =>
+      'Every search, its points and readings leave this phone. This cannot be undone — export what you need first.';
+
+  @override
+  String get settingsDeleteConfirm => 'Delete';
+
+  @override
+  String get settingsDeleteKeep => 'Keep them';
+
+  @override
+  String get settingsDeleted => 'Deleted.';
+
+  @override
+  String get settingsAbout => 'About';
+
+  @override
+  String settingsVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get settingsDisclaimer => 'Read the disclaimer again';
+
+  @override
+  String get settingsPrivacy => 'Privacy';
+
+  @override
+  String get settingsLicences => 'Open-source licences';
+
+  @override
+  String get privacyNothing =>
+      'BeneathSOS collects nothing: no account, no server, no analytics. It never connects to the internet by itself.';
+
+  @override
+  String get privacyOnPhone =>
+      'Searches — the site name, the drawing, targets, points and signal readings — stay in the app on this phone. Deleting the app or a search deletes them.';
+
+  @override
+  String get privacyExport =>
+      'Only when you export a search do two files go to the share sheet, and you choose where. Phones that are not your targets appear in them only as codes that cannot be traced back.';
+
+  @override
+  String get privacyBeacon =>
+      '\"I am trapped\" sends a Bluetooth help signal phones nearby can read: a random number, the battery, how long since the phone was moved or touched, and the air pressure. It stops when you leave that screen.';
 }

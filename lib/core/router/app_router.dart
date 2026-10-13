@@ -10,6 +10,9 @@ import 'package:beneathsos_app/features/preview/presentation/screens/preview_sca
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_site_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_target_screen.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/screens/map_screen.dart';
+import 'package:beneathsos_app/features/settings/presentation/screens/about_disclaimer_screen.dart';
+import 'package:beneathsos_app/features/settings/presentation/screens/privacy_screen.dart';
+import 'package:beneathsos_app/features/settings/presentation/screens/settings_screen.dart';
 import 'package:beneathsos_app/features/site_depth/presentation/screens/depth_screen.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/screens/draw_outline_screen.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/screens/scale_screen.dart';
@@ -19,7 +22,7 @@ import 'package:beneathsos_app/features/sites/presentation/screens/sites_screen.
 import 'package:beneathsos_app/features/targets/presentation/screens/ambient_scan_screen.dart';
 import 'package:beneathsos_app/features/targets/presentation/screens/targets_screen.dart';
 import 'package:beneathsos_app/features/victim/presentation/screens/victim_screen.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -78,6 +81,14 @@ part 'app_router.g.dart';
       ],
     ),
     TypedGoRoute<VictimRoute>(path: 'victim'),
+    TypedGoRoute<SettingsRoute>(
+      path: 'settings',
+      routes: [
+        TypedGoRoute<AboutDisclaimerRoute>(path: 'disclaimer'),
+        TypedGoRoute<PrivacyRoute>(path: 'privacy'),
+        TypedGoRoute<LicencesRoute>(path: 'licences'),
+      ],
+    ),
   ],
 )
 class HomeRoute extends GoRouteData with $HomeRoute {
@@ -237,6 +248,46 @@ class MapRoute extends GoRouteData with $MapRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       MapScreen(sessionId: sessionId);
+}
+
+/// Settings (`/settings`).
+class SettingsRoute extends GoRouteData with $SettingsRoute {
+  /// Route to Settings.
+  const SettingsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SettingsScreen();
+}
+
+/// The disclaimer to read again (`/settings/disclaimer`).
+class AboutDisclaimerRoute extends GoRouteData with $AboutDisclaimerRoute {
+  /// Route to the disclaimer.
+  const AboutDisclaimerRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AboutDisclaimerScreen();
+}
+
+/// Privacy (`/settings/privacy`).
+class PrivacyRoute extends GoRouteData with $PrivacyRoute {
+  /// Route to privacy.
+  const PrivacyRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const PrivacyScreen();
+}
+
+/// Open-source licences (`/settings/licences`), Flutter's own page.
+class LicencesRoute extends GoRouteData with $LicencesRoute {
+  /// Route to the licences.
+  const LicencesRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const LicensePage(applicationName: 'BeneathSOS');
 }
 
 /// Rubble height and the person's likely level (`/sites/:sessionId/depth`).

@@ -621,7 +621,7 @@
       }
     }
   },
-  "probDepthUnset": "Depth not given: the map assumes 4 m of rubble. Set it on the overview.",
+  "probDepthUnset": "Depth not given: the map assumes {height} of rubble. Set it on the overview.",
   "baroLine": "Its barometer: {where} (± 8 m).",
   "@baroLine": {
     "placeholders": {
@@ -633,5 +633,66 @@
   "baroAbove": "above you",
   "baroLevel": "about your level",
   "baroBelow": "1–3 floors below you",
-  "baroDeep": "more than 3 floors below you"
+  "baroDeep": "more than 3 floors below you",
+  "@probDepthUnset": {
+    "placeholders": {
+      "height": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsTitle": "Settings",
+  "settingsLanguage": "Language",
+  "settingsLanguageHint": "The app speaks",
+  "languageSystem": "Phone's language",
+  "languageTurkish": "Türkçe",
+  "languageEnglish": "English",
+  "settingsSearches": "Searches",
+  "settingsRubbleType": "Default rubble type for new searches",
+  "rubbleVoided": "Voided (pancake)",
+  "rubbleDense": "Dense",
+  "settingsHeight": "Rubble height when a search has none",
+  "settingsHeightChip": "{metres} m",
+  "@settingsHeightChip": {
+    "placeholders": {
+      "metres": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsMeasure": "Still time per measuring point",
+  "settingsSeconds": "{seconds} s",
+  "@settingsSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsData": "Data on this phone",
+  "settingsDeletePractice": "Delete practice searches",
+  "settingsDeleteAll": "Delete all searches",
+  "settingsDeletePracticeTitle": "Delete practice searches?",
+  "settingsDeletePracticeBody": "Searches made with sample data are deleted; real searches stay.",
+  "settingsDeleteAllTitle": "Delete all searches?",
+  "settingsDeleteAllBody": "Every search, its points and readings leave this phone. This cannot be undone — export what you need first.",
+  "settingsDeleteConfirm": "Delete",
+  "settingsDeleteKeep": "Keep them",
+  "settingsDeleted": "Deleted.",
+  "settingsAbout": "About",
+  "settingsVersion": "Version {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsDisclaimer": "Read the disclaimer again",
+  "settingsPrivacy": "Privacy",
+  "settingsLicences": "Open-source licences",
+  "privacyNothing": "BeneathSOS collects nothing: no account, no server, no analytics. It never connects to the internet by itself.",
+  "privacyOnPhone": "Searches — the site name, the drawing, targets, points and signal readings — stay in the app on this phone. Deleting the app or a search deletes them.",
+  "privacyExport": "Only when you export a search do two files go to the share sheet, and you choose where. Phones that are not your targets appear in them only as codes that cannot be traced back.",
+  "privacyBeacon": "\"I am trapped\" sends a Bluetooth help signal phones nearby can read: a random number, the battery, how long since the phone was moved or touched, and the air pressure. It stops when you leave that screen."
 }

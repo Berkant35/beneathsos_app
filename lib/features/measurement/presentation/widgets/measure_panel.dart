@@ -19,11 +19,15 @@ class MeasurePanel extends StatelessWidget with MeasureMixin {
     required this.onDiscard,
     required this.onRelink,
     required this.onRejectRelink,
+    this.total = MeasurementPolicy.duration,
     super.key,
   });
 
   /// The search.
   final SessionState search;
+
+  /// Still time per point (Settings).
+  final Duration total;
 
   /// Where measuring stands.
   final MeasurementState state;
@@ -84,7 +88,7 @@ class MeasurePanel extends StatelessWidget with MeasureMixin {
           Row(
             children: [
               CountdownRing(
-                total: MeasurementPolicy.duration,
+                total: total,
                 remaining: measuring.remaining,
                 semanticLabel: l10n.secondsLeft(measuring.remaining.inSeconds),
                 size: 96,

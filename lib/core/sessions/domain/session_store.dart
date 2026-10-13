@@ -106,6 +106,9 @@ abstract interface class SessionStore {
   /// else changes).
   Future<void> delete(SessionId session);
 
+  /// Deletes every search — or, with [practiceOnly], only the practice ones — from this phone.
+  Future<void> deleteAll({bool practiceOnly = false});
+
   /// Everything stored for [session], for export: its row, every event as stored (also one that no
   /// longer decodes) and its raw readings.
   Future<SearchRecord> record(SessionId session);

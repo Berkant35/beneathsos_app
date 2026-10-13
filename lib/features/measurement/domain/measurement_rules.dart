@@ -50,6 +50,12 @@ TargetReading _reading(TargetId target, List<int> rssi) {
 /// The readings and still time of one point. Readings wait for their second to end: a second with
 /// movement, without scanning or in the background neither counts nor keeps its readings.
 final class MeasurementWindow {
+  /// A window of [duration] still time (Settings; [MeasurementPolicy.duration] by default).
+  MeasurementWindow({this.duration = MeasurementPolicy.duration});
+
+  /// Still time needed.
+  final Duration duration;
+
   final _pending = <BleSample>[];
   final _kept = <BleSample>[];
   var _moved = false;
@@ -63,7 +69,7 @@ final class MeasurementWindow {
 
   /// Still time left.
   Duration get remaining {
-    final left = MeasurementPolicy.duration - Duration(seconds: _stillSeconds);
+    final left = duration - Duration(seconds: _stillSeconds);
     return left.isNegative ? Duration.zero : left;
   }
 

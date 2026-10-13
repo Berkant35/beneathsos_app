@@ -1032,8 +1032,9 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get probDepthUnset =>
-      'Derinlik girilmedi: harita 4 m enkaz varsayar. Genel bakıştan girin.';
+  String probDepthUnset(String height) {
+    return 'Derinlik girilmedi: harita $height enkaz varsayar. Genel bakıştan girin.';
+  }
 
   @override
   String baroLine(String where) {
@@ -1051,4 +1052,115 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get baroDeep => 'sizden 3 kattan daha aşağıda';
+
+  @override
+  String get settingsTitle => 'Ayarlar';
+
+  @override
+  String get settingsLanguage => 'Dil';
+
+  @override
+  String get settingsLanguageHint => 'Uygulamanın dili';
+
+  @override
+  String get languageSystem => 'Telefonun dili';
+
+  @override
+  String get languageTurkish => 'Türkçe';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get settingsSearches => 'Aramalar';
+
+  @override
+  String get settingsRubbleType => 'Yeni aramalarda varsayılan enkaz tipi';
+
+  @override
+  String get rubbleVoided => 'Boşluklu (pankek)';
+
+  @override
+  String get rubbleDense => 'Yoğun';
+
+  @override
+  String get settingsHeight => 'Aramada girilmediğinde enkaz yüksekliği';
+
+  @override
+  String settingsHeightChip(int metres) {
+    return '$metres m';
+  }
+
+  @override
+  String get settingsMeasure => 'Ölçüm noktası başına hareketsiz süre';
+
+  @override
+  String settingsSeconds(int seconds) {
+    return '$seconds sn';
+  }
+
+  @override
+  String get settingsData => 'Bu telefondaki veriler';
+
+  @override
+  String get settingsDeletePractice => 'Alıştırma aramalarını sil';
+
+  @override
+  String get settingsDeleteAll => 'Tüm aramaları sil';
+
+  @override
+  String get settingsDeletePracticeTitle => 'Alıştırma aramaları silinsin mi?';
+
+  @override
+  String get settingsDeletePracticeBody =>
+      'Örnek verilerle yapılan aramalar silinir; gerçek aramalar kalır.';
+
+  @override
+  String get settingsDeleteAllTitle => 'Tüm aramalar silinsin mi?';
+
+  @override
+  String get settingsDeleteAllBody =>
+      'Tüm aramalar, noktaları ve ölçümleri bu telefondan silinir. Geri alınamaz — gerekenleri önce dışa aktarın.';
+
+  @override
+  String get settingsDeleteConfirm => 'Sil';
+
+  @override
+  String get settingsDeleteKeep => 'Kalsın';
+
+  @override
+  String get settingsDeleted => 'Silindi.';
+
+  @override
+  String get settingsAbout => 'Hakkında';
+
+  @override
+  String settingsVersion(String version) {
+    return 'Sürüm $version';
+  }
+
+  @override
+  String get settingsDisclaimer => 'Uyarı metnini yeniden oku';
+
+  @override
+  String get settingsPrivacy => 'Gizlilik';
+
+  @override
+  String get settingsLicences => 'Açık kaynak lisansları';
+
+  @override
+  String get privacyNothing =>
+      'BeneathSOS hiçbir veri toplamaz: hesap, sunucu ya da analiz yoktur. Kendiliğinden internete bağlanmaz.';
+
+  @override
+  String get privacyOnPhone =>
+      'Aramalar — alan adı, çizim, hedefler, noktalar ve sinyal ölçümleri — bu telefondaki uygulamada kalır. Uygulamayı ya da bir aramayı silmek onları siler.';
+
+  @override
+  String get privacyExport =>
+      'Yalnızca bir aramayı dışa aktardığınızda iki dosya paylaşım menüsüne gider; nereye gideceğini siz seçersiniz. Hedefiniz olmayan telefonlar bu dosyalarda yalnızca geri izlenemeyen kodlarla görünür.';
+
+  @override
+  String get privacyBeacon =>
+      '\"Enkaz altındayım\", yakındaki telefonların okuyabildiği bir Bluetooth yardım sinyali gönderir: rastgele bir sayı, pil, telefonun en son ne zaman kıpırdatıldığı ya da dokunulduğu ve hava basıncı. O ekrandan çıkınca durur.';
 }
