@@ -6,16 +6,23 @@ and appear only in TestFlight.
 
 ## [Unreleased]
 
+## [1.0.0] - store submission pending
+
+The first complete version: every step of a search, the trapped person's side, and export.
+
 ### Added
 
-- Readiness banner on the home screen: Bluetooth and permission state, live; asks for
-  Bluetooth permission on first launch.
-- "Being prepared" screens show their text in a card.
-- Branded home screen: logo, "Start a search" and "I am trapped" (both open "being prepared"
-  screens; the victim screen says to call 112), independence note, "Powered by Socrepho".
-- BeneathSOS theme from `beneathsos_ui` (light and dark, Atkinson Hyperlegible Next).
-- App icon (iOS light, dark and tinted; Android adaptive and themed) and launch screen in the
-  BeneathSOS brand.
+- Searches (event-sourced, offline): list, new search, overview, finish; one-time legal disclaimer.
+- Rubble outline drawing with side lengths and the real size of one side.
+- Surface scan (phones heard strongly set aside) and target selection with plain-language reasons.
+- Measuring points: 15 still seconds, the median per target, "no signal" stored as data, relink.
+- Probability map: 50 % / 90 % areas (never a single spot), low-information warning, target tabs,
+  suggested next point (also on the measuring screen), points on the rubble left out.
+- "I am trapped": a Bluetooth help signal with battery and "moved or touched N min ago", SOS sound,
+  always dark; rescuers see such a phone first.
+- Export (JSON + CSV with the disclaimer, bystanders coded) and "Record where it was found".
+- Readiness banner, branded home, app icon and launch screen, light and dark theme (`beneathsos_ui`).
+- Privacy manifest: no tracking, nothing collected.
 
 ## [0.1.0] - 2026-10-11
 
