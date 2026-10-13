@@ -1,4 +1,5 @@
 import 'package:beneathsos_app/core/formatting/measures.dart';
+import 'package:beneathsos_app/features/probability_map/domain/likely_spot.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
 import 'package:beneathsos_app/features/research/domain/found_report.dart';
 import 'package:beneathsos_app/features/research/presentation/providers/research_providers.dart';
@@ -35,12 +36,15 @@ mixin MapMixin {
       if (point.at case final at?)
         for (final reading in point.readings)
           if (reading.target == target)
-            MapPoint(
-              at: at,
-              kind: reading is SignalHeard
-                  ? MapPointKind.heard
-                  : MapPointKind.notHeard,
-            ),
+            switch (reading) {
+              SignalHeard(:final median) => MapPoint(
+                at: at,
+                kind: MapPointKind.heard,
+                label: median.value.round().toString().replaceFirst('-', '−'),
+                strength: ((median.value + 100) / 40).clamp(0.0, 1.0),
+              ),
+              NoSignal() => MapPoint(at: at, kind: MapPointKind.notHeard),
+            },
     if (search.groundTruths[target] case final found?)
       MapPoint(at: found, kind: MapPointKind.found),
     if (next != null)
@@ -94,4 +98,17 @@ mixin MapMixin {
     FoundFailed() => l10n.probRecordFailed,
     FoundIdle() || FoundSaving() => foundLine(l10n, search, target, map),
   };
+
+  /// The likely spot on the drawing (the engine works in real metres).
+  LikelySpot likelyOf(LikelySpotResult spot, double scale) => (
+    centre: toDrawn(spot.centre, scale),
+    radius: Meters(spot.radius50.value / scale),
+  );
+
+  /// "Most likely spot: inside the dashed circle (…; radius 0.8 m), 1.4 m in from the nearest edge…"
+  String spotLine(AppLocalizations l10n, LikelySpotResult spot) =>
+      l10n.probSpot(
+        metresLabel(l10n, spot.radius50),
+        metresLabel(l10n, spot.fromEdge),
+      );
 }

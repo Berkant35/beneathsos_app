@@ -31,6 +31,7 @@ Future<AppDatabase> _search(
   WidgetTester tester, {
   bool measured = true,
   bool onRubble = false,
+  bool close = false,
 }) async {
   final db = testDatabase();
   addTearDown(db.close);
@@ -72,6 +73,19 @@ Future<AppDatabase> _search(
       );
     }
 
+    if (close) {
+      for (final (id, at) in [
+        ('a', p(-1, -1)),
+        ('b', p(-1, -2)),
+        ('c', p(-2, -1)),
+      ]) {
+        await point(id, at, [
+          SignalHeard(_phone, median: const Dbm(-80), samples: 20),
+          const NoSignal(_watch),
+        ]);
+      }
+      return;
+    }
     await point('a', p(-1, -1), [
       SignalHeard(_phone, median: const Dbm(-80), samples: 20),
       const NoSignal(_watch),
@@ -140,10 +154,7 @@ void main() {
       );
       // The colours read the same in light and dark mode.
       expect(
-        find.text(
-          'Strong colour: most likely 50 % · Faint colour: 90 % · '
-          'Ring: suggested next point',
-        ),
+        find.textContaining('Strong colour: 50 % · Faint: 90 %'),
         findsOneWidget,
       );
       final map = tester.widget<SiteMap>(find.byType(SiteMap));
@@ -160,6 +171,22 @@ void main() {
       expect(
         map.points.where((m) => m.kind == MapPointKind.heard),
         hasLength(2),
+      );
+      // Each heard point shows its signal; a spot is shown only with its 50 % circle.
+      expect(
+        [
+          for (final m in map.points)
+            if (m.kind == MapPointKind.heard) m.label,
+        ],
+        ['−80', '−85'],
+      );
+      expect(map.likely, isNotNull);
+      expect(map.likely!.radius.value, greaterThan(0));
+      expect(
+        find.textContaining(
+          RegExp(r'^Most likely spot: inside the dashed circle'),
+        ),
+        findsOneWidget,
       );
     },
   );
@@ -345,5 +372,19 @@ void main() {
     await tester.tap(find.byType(SiteMap));
     await tester.pumpAndSettle();
     expect(find.text('Record the phone as found here?'), findsNothing);
+  });
+
+  testWidgets('points measured close together are flagged', (tester) async {
+    setPhoneSize(tester, 402, 874);
+    final db = await _search(tester, close: true);
+    await pumpRouterApp(tester, database: db);
+    await settleWithDatabase(tester);
+    await _openMap(tester);
+    expect(
+      find.text(
+        'Your points are close together: measure all around the rubble, at least 3 m apart.',
+      ),
+      findsOneWidget,
+    );
   });
 }

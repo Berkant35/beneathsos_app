@@ -712,7 +712,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get mapLegend =>
-      'Dolu: sinyal var · Halka: duyulmadı · Turuncu: şimdi ölçülüyor';
+      'Dolu elmas: sinyal var · İçi boş elmas: duyulmadı · Turuncu daire: şimdi ölçülüyor';
 
   @override
   String get pointRadioSilent =>
@@ -757,7 +757,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get probLegend =>
-      'Yoğun renk: en olası %50 · Soluk renk: %90 · Halka: önerilen sonraki nokta';
+      'Elmaslar: ölçüm noktaları (sayı = dBm cinsinden sinyal, sıcak renk = güçlü, içi boş = duyulmadı) · + ve kesikli çember: en olası nokta · Halka: önerilen sonraki nokta · Yoğun renk: %50 · Soluk: %90';
 
   @override
   String get probRule =>
@@ -922,4 +922,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get probCancel => 'Vazgeç';
+
+  @override
+  String probSpot(String radius, String fromEdge) {
+    return 'En olası nokta: kesikli çemberin içinde (olasılığın yarısı; yarıçap $radius), enkazın en yakın kenarından $fromEdge içeride.';
+  }
+
+  @override
+  String get probBunched =>
+      'Noktalarınız birbirine çok yakın: enkazın her yanında, aralarında en az 3 m olacak şekilde ölçün.';
 }

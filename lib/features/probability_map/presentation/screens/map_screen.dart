@@ -91,8 +91,10 @@ class _MapScreenState extends ConsumerState<MapScreen> with MapMixin {
                     outline: outline,
                     points: pointsOf(search!, target!, result.result.next),
                     heat: heatOf(result.result.map, search.scale),
+                    likely: likelyOf(result.spot, search.scale),
                     style: canvasStyleOf(Theme.of(context)),
-                    semanticLabel: areas(l10n, result.result.map),
+                    semanticLabel:
+                        '${areas(l10n, result.result.map)} ${spotLine(l10n, result.spot)}',
                     onTap: found is FoundChoosing
                         ? (at) => unawaited(_confirm(target, at))
                         : null,

@@ -49,7 +49,13 @@ class MapPanel extends StatelessWidget with MapMixin {
           liveRegion: true,
           child: Text(areas(l10n, map.result.map), style: text.titleMedium),
         ),
+        Text(spotLine(l10n, map.spot), style: text.bodyLarge),
+        const SizedBox(height: BeneathSpacing.s),
         Text(l10n.probRule, style: text.bodyMedium),
+        if (map.bunched) ...[
+          const SizedBox(height: BeneathSpacing.sm),
+          StatusBanner(kind: StatusKind.attention, message: l10n.probBunched),
+        ],
         if (map.lowInformation) ...[
           const SizedBox(height: BeneathSpacing.sm),
           StatusBanner(

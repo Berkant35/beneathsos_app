@@ -1,6 +1,7 @@
 import 'dart:isolate';
 
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
+import 'package:beneathsos_app/features/probability_map/domain/likely_spot.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_memo.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -21,8 +22,15 @@ MapEngine mapEngine(Ref ref) =>
 MapMemo mapMemo(Ref ref) => MapMemo(ref.watch(mapEngineProvider));
 
 /// What the map screen shows for one target: the map, whether it rests on too few places with a
-/// signal, and how many points on the rubble were left out.
-typedef TargetMap = ({MapResult result, bool lowInformation, int onRubble});
+/// signal, how many points on the rubble were left out, the likely spot with its 50 % circle, and
+/// whether the places measured are too close together to tell the map apart.
+typedef TargetMap = ({
+  MapResult result,
+  bool lowInformation,
+  int onRubble,
+  LikelySpotResult spot,
+  bool bunched,
+});
 
 /// The probability map of [targetId] in [sessionId]; null until there is an outline and a point.
 @riverpod
@@ -36,10 +44,13 @@ Future<TargetMap?> probabilityMap(
   final target = TargetId(targetId);
   final request = requestFor(search, target);
   if (request == null) return null;
+  final result = await memo(request);
   return (
-    result: await memo(request),
+    result: result,
     lowInformation: isLowInformation(request.observations),
     onRubble: pointsOnRubble(search, target),
+    spot: likelySpot(result.map, request.outline),
+    bunched: bunched(request.observations),
   );
 }
 

@@ -87,9 +87,10 @@ List<Observation> _realObservations(SessionState search, TargetId target) => [
 
 bool _onRubble(RubblePolygon outline, SitePoint at) =>
     outline.contains(at) &&
-    outline.edges.every((e) => _distanceToSide(at, e) >= onRubbleFromM);
+    outline.edges.every((e) => distanceToSide(at, e) >= onRubbleFromM);
 
-double _distanceToSide(SitePoint q, PolygonEdge e) {
+/// The distance from [q] to the side [e] (real metres when both are).
+double distanceToSide(SitePoint q, PolygonEdge e) {
   final (ax, ay) = (e.start.x.value, e.start.y.value);
   final (abx, aby) = (e.end.x.value - ax, e.end.y.value - ay);
   final t =

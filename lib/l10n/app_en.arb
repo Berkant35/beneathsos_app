@@ -422,7 +422,7 @@
     }
   },
   "relinkYes": "Yes, the same phone",
-  "mapLegend": "Filled: signal heard · Ring: not heard · Orange: measuring now",
+  "mapLegend": "Filled diamond: signal heard · Hollow diamond: not heard · Orange circle: measuring now",
   "pointRadioSilent": "No Bluetooth device was heard at all — scanning was not working. The point was not stored; measure again.",
   "pointStart": "Measure here",
   "pointMoveHint": "Tap the map again to move the point.",
@@ -445,7 +445,7 @@
   "probCalculating": "Calculating the map…",
   "probFailed": "The map could not be calculated. Nothing was deleted.",
   "probMeasureNext": "Measure next point",
-  "probLegend": "Strong colour: most likely 50 % · Faint colour: 90 % · Ring: suggested next point",
+  "probLegend": "Diamonds: measured points (number = signal in dBm, warmer = stronger, hollow = not heard) · + and dashed circle: most likely spot · Ring: suggested next point · Strong colour: 50 % · Faint: 90 %",
   "probRule": "This is an area where the phone most likely is — never an exact spot.",
   "siteOpenMap": "Open the probability map",
   "@probLowInfo": {
@@ -537,5 +537,17 @@
   "probConfirmFoundBody": "Everyone on this search will see it as found here. Record it only once the phone is in hand.",
   "probConfirmFoundYes": "Record",
   "probConfirmFoundNo": "Not here",
-  "probCancel": "Cancel"
+  "probCancel": "Cancel",
+  "probSpot": "Most likely spot: inside the dashed circle (half the chance; radius {radius}), {fromEdge} in from the nearest edge of the rubble.",
+  "@probSpot": {
+    "placeholders": {
+      "radius": {
+        "type": "String"
+      },
+      "fromEdge": {
+        "type": "String"
+      }
+    }
+  },
+  "probBunched": "Your points are close together: measure all around the rubble, at least 3 m apart."
 }

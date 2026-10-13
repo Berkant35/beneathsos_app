@@ -1253,7 +1253,7 @@ abstract class AppLocalizations {
   /// No description provided for @mapLegend.
   ///
   /// In en, this message translates to:
-  /// **'Filled: signal heard · Ring: not heard · Orange: measuring now'**
+  /// **'Filled diamond: signal heard · Hollow diamond: not heard · Orange circle: measuring now'**
   String get mapLegend;
 
   /// No description provided for @pointRadioSilent.
@@ -1331,7 +1331,7 @@ abstract class AppLocalizations {
   /// No description provided for @probLegend.
   ///
   /// In en, this message translates to:
-  /// **'Strong colour: most likely 50 % · Faint colour: 90 % · Ring: suggested next point'**
+  /// **'Diamonds: measured points (number = signal in dBm, warmer = stronger, hollow = not heard) · + and dashed circle: most likely spot · Ring: suggested next point · Strong colour: 50 % · Faint: 90 %'**
   String get probLegend;
 
   /// No description provided for @probRule.
@@ -1591,6 +1591,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get probCancel;
+
+  /// No description provided for @probSpot.
+  ///
+  /// In en, this message translates to:
+  /// **'Most likely spot: inside the dashed circle (half the chance; radius {radius}), {fromEdge} in from the nearest edge of the rubble.'**
+  String probSpot(String radius, String fromEdge);
+
+  /// No description provided for @probBunched.
+  ///
+  /// In en, this message translates to:
+  /// **'Your points are close together: measure all around the rubble, at least 3 m apart.'**
+  String get probBunched;
 }
 
 class _AppLocalizationsDelegate

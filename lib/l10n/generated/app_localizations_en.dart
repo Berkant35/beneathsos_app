@@ -721,7 +721,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mapLegend =>
-      'Filled: signal heard · Ring: not heard · Orange: measuring now';
+      'Filled diamond: signal heard · Hollow diamond: not heard · Orange circle: measuring now';
 
   @override
   String get pointRadioSilent =>
@@ -768,7 +768,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get probLegend =>
-      'Strong colour: most likely 50 % · Faint colour: 90 % · Ring: suggested next point';
+      'Diamonds: measured points (number = signal in dBm, warmer = stronger, hollow = not heard) · + and dashed circle: most likely spot · Ring: suggested next point · Strong colour: 50 % · Faint: 90 %';
 
   @override
   String get probRule =>
@@ -933,4 +933,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get probCancel => 'Cancel';
+
+  @override
+  String probSpot(String radius, String fromEdge) {
+    return 'Most likely spot: inside the dashed circle (half the chance; radius $radius), $fromEdge in from the nearest edge of the rubble.';
+  }
+
+  @override
+  String get probBunched =>
+      'Your points are close together: measure all around the rubble, at least 3 m apart.';
 }

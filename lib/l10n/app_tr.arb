@@ -192,7 +192,7 @@
   "pointNeedsTarget": "Önce aranacak telefonu seçin.",
   "relinkQuestion": "{label} Bluetooth kimliğini değiştirmiş olabilir: susmasından {seconds} sn sonra benzer sinyalli yeni bir kimlik çıktı. Aynı telefon mu?",
   "relinkYes": "Evet, aynı telefon",
-  "mapLegend": "Dolu: sinyal var · Halka: duyulmadı · Turuncu: şimdi ölçülüyor",
+  "mapLegend": "Dolu elmas: sinyal var · İçi boş elmas: duyulmadı · Turuncu daire: şimdi ölçülüyor",
   "pointRadioSilent": "Hiçbir Bluetooth cihazı duyulmadı — tarama çalışmıyordu. Nokta kaydedilmedi; yeniden ölçün.",
   "pointStart": "Burada ölç",
   "pointMoveHint": "Noktayı taşımak için haritaya yeniden dokunun.",
@@ -205,7 +205,7 @@
   "probCalculating": "Harita hesaplanıyor…",
   "probFailed": "Harita hesaplanamadı. Hiçbir şey silinmedi.",
   "probMeasureNext": "Sonraki noktayı ölç",
-  "probLegend": "Yoğun renk: en olası %50 · Soluk renk: %90 · Halka: önerilen sonraki nokta",
+  "probLegend": "Elmaslar: ölçüm noktaları (sayı = dBm cinsinden sinyal, sıcak renk = güçlü, içi boş = duyulmadı) · + ve kesikli çember: en olası nokta · Halka: önerilen sonraki nokta · Yoğun renk: %50 · Soluk: %90",
   "probRule": "Bu, telefonun büyük olasılıkla bulunduğu bir alandır — asla kesin bir nokta değil.",
   "siteOpenMap": "Olasılık haritasını aç",
   "probOnRubble": "{count, plural, =1{Enkazın üstündeki 1 nokta kullanılmadı} other{Enkazın üstündeki {count} nokta kullanılmadı}}: harita, çevresinde ölçülen noktalarla çalışır.",
@@ -248,5 +248,7 @@
   "probConfirmFoundBody": "Bu aramadaki herkes onu burada bulunmuş görür. Yalnızca telefon elinizdeyken kaydedin.",
   "probConfirmFoundYes": "Kaydet",
   "probConfirmFoundNo": "Burada değil",
-  "probCancel": "Vazgeç"
+  "probCancel": "Vazgeç",
+  "probSpot": "En olası nokta: kesikli çemberin içinde (olasılığın yarısı; yarıçap {radius}), enkazın en yakın kenarından {fromEdge} içeride.",
+  "probBunched": "Noktalarınız birbirine çok yakın: enkazın her yanında, aralarında en az 3 m olacak şekilde ölçün."
 }
