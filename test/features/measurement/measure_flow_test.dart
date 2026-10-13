@@ -209,6 +209,9 @@ void main() {
     await _placePoint(tester, outside: true);
     await _seconds(tester, 16, each: () => samples.add(_heard('apple-1', -80)));
     expect(suggested(), hasLength(1));
+    // Its signal circle shows on the measuring screen too.
+    expect(tester.widget<SiteMap>(find.byType(SiteMap)).circles, hasLength(1));
+    expect(find.text('Signal circles (rough guide)'), findsOneWidget);
     // Outside the 10 × 10 m rubble.
     final at = suggested().single.at;
     expect(

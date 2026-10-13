@@ -4,6 +4,7 @@ import 'package:beneathsos_app/features/probability_map/domain/map_request.dart'
 import 'package:beneathsos_app/features/research/domain/found_report.dart';
 import 'package:beneathsos_app/features/research/presentation/providers/research_providers.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
+import 'package:flutter/painting.dart';
 import 'package:locator_engine/locator_engine.dart';
 import 'package:rubble_canvas/rubble_canvas.dart';
 import 'package:rubble_core/rubble_core.dart';
@@ -27,11 +28,15 @@ mixin MapMixin {
   );
 
   /// Measured points of [target] (heard / not heard) and the suggested [next] point (real metres).
+  /// [colors] gives a point the colour of its signal circle; [nextLabel] names the suggestion so it
+  /// is never read as the phone.
   List<MapPoint> pointsOf(
     SessionState search,
     TargetId target,
-    SitePoint? next,
-  ) => [
+    SitePoint? next, {
+    Map<PointId, Color> colors = const {},
+    String? nextLabel,
+  }) => [
     for (final point in search.measuredPoints)
       if (point.at case final at?)
         for (final reading in point.readings)
@@ -42,13 +47,18 @@ mixin MapMixin {
                 kind: MapPointKind.heard,
                 label: median.value.round().toString().replaceFirst('-', '−'),
                 strength: ((median.value + 100) / 40).clamp(0.0, 1.0),
+                color: colors[point.id],
               ),
               NoSignal() => MapPoint(at: at, kind: MapPointKind.notHeard),
             },
     if (search.groundTruths[target] case final found?)
       MapPoint(at: found, kind: MapPointKind.found),
     if (next != null)
-      MapPoint(at: toDrawn(next, search.scale), kind: MapPointKind.suggested),
+      MapPoint(
+        at: toDrawn(next, search.scale),
+        kind: MapPointKind.suggested,
+        label: nextLabel,
+      ),
   ];
 
   /// "Most likely area: 4.4 m² (50 %) · 14 m² (90 %)" — areas, never a spot (rule 1).

@@ -942,4 +942,19 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get probBunched =>
       'Your points are close together: measure all around the rubble, at least 3 m apart.';
+
+  @override
+  String get circlesToggle => 'Signal circles (rough guide)';
+
+  @override
+  String circlesMeet(String distance) {
+    return 'Circles meet about $distance from the nearest measured point. Rough guide: each circle assumes the signal crossed rubble all the way.';
+  }
+
+  @override
+  String get circlesOne =>
+      'Measure one more point with a signal to see where the circles meet.';
+
+  @override
+  String get mapNextLabel => 'Measure next';
 }

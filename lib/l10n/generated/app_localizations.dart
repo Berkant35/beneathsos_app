@@ -1603,6 +1603,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your points are close together: measure all around the rubble, at least 3 m apart.'**
   String get probBunched;
+
+  /// No description provided for @circlesToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal circles (rough guide)'**
+  String get circlesToggle;
+
+  /// No description provided for @circlesMeet.
+  ///
+  /// In en, this message translates to:
+  /// **'Circles meet about {distance} from the nearest measured point. Rough guide: each circle assumes the signal crossed rubble all the way.'**
+  String circlesMeet(String distance);
+
+  /// No description provided for @circlesOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Measure one more point with a signal to see where the circles meet.'**
+  String get circlesOne;
+
+  /// No description provided for @mapNextLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Measure next'**
+  String get mapNextLabel;
 }
 
 class _AppLocalizationsDelegate

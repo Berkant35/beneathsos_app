@@ -549,5 +549,16 @@
       }
     }
   },
-  "probBunched": "Your points are close together: measure all around the rubble, at least 3 m apart."
+  "probBunched": "Your points are close together: measure all around the rubble, at least 3 m apart.",
+  "circlesToggle": "Signal circles (rough guide)",
+  "circlesMeet": "Circles meet about {distance} from the nearest measured point. Rough guide: each circle assumes the signal crossed rubble all the way.",
+  "@circlesMeet": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "circlesOne": "Measure one more point with a signal to see where the circles meet.",
+  "mapNextLabel": "Measure next"
 }

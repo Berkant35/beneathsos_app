@@ -4,6 +4,7 @@ import 'package:beneathsos_app/core/canvas/canvas_style.dart';
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/mixins/map_mixin.dart';
+import 'package:beneathsos_app/features/probability_map/presentation/mixins/signal_overlay_mixin.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/providers/map_providers.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/widgets/map_panel.dart';
 import 'package:beneathsos_app/features/research/presentation/providers/research_providers.dart';
@@ -27,7 +28,8 @@ class MapScreen extends ConsumerStatefulWidget {
   ConsumerState<MapScreen> createState() => _MapScreenState();
 }
 
-class _MapScreenState extends ConsumerState<MapScreen> with MapMixin {
+class _MapScreenState extends ConsumerState<MapScreen>
+    with MapMixin, SignalOverlayMixin {
   /// The target shown (form state only); null = the first one.
   TargetId? _chosen;
 
@@ -48,6 +50,14 @@ class _MapScreenState extends ConsumerState<MapScreen> with MapMixin {
     final search = ref.watch(sessionStateProvider(widget.sessionId)).value;
     final targets = search?.targets ?? const <TargetId, TargetState>{};
     final target = _chosen ?? targets.keys.firstOrNull;
+    final overlay = search == null
+        ? null
+        : signalOverlay(
+            l10n,
+            search,
+            target,
+            visible: ref.watch(signalCirclesProvider),
+          );
     final page = BeneathSpacing.pageFor(MediaQuery.sizeOf(context).width);
     final map = target == null
         ? null
@@ -89,7 +99,15 @@ class _MapScreenState extends ConsumerState<MapScreen> with MapMixin {
                 Expanded(
                   child: SiteMap(
                     outline: outline,
-                    points: pointsOf(search!, target!, result.result.next),
+                    points: pointsOf(
+                      search!,
+                      target!,
+                      result.result.next,
+                      colors: overlay!.colors,
+                      nextLabel: l10n.mapNextLabel,
+                    ),
+                    circles: overlay.circles,
+                    measure: overlay.measure,
                     heat: heatOf(result.result.map, search.scale),
                     likely: likelyOf(result.spot, search.scale),
                     style: canvasStyleOf(Theme.of(context)),
@@ -110,6 +128,7 @@ class _MapScreenState extends ConsumerState<MapScreen> with MapMixin {
                       sessionId: widget.sessionId,
                       map: result,
                       choosing: found is FoundChoosing,
+                      circlesNote: overlay.note,
                       onRecordFound: recorder.start,
                       onCancelFound: recorder.cancel,
                       note: foundNote(

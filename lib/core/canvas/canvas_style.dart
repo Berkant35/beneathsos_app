@@ -17,3 +17,16 @@ RubbleCanvasStyle canvasStyleOf(ThemeData theme) {
     labelBackground: scheme.surface,
   );
 }
+
+/// One colour per signal circle (in measuring order): far from the safety orange of the regions and the
+/// suggestion, and distinct from each other in light and dark.
+const signalCircleColors = <Color>[
+  Color(0xFFE53935), // red
+  Color(0xFF7E57C2), // violet
+  Color(0xFF00897B), // teal
+  Color(0xFF1E88E5), // blue
+  Color(0xFFD81B60), // pink
+  Color(0xFF43A047), // green
+  Color(0xFFFDD835), // yellow
+  Color(0xFF8D6E63), // brown
+];

@@ -67,3 +67,13 @@ Future<SitePoint?> suggestedPoint(Ref ref, String sessionId) async {
   final next = map?.result.next;
   return next == null ? null : toDrawn(next, search.scale);
 }
+
+/// Whether the signal circles (a rough guide) are shown, on the map and while measuring.
+@Riverpod(keepAlive: true)
+class SignalCircles extends _$SignalCircles {
+  @override
+  bool build() => true;
+
+  /// Shows or hides them.
+  void toggle() => state = !state;
+}

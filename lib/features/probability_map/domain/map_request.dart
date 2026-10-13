@@ -46,7 +46,7 @@ const onRubbleFromM = 0.5;
 /// around the rubble. The outline and points are drawn lengths; the engine gets real metres
 /// (× `ScaleSet`), points on the rubble left out and readings at one place merged.
 MapRequest? requestFor(SessionState search, TargetId target) {
-  final outline = _realOutline(search);
+  final outline = realOutline(search);
   if (outline == null) return null;
   final around = [
     for (final o in _realObservations(search, target))
@@ -62,7 +62,7 @@ MapRequest? requestFor(SessionState search, TargetId target) {
 
 /// How many measured points of [target] stand on the rubble (left out of the map).
 int pointsOnRubble(SessionState search, TargetId target) {
-  final outline = _realOutline(search);
+  final outline = realOutline(search);
   if (outline == null) return 0;
   return _realObservations(
     search,
@@ -70,9 +70,10 @@ int pointsOnRubble(SessionState search, TargetId target) {
   ).where((o) => _onRubble(outline, o.at)).length;
 }
 
-RubblePolygon? _realOutline(SessionState search) => switch (search.outline) {
+/// The outline of [search] in real metres (× `ScaleSet`), or null before it is drawn.
+RubblePolygon? realOutline(SessionState search) => switch (search.outline) {
   final outline? => RubblePolygon([
-    for (final c in outline.corners) _times(c, search.scale),
+    for (final c in outline.corners) toReal(c, search.scale),
   ]),
   null => null,
 };
@@ -80,8 +81,8 @@ RubblePolygon? _realOutline(SessionState search) => switch (search.outline) {
 List<Observation> _realObservations(SessionState search, TargetId target) => [
   for (final o in observationsFor(search, target))
     switch (o.median) {
-      final median? => Observation.heard(_times(o.at, search.scale), median),
-      null => Observation.notHeard(_times(o.at, search.scale)),
+      final median? => Observation.heard(toReal(o.at, search.scale), median),
+      null => Observation.notHeard(toReal(o.at, search.scale)),
     },
 ];
 
@@ -139,9 +140,10 @@ Observation _merge(List<Observation> readings) {
 }
 
 /// A point of the engine's map (real metres) on the drawing.
-SitePoint toDrawn(SitePoint real, double scale) => _times(real, 1 / scale);
+SitePoint toDrawn(SitePoint real, double scale) => toReal(real, 1 / scale);
 
-SitePoint _times(SitePoint p, double factor) =>
+/// [p] with every length × [factor] (drawn → real with the scale).
+SitePoint toReal(SitePoint p, double factor) =>
     SitePoint(Meters(p.x.value * factor), Meters(p.y.value * factor));
 
 /// The map (real metres) and the suggested next point (real metres).

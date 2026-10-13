@@ -250,5 +250,9 @@
   "probConfirmFoundNo": "Burada değil",
   "probCancel": "Vazgeç",
   "probSpot": "En olası nokta: kesikli çemberin içinde (olasılığın yarısı; yarıçap {radius}), enkazın en yakın kenarından {fromEdge} içeride.",
-  "probBunched": "Noktalarınız birbirine çok yakın: enkazın her yanında, aralarında en az 3 m olacak şekilde ölçün."
+  "probBunched": "Noktalarınız birbirine çok yakın: enkazın her yanında, aralarında en az 3 m olacak şekilde ölçün.",
+  "circlesToggle": "Sinyal çemberleri (kaba tahmin)",
+  "circlesMeet": "Çemberler en yakın ölçüm noktasından yaklaşık {distance} uzakta kesişiyor. Kaba tahmin: her çember sinyalin baştan sona enkazdan geçtiğini varsayar.",
+  "circlesOne": "Çemberlerin nerede kesiştiğini görmek için sinyal alınan bir nokta daha ölçün.",
+  "mapNextLabel": "Sonraki ölçüm"
 }

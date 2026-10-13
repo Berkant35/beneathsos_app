@@ -387,4 +387,32 @@ void main() {
       findsOneWidget,
     );
   });
+
+  testWidgets(
+    'signal circles: one per heard point in its own colour, where they meet, and a switch',
+    (tester) async {
+      setPhoneSize(tester, 402, 874);
+      final db = await _search(tester);
+      await pumpRouterApp(tester, database: db);
+      await settleWithDatabase(tester);
+      await _openMap(tester);
+      SiteMap map() => tester.widget<SiteMap>(find.byType(SiteMap));
+      // The phone was heard at 2 points.
+      expect(map().circles, hasLength(2));
+      expect(map().circles[0].color, isNot(map().circles[1].color));
+      expect(map().measure, isNotNull);
+      expect(map().measure!.label, endsWith(' m'));
+      expect(find.textContaining('Circles meet about'), findsOneWidget);
+      // The suggestion says what it is, so it is never read as the phone.
+      expect(
+        map().points.singleWhere((m) => m.kind == MapPointKind.suggested).label,
+        'Measure next',
+      );
+      await tester.ensureVisible(find.text('Signal circles (rough guide)'));
+      await tester.tap(find.text('Signal circles (rough guide)'));
+      await tester.pumpAndSettle();
+      expect(map().circles, isEmpty);
+      expect(map().measure, isNull);
+    },
+  );
 }

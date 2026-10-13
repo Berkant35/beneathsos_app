@@ -1,5 +1,6 @@
 import 'package:beneathsos_app/features/measurement/domain/measurement_state.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
+import 'package:flutter/painting.dart';
 import 'package:rubble_canvas/rubble_canvas.dart';
 import 'package:rubble_core/rubble_core.dart';
 
@@ -11,8 +12,11 @@ mixin MeasureMixin {
     SessionState search,
     MeasurementState state, {
     SitePoint? next,
+    String? nextLabel,
+    Map<PointId, Color> colors = const {},
   }) => [
-    if (next != null) MapPoint(at: next, kind: MapPointKind.suggested),
+    if (next != null)
+      MapPoint(at: next, kind: MapPointKind.suggested, label: nextLabel),
     for (final point in search.measuredPoints)
       if (point.at case final at?)
         MapPoint(
@@ -20,6 +24,7 @@ mixin MeasureMixin {
           kind: point.readings.any((r) => r is SignalHeard)
               ? MapPointKind.heard
               : MapPointKind.notHeard,
+          color: colors[point.id],
         ),
     if (state
         case Measuring(:final at) ||

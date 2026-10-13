@@ -931,4 +931,19 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get probBunched =>
       'Noktalarınız birbirine çok yakın: enkazın her yanında, aralarında en az 3 m olacak şekilde ölçün.';
+
+  @override
+  String get circlesToggle => 'Sinyal çemberleri (kaba tahmin)';
+
+  @override
+  String circlesMeet(String distance) {
+    return 'Çemberler en yakın ölçüm noktasından yaklaşık $distance uzakta kesişiyor. Kaba tahmin: her çember sinyalin baştan sona enkazdan geçtiğini varsayar.';
+  }
+
+  @override
+  String get circlesOne =>
+      'Çemberlerin nerede kesiştiğini görmek için sinyal alınan bir nokta daha ölçün.';
+
+  @override
+  String get mapNextLabel => 'Sonraki ölçüm';
 }

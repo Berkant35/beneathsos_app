@@ -270,3 +270,61 @@ final class SuggestedPointFamily extends $Family
   @override
   String toString() => r'suggestedPointProvider';
 }
+
+/// Whether the signal circles (a rough guide) are shown, on the map and while measuring.
+
+@ProviderFor(SignalCircles)
+final signalCirclesProvider = SignalCirclesProvider._();
+
+/// Whether the signal circles (a rough guide) are shown, on the map and while measuring.
+final class SignalCirclesProvider
+    extends $NotifierProvider<SignalCircles, bool> {
+  /// Whether the signal circles (a rough guide) are shown, on the map and while measuring.
+  SignalCirclesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'signalCirclesProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$signalCirclesHash();
+
+  @$internal
+  @override
+  SignalCircles create() => SignalCircles();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$signalCirclesHash() => r'8f0fb39e7c1554650d7f4415b2cc7a0ee8e465f7';
+
+/// Whether the signal circles (a rough guide) are shown, on the map and while measuring.
+
+abstract class _$SignalCircles extends $Notifier<bool> {
+  bool build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<bool, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}

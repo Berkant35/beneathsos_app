@@ -10,15 +10,19 @@ import 'package:beneathsos_app/features/measurement/domain/measurement_state.dar
 import 'package:beneathsos_app/features/measurement/presentation/mixins/measure_mixin.dart';
 import 'package:beneathsos_app/features/measurement/presentation/providers/measurement_providers.dart';
 import 'package:beneathsos_app/features/measurement/presentation/widgets/measure_panel.dart';
+import 'package:beneathsos_app/features/probability_map/presentation/mixins/signal_overlay_mixin.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/providers/map_providers.dart';
+import 'package:beneathsos_app/features/probability_map/presentation/widgets/signal_circles_toggle.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rubble_canvas/rubble_canvas.dart';
+import 'package:rubble_core/rubble_core.dart' show SessionState;
 
 /// Measure at points around the rubble (roadmap 7): tap where you stand, hold still 15 s, every point
 /// is stored — heard or not (rule 3). The map runs edge to edge (`padded: false`).
-class MeasureScreen extends ConsumerWidget with MeasureMixin {
+class MeasureScreen extends ConsumerWidget
+    with MeasureMixin, SignalOverlayMixin {
   /// Creates the screen for [sessionId].
   const MeasureScreen({required this.sessionId, super.key});
 
@@ -42,6 +46,14 @@ class MeasureScreen extends ConsumerWidget with MeasureMixin {
     final next = ready
         ? ref.watch(suggestedPointProvider(sessionId)).value
         : null;
+    final overlay = search == null
+        ? signalOverlay(l10n, SessionState.empty, null, visible: false)
+        : signalOverlay(
+            l10n,
+            search,
+            search.targets.keys.firstOrNull,
+            visible: ref.watch(signalCirclesProvider),
+          );
     final page = BeneathSpacing.pageFor(MediaQuery.sizeOf(context).width);
     return BeneathScaffold(
       title: l10n.pointTitle,
@@ -68,7 +80,15 @@ class MeasureScreen extends ConsumerWidget with MeasureMixin {
                   Expanded(
                     child: SiteMap(
                       outline: outline,
-                      points: mapPoints(search, state, next: next),
+                      points: mapPoints(
+                        search,
+                        state,
+                        next: next,
+                        nextLabel: l10n.mapNextLabel,
+                        colors: overlay.colors,
+                      ),
+                      circles: overlay.circles,
+                      measure: overlay.measure,
                       style: canvasStyleOf(Theme.of(context)),
                       semanticLabel: summary(l10n, search),
                       onTap: state is ChoosingPoint
@@ -98,6 +118,7 @@ class MeasureScreen extends ConsumerWidget with MeasureMixin {
                             onRejectRelink: (relink) =>
                                 controller().rejectRelink(relink),
                           ),
+                          SignalCirclesToggle(note: overlay.note),
                         ],
                       ),
                     ),

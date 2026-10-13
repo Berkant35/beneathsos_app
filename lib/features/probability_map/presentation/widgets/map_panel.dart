@@ -3,6 +3,7 @@ import 'package:beneathsos_app/core/router/app_router.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/mixins/map_mixin.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/providers/map_providers.dart';
+import 'package:beneathsos_app/features/probability_map/presentation/widgets/signal_circles_toggle.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ class MapPanel extends StatelessWidget with MapMixin {
     required this.onRecordFound,
     required this.onCancelFound,
     this.note,
+    this.circlesNote,
     super.key,
   });
 
@@ -37,6 +39,9 @@ class MapPanel extends StatelessWidget with MapMixin {
 
   /// The research line: how to record, how the map did, or a failure; null for none.
   final String? note;
+
+  /// Where the signal circles meet, or what is missing.
+  final String? circlesNote;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +75,7 @@ class MapPanel extends StatelessWidget with MapMixin {
             message: l10n.probOnRubble(map.onRubble),
           ),
         ],
+        SignalCirclesToggle(note: circlesNote),
         const SizedBox(height: BeneathSpacing.sm),
         Text(l10n.probLegend, style: text.bodySmall),
         if (note case final note?) ...[
