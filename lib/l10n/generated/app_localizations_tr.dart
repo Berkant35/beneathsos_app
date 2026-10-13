@@ -203,7 +203,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get victimTap =>
-      'Arada bir ekrana dokunun: kurtarıcılar telefona dokunulduğunu görür.';
+      'Arada bir ekrana dokunun: kurtarıcılar telefona yakın zamanda dokunulduğunu ya da kıpırdatıldığını görür.';
 
   @override
   String get victimSos => 'SOS sesi çal';
@@ -853,14 +853,15 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes dk önce dokunuldu',
-      zero: 'son bir dakikada dokunuldu',
+      other: '$minutes dk önce kıpırdatıldı ya da dokunuldu',
+      zero: 'son bir dakikada kıpırdatıldı ya da dokunuldu',
     );
     return '$_temp0';
   }
 
   @override
-  String get reasonUntouched => '4 saatten uzun süredir dokunulmadı';
+  String get reasonUntouched =>
+      '4 saatten uzun süredir kıpırdatılmadı, dokunulmadı';
 
   @override
   String get exportTitle => 'Bu aramayı dışa aktar';
@@ -881,4 +882,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get siteExport => 'Bu aramayı dışa aktar';
+
+  @override
+  String get victimSosHint => 'Sesi sonuna kadar açın.';
 }

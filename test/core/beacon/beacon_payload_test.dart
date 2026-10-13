@@ -74,11 +74,14 @@ void main() {
       );
     });
 
-    test('a beacon without an id still counts, by its UUID', () {
+    test('a beacon without an id keeps its own key, but is still a beacon', () {
+      // Several victims must never merge into one track.
       expect(
         beaconKey(serviceUuids: [beaconServiceUuid.toUpperCase()]),
-        'sos-unknown',
+        isNull,
       );
+      expect(isBeacon(serviceUuids: [beaconServiceUuid.toUpperCase()]), isTrue);
+      expect(isBeacon(serviceUuids: const ['180d']), isFalse);
     });
 
     test('anything else is not a beacon', () {

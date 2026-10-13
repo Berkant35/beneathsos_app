@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:beneathsos_app/core/l10n_extension.dart';
-import 'package:beneathsos_app/features/victim/domain/victim_state.dart';
 import 'package:beneathsos_app/features/victim/presentation/providers/victim_providers.dart';
 import 'package:beneathsos_app/features/victim/presentation/widgets/stop_calling_dialog.dart';
 import 'package:beneathsos_app/features/victim/presentation/widgets/victim_status.dart';
@@ -23,48 +22,50 @@ class VictimScreen extends ConsumerWidget {
     final state = ref.watch(victimControllerProvider);
     final sos = ref.watch(sosSoundControllerProvider);
     final controller = ref.read(victimControllerProvider.notifier);
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, _) async {
-        if (didPop || !await StopCallingDialog.confirm(context)) return;
-        if (context.mounted) Navigator.of(context).pop();
-      },
-      child: BeneathScaffold(
-        title: l10n.victimTitle,
-        // Every touch is a sign of life; Listener sees taps on buttons too.
-        body: Listener(
-          behavior: HitTestBehavior.opaque,
-          onPointerDown: (_) => controller.touched(),
-          // Scrolls so large system text is never cut off.
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: BeneathSpacing.l),
-                VictimStatus(
-                  state: state,
-                  onAction: () => unawaited(
-                    state is VictimNeedsPermission && state.permanently
-                        ? controller.openSettings()
-                        : controller.retry(),
+    // Always dark (ADR 0017, victim-mode exception): a lit screen drains a trapped phone's battery.
+    return Theme(
+      data: BeneathTheme.dark(),
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, _) async {
+          if (didPop || !await StopCallingDialog.confirm(context)) return;
+          if (context.mounted) Navigator.of(context).pop();
+        },
+        child: BeneathScaffold(
+          title: l10n.victimTitle,
+          // Every touch is a sign of life; Listener sees taps on buttons too.
+          body: Listener(
+            behavior: HitTestBehavior.opaque,
+            onPointerDown: (_) => controller.touched(),
+            // Scrolls so large system text is never cut off.
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: BeneathSpacing.l),
+                  VictimStatus(
+                    state: state,
+                    onAction: () => unawaited(controller.act()),
                   ),
-                ),
-                const SizedBox(height: BeneathSpacing.xl),
-                PrimaryButton(
-                  label: sos ? l10n.victimSosStop : l10n.victimSos,
-                  icon: sos
-                      ? Icons.volume_off_rounded
-                      : Icons.volume_up_rounded,
-                  onPressed: () => unawaited(
-                    ref.read(sosSoundControllerProvider.notifier).toggle(),
+                  const SizedBox(height: BeneathSpacing.xl),
+                  PrimaryButton(
+                    label: sos ? l10n.victimSosStop : l10n.victimSos,
+                    icon: sos
+                        ? Icons.volume_off_rounded
+                        : Icons.volume_up_rounded,
+                    onPressed: () => unawaited(
+                      ref.read(sosSoundControllerProvider.notifier).toggle(),
+                    ),
                   ),
-                ),
-                const SizedBox(height: BeneathSpacing.l),
-                BeneathCard(
-                  icon: Icons.call_rounded,
-                  child: Text(l10n.victim112, style: text.headlineSmall),
-                ),
-              ],
+                  const SizedBox(height: BeneathSpacing.s),
+                  Text(l10n.victimSosHint, style: text.bodyMedium),
+                  const SizedBox(height: BeneathSpacing.l),
+                  BeneathCard(
+                    icon: Icons.call_rounded,
+                    child: Text(l10n.victim112, style: text.headlineSmall),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

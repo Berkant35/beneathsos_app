@@ -9,6 +9,9 @@ abstract interface class BeaconPort {
   /// Adapter state changes while the app runs.
   Stream<BluetoothAvailability> get availabilityChanges;
 
+  /// The platform confirmed a start (each [advertise] is confirmed or fails).
+  Stream<void> get advertiseStarted;
+
   /// Advertising failures reported by the platform, as text.
   Stream<String> get advertiseErrors;
 

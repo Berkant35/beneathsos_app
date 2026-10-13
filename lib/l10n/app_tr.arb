@@ -58,7 +58,7 @@
   "mapMeasure": "Burada ölç",
   "victimSending": "Telefonunuz kurtarıcılara sinyal gönderiyor.",
   "victimCalm": "Sakin olun. Bu ekranı açık tutun — pil için karanlık kalır.",
-  "victimTap": "Arada bir ekrana dokunun: kurtarıcılar telefona dokunulduğunu görür.",
+  "victimTap": "Arada bir ekrana dokunun: kurtarıcılar telefona yakın zamanda dokunulduğunu ya da kıpırdatıldığını görür.",
   "victimSos": "SOS sesi çal",
   "practiceTitle": "Alıştırma araması",
   "lastSearchTitle": "Son arama",
@@ -229,12 +229,13 @@
   "kindTrapped": "BeneathSOS: “Enkaz altındayım”",
   "reasonTrapped": "Bu telefon enkaz altında olduğunu bildiriyor",
   "reasonBattery": "pil %{percent}",
-  "reasonTouched": "{minutes, plural, =0{son bir dakikada dokunuldu} other{{minutes} dk önce dokunuldu}}",
-  "reasonUntouched": "4 saatten uzun süredir dokunulmadı",
+  "reasonTouched": "{minutes, plural, =0{son bir dakikada kıpırdatıldı ya da dokunuldu} other{{minutes} dk önce kıpırdatıldı ya da dokunuldu}}",
+  "reasonUntouched": "4 saatten uzun süredir kıpırdatılmadı, dokunulmadı",
   "exportTitle": "Bu aramayı dışa aktar",
   "exportContents": "İki dosya: kaydedildiği hâliyle arama (her adım, nokta ve ölçüm ile bu uyarı) ve ham sinyal ölçümleri. Hedef olmayan telefonlar yalnızca geri izlenemeyen kodlarla görünür. Dosyaların nereye gideceğini siz seçersiniz.",
   "exportShare": "Dışa aktar ve paylaş",
   "exportDone": "Paylaşıldı. Dosyalar bu aramayı kaydedildiği hâliyle içerir.",
   "exportFailed": "Dışa aktarılamadı. Hiçbir şey değişmedi.",
-  "siteExport": "Bu aramayı dışa aktar"
+  "siteExport": "Bu aramayı dışa aktar",
+  "victimSosHint": "Sesi sonuna kadar açın."
 }

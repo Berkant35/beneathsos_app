@@ -29,6 +29,12 @@ final class BeaconBluetoothOff extends BeaconStart {
   const BeaconBluetoothOff();
 }
 
+/// The radio has not reported its state yet (iOS while its Bluetooth prompt is open): wait for it.
+final class BeaconNotReady extends BeaconStart {
+  /// Creates the result.
+  const BeaconNotReady();
+}
+
 /// This phone cannot advertise.
 final class BeaconUnsupported extends BeaconStart {
   /// Creates the result.
@@ -62,7 +68,9 @@ final class StartBeacon {
         return const BeaconNeedsPermission(permanently: true);
       case BluetoothAvailability.off:
         return const BeaconBluetoothOff();
-      case BluetoothAvailability.on || BluetoothAvailability.unknown:
+      case BluetoothAvailability.unknown:
+        return const BeaconNotReady();
+      case BluetoothAvailability.on:
         break;
     }
     if (!await _beacon.supported()) return const BeaconUnsupported();

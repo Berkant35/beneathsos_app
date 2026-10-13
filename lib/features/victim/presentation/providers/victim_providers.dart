@@ -14,6 +14,7 @@ import 'package:beneathsos_app/core/services/clock.dart';
 import 'package:beneathsos_app/core/services/motion_service.dart';
 import 'package:beneathsos_app/core/services/permission_service.dart';
 import 'package:beneathsos_app/core/services/sos_sound_service.dart';
+import 'package:beneathsos_app/features/victim/domain/liveness.dart';
 import 'package:beneathsos_app/features/victim/domain/victim_state.dart';
 import 'package:flutter/widgets.dart' show AppLifecycleState;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -34,26 +35,28 @@ StartBeacon startBeacon(Ref ref) => StartBeacon(
   ref.watch(advertisePermissionProvider),
 );
 
-/// Victim mode: calls out as long as the screen is open, with the battery and the time since the
-/// phone was last touched or moved refreshed every [refreshEvery]; stops when the screen closes.
+/// Victim mode: calls out as long as the screen is open — "calling out" only once the platform
+/// confirms — with the battery and the time since the phone was last touched or moved refreshed every
+/// minute; follows Bluetooth going off and on, tries a failed start again every minute, and stops when
+/// the screen closes (also a start still under way).
 @riverpod
 class VictimController extends _$VictimController {
-  /// How often the payload is refreshed.
-  static const refreshEvery = Duration(minutes: 1);
-
   /// Above this (m/s², gravity removed) the phone was moved: a sign of life.
   static const movedAbove = 0.8;
 
   late int _id;
-  late DateTime _lastTouch;
+  late Liveness _liveness;
+
+  /// The payload last handed to the radio, shown once the platform confirms it.
+  BeaconPayload? _sending;
 
   @override
   VictimState build() {
     final beacon = ref.watch(beaconPortProvider);
     final screen = ref.watch(screenAwakePortProvider);
     _id = ref.watch(beaconIdSourceProvider)();
-    _lastTouch = ref.read(clockProvider)();
-    final timer = Timer.periodic(refreshEvery, (_) => unawaited(_refresh()));
+    _liveness = Liveness(ref.read(clockProvider)());
+    final timer = Timer.periodic(Liveness.quiet, (_) => unawaited(_tick()));
     final subscriptions = _listen(beacon);
     unawaited(screen.keepAwake(enabled: true));
     ref.onDispose(() {
@@ -68,26 +71,36 @@ class VictimController extends _$VictimController {
     return const VictimStarting();
   }
 
-  /// Platform failures, movement (a sign of life), Bluetooth turned on, and the return from Settings.
   List<StreamSubscription<Object?>> _listen(BeaconPort beacon) {
     ref.listen(appLifecycleProvider, (_, next) {
-      if (next.value == AppLifecycleState.resumed &&
-          state is VictimNeedsPermission) {
+      // Back from Settings; a refusal that can still be asked is not asked again by itself.
+      final settings = switch (state) {
+        VictimNeedsPermission(:final permanently) => permanently,
+        _ => false,
+      };
+      if (next.value == AppLifecycleState.resumed && settings) {
         unawaited(retry());
       }
     });
     return [
+      beacon.advertiseStarted.listen((_) {
+        if (_sending case final payload?) state = VictimCallingOut(payload);
+      }),
       beacon.advertiseErrors.listen((message) {
         AppLogger.error('victim', 'Beacon stopped: $message');
-        state = const VictimFailed();
+        _fail();
       }),
       ref
           .watch(motionPortProvider)
           .accelerations
           .where((m) => m > movedAbove)
           .listen((_) => touched()),
-      beacon.availabilityChanges.listen((a) {
-        if (a == BluetoothAvailability.on && state is VictimBluetoothOff) {
+      beacon.availabilityChanges.listen((availability) {
+        if (onRadio(availability) case final next?) {
+          _sending = null;
+          state = next;
+        } else if (availability == BluetoothAvailability.on &&
+            state is! VictimCallingOut) {
           unawaited(retry());
         }
       }),
@@ -96,11 +109,27 @@ class VictimController extends _$VictimController {
 
   /// Starts (again) calling out.
   Future<void> retry() async {
+    final beacon = ref.read(beaconPortProvider);
+    final start = ref.read(startBeaconProvider);
     final payload = await _payload();
-    final result = await ref.read(startBeaconProvider)(payload);
-    if (!ref.mounted) return;
+    _sending = payload;
+    final BeaconStart result;
+    try {
+      result = await start(payload);
+    } on Object catch (error, stack) {
+      AppLogger.error('victim', 'Beacon did not start', error, stack);
+      if (ref.mounted) _fail();
+      return;
+    }
+    if (!ref.mounted) {
+      // The screen closed while starting: leave no signal behind.
+      if (result is BeaconStarted) unawaited(beacon.stopAdvertising());
+      return;
+    }
+    if (result is! BeaconStarted) _sending = null;
     state = switch (result) {
-      BeaconStarted() => VictimCallingOut(payload),
+      BeaconStarted() || BeaconNotReady() =>
+        state is VictimCallingOut ? state : const VictimStarting(),
       BeaconNeedsPermission(:final permanently) => VictimNeedsPermission(
         permanently: permanently,
       ),
@@ -109,31 +138,50 @@ class VictimController extends _$VictimController {
     };
   }
 
+  /// The one action of the current state: Settings when only Settings can help, else start again.
+  Future<void> act() => switch (state) {
+    VictimNeedsPermission(permanently: true) =>
+      ref.read(advertisePermissionProvider).openSettings(),
+    _ => retry(),
+  };
+
   /// Someone touched or moved the phone; after a quiet minute the signal says so at once.
   void touched() {
-    final quiet = ref.read(clockProvider)().difference(_lastTouch);
-    _lastTouch = ref.read(clockProvider)();
-    if (quiet >= refreshEvery) unawaited(_refresh());
+    if (_liveness.touch(ref.read(clockProvider)())) unawaited(_tick());
   }
 
-  /// Opens the OS settings for Bluetooth access.
-  Future<void> openSettings() =>
-      ref.read(advertisePermissionProvider).openSettings();
+  Future<void> _tick() async => switch (state) {
+    VictimFailed() => retry(),
+    VictimCallingOut() => _refresh(),
+    _ => null,
+  };
 
   Future<void> _refresh() async {
-    if (state is! VictimCallingOut) return;
+    final beacon = ref.read(beaconPortProvider);
     final payload = await _payload();
-    await ref.read(beaconPortProvider).advertise(payload);
-    if (ref.mounted && state is VictimCallingOut) {
-      state = VictimCallingOut(payload);
+    _sending = payload;
+    try {
+      await beacon.advertise(payload);
+    } on Object catch (error, stack) {
+      AppLogger.error('victim', 'Beacon refresh failed', error, stack);
+      if (ref.mounted) _fail();
     }
   }
 
-  Future<BeaconPayload> _payload() async => BeaconPayload(
-    id: _id,
-    batteryPercent: await ref.read(batteryProvider).level(),
-    sinceTouch: ref.read(clockProvider)().difference(_lastTouch),
-  );
+  void _fail() {
+    _sending = null;
+    state = const VictimFailed();
+  }
+
+  /// Reads everything before the first await, so it is safe while the screen closes.
+  Future<BeaconPayload> _payload() {
+    final battery = ref.read(batteryProvider);
+    final since = _liveness.since(ref.read(clockProvider)());
+    return battery.level().then(
+      (percent) =>
+          BeaconPayload(id: _id, batteryPercent: percent, sinceTouch: since),
+    );
+  }
 }
 
 /// Whether the SOS sound plays; it stops when victim mode closes.
@@ -151,5 +199,7 @@ class SosSoundController extends _$SosSoundController {
     final sound = ref.read(sosSoundProvider);
     state = !state;
     await (state ? sound.play() : sound.stop());
+    // Closed while the sound was starting: it must not outlive the screen.
+    if (!ref.mounted) await sound.stop();
   }
 }

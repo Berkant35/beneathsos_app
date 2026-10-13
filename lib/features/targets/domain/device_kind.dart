@@ -51,12 +51,12 @@ abstract final class _AppleType {
 
 /// Classifies a sample: a BeneathSOS victim beacon first, then by manufacturer data. Pure function.
 DeviceKind classify(BleSample sample) {
-  final beacon = beaconKey(
+  if (isBeacon(
     serviceUuids: sample.serviceUuids,
     serviceData: sample.serviceData,
-    localName: sample.localName,
-  );
-  if (beacon != null) return DeviceKind.trappedBeacon;
+  )) {
+    return DeviceKind.trappedBeacon;
+  }
   final payload = sample.payload;
   return switch (sample.companyId) {
     null => DeviceKind.unknown,

@@ -202,7 +202,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get victimTap =>
-      'Touch the screen now and then: rescuers can see that someone touched the phone.';
+      'Touch the screen now and then: rescuers can see that the phone was touched or moved recently.';
 
   @override
   String get victimSos => 'Play SOS sound';
@@ -864,15 +864,15 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: 'touched $minutes min ago',
-      one: 'touched 1 min ago',
-      zero: 'touched in the last minute',
+      other: 'moved or touched $minutes min ago',
+      one: 'moved or touched 1 min ago',
+      zero: 'moved or touched in the last minute',
     );
     return '$_temp0';
   }
 
   @override
-  String get reasonUntouched => 'not touched for over 4 hours';
+  String get reasonUntouched => 'not moved or touched for over 4 hours';
 
   @override
   String get exportTitle => 'Export this search';
@@ -892,4 +892,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get siteExport => 'Export this search';
+
+  @override
+  String get victimSosHint => 'Turn the volume all the way up.';
 }

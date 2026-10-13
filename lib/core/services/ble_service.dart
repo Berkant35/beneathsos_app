@@ -51,6 +51,9 @@ class BleService implements ScannerPort, BeaconPort {
   Future<void> stop() => _scanner.stop();
 
   @override
+  Stream<void> get advertiseStarted => _scanner.advertiseStarted;
+
+  @override
   Stream<String> get advertiseErrors =>
       _scanner.advertiseErrors.map((e) => e.toString());
 

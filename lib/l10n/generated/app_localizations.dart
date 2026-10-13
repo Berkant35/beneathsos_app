@@ -449,7 +449,7 @@ abstract class AppLocalizations {
   /// No description provided for @victimTap.
   ///
   /// In en, this message translates to:
-  /// **'Touch the screen now and then: rescuers can see that someone touched the phone.'**
+  /// **'Touch the screen now and then: rescuers can see that the phone was touched or moved recently.'**
   String get victimTap;
 
   /// No description provided for @victimSos.
@@ -1475,13 +1475,13 @@ abstract class AppLocalizations {
   /// No description provided for @reasonTouched.
   ///
   /// In en, this message translates to:
-  /// **'{minutes, plural, =0{touched in the last minute} =1{touched 1 min ago} other{touched {minutes} min ago}}'**
+  /// **'{minutes, plural, =0{moved or touched in the last minute} =1{moved or touched 1 min ago} other{moved or touched {minutes} min ago}}'**
   String reasonTouched(int minutes);
 
   /// No description provided for @reasonUntouched.
   ///
   /// In en, this message translates to:
-  /// **'not touched for over 4 hours'**
+  /// **'not moved or touched for over 4 hours'**
   String get reasonUntouched;
 
   /// No description provided for @exportTitle.
@@ -1519,6 +1519,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Export this search'**
   String get siteExport;
+
+  /// No description provided for @victimSosHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn the volume all the way up.'**
+  String get victimSosHint;
 }
 
 class _AppLocalizationsDelegate

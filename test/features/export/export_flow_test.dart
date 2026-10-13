@@ -69,7 +69,10 @@ void main() {
         'beneathsos-1970-01-01-ataturk-cad-12-samples.csv',
       ]);
       final json = jsonDecode(files.first.text) as Map<String, Object?>;
-      expect(json['disclaimer'], contains('does not replace professional rescue'));
+      expect(
+        json['disclaimer'],
+        contains('does not replace professional rescue'),
+      );
       expect(json['events']! as List, hasLength(2));
       expect(
         find.text('Shared. The files hold this search as recorded.'),

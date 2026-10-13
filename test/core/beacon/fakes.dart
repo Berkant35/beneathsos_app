@@ -11,17 +11,37 @@ final class FakeBeacon implements BeaconPort {
   FakeBeacon({
     this.availability = BluetoothAvailability.on,
     this.canAdvertise = true,
+    this.confirms = true,
   });
 
   BluetoothAvailability availability;
   bool canAdvertise;
+
+  /// Whether the platform confirms each start at once.
+  bool confirms;
+
+  /// When set, advertising throws this.
+  Error? throwOnAdvertise;
+
+  /// When set, the adapter state is answered only once this completes.
+  Completer<void>? gate;
+  final _started = StreamController<void>.broadcast();
   final sent = <BeaconPayload>[];
   int stopped = 0;
   final _availability = StreamController<BluetoothAvailability>.broadcast();
   final _errors = StreamController<String>.broadcast();
 
   @override
-  Future<BluetoothAvailability> settledAvailability() async => availability;
+  Future<BluetoothAvailability> settledAvailability() async {
+    await gate?.future;
+    return availability;
+  }
+
+  @override
+  Stream<void> get advertiseStarted => _started.stream;
+
+  /// The platform confirms the last start.
+  void confirm() => _started.add(null);
 
   @override
   Stream<BluetoothAvailability> get availabilityChanges => _availability.stream;
@@ -33,7 +53,11 @@ final class FakeBeacon implements BeaconPort {
   Future<bool> supported() async => canAdvertise;
 
   @override
-  Future<void> advertise(BeaconPayload payload) async => sent.add(payload);
+  Future<void> advertise(BeaconPayload payload) async {
+    if (throwOnAdvertise case final error?) throw error;
+    sent.add(payload);
+    if (confirms) confirm();
+  }
 
   @override
   Future<void> stopAdvertising() async => stopped++;

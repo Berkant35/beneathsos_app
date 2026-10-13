@@ -46,7 +46,7 @@ void main() {
       expect(
         subject.reason(l10n, candidate, surfaceScanned: false),
         startsWith(
-          'This phone says it is trapped · battery 55 % · touched 3 min ago',
+          'This phone says it is trapped · battery 55 % · moved or touched 3 min ago',
         ),
       );
     },
@@ -60,7 +60,7 @@ void main() {
         surfaceScanned: false,
       ),
       startsWith(
-        'This phone says it is trapped · not touched for over 4 hours',
+        'This phone says it is trapped · not moved or touched for over 4 hours',
       ),
     );
   });

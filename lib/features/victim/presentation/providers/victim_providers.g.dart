@@ -100,18 +100,24 @@ final class StartBeaconProvider
 
 String _$startBeaconHash() => r'3c50955fad18c6da557b110006993b65f2b47707';
 
-/// Victim mode: calls out as long as the screen is open, with the battery and the time since the
-/// phone was last touched or moved refreshed every [refreshEvery]; stops when the screen closes.
+/// Victim mode: calls out as long as the screen is open — "calling out" only once the platform
+/// confirms — with the battery and the time since the phone was last touched or moved refreshed every
+/// minute; follows Bluetooth going off and on, tries a failed start again every minute, and stops when
+/// the screen closes (also a start still under way).
 
 @ProviderFor(VictimController)
 final victimControllerProvider = VictimControllerProvider._();
 
-/// Victim mode: calls out as long as the screen is open, with the battery and the time since the
-/// phone was last touched or moved refreshed every [refreshEvery]; stops when the screen closes.
+/// Victim mode: calls out as long as the screen is open — "calling out" only once the platform
+/// confirms — with the battery and the time since the phone was last touched or moved refreshed every
+/// minute; follows Bluetooth going off and on, tries a failed start again every minute, and stops when
+/// the screen closes (also a start still under way).
 final class VictimControllerProvider
     extends $NotifierProvider<VictimController, VictimState> {
-  /// Victim mode: calls out as long as the screen is open, with the battery and the time since the
-  /// phone was last touched or moved refreshed every [refreshEvery]; stops when the screen closes.
+  /// Victim mode: calls out as long as the screen is open — "calling out" only once the platform
+  /// confirms — with the battery and the time since the phone was last touched or moved refreshed every
+  /// minute; follows Bluetooth going off and on, tries a failed start again every minute, and stops when
+  /// the screen closes (also a start still under way).
   VictimControllerProvider._()
     : super(
         from: null,
@@ -139,10 +145,12 @@ final class VictimControllerProvider
   }
 }
 
-String _$victimControllerHash() => r'25af7d9e35a6744a1bb7d6b1142e7a0d77088970';
+String _$victimControllerHash() => r'0c1acf0d18ba100822b6fec8bcedc8a6cb1522fa';
 
-/// Victim mode: calls out as long as the screen is open, with the battery and the time since the
-/// phone was last touched or moved refreshed every [refreshEvery]; stops when the screen closes.
+/// Victim mode: calls out as long as the screen is open — "calling out" only once the platform
+/// confirms — with the battery and the time since the phone was last touched or moved refreshed every
+/// minute; follows Bluetooth going off and on, tries a failed start again every minute, and stops when
+/// the screen closes (also a start still under way).
 
 abstract class _$VictimController extends $Notifier<VictimState> {
   VictimState build();
@@ -199,7 +207,7 @@ final class SosSoundControllerProvider
 }
 
 String _$sosSoundControllerHash() =>
-    r'53f506f283579c3e1eec10513030089328e1fe67';
+    r'84318306e962608d7811cb44c76863d7254671a9';
 
 /// Whether the SOS sound plays; it stops when victim mode closes.
 

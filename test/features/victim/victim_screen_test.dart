@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
 import 'package:beneathsos_app/features/home/presentation/screens/home_screen.dart';
 import 'package:beneathsos_app/features/victim/presentation/screens/victim_screen.dart';
@@ -43,6 +45,12 @@ void main() {
     expect(find.text('Signal name: SOS-1A2B'), findsOneWidget);
     expect(find.text('Battery: 80 %'), findsOneWidget);
     expect(find.textContaining('call 112'), findsOneWidget);
+    // Dark whatever the phone's setting: a lit screen drains a trapped phone's battery.
+    expect(
+      Theme.of(tester.element(find.text('Play SOS sound'))).brightness,
+      Brightness.dark,
+    );
+    expect(find.text('Turn the volume all the way up.'), findsOneWidget);
   });
 
   testWidgets(
@@ -166,6 +174,100 @@ void main() {
     expect(fakes.beacon.stopped, greaterThan(0));
     expect(fakes.sound.playing, isFalse);
   });
+
+  testWidgets('Bluetooth turned off while calling out says so, and resumes', (
+    tester,
+  ) async {
+    final fakes = await _open(tester);
+    fakes.beacon.turn(BluetoothAvailability.off);
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Turn on Bluetooth so rescuers can find this phone.'),
+      findsOneWidget,
+    );
+    fakes.beacon.turn(BluetoothAvailability.on);
+    await tester.pumpAndSettle();
+    expect(find.text('Your phone is calling out to rescuers.'), findsOneWidget);
+    expect(fakes.beacon.sent, hasLength(2));
+  });
+
+  testWidgets('access taken away while calling out asks for Settings', (
+    tester,
+  ) async {
+    final fakes = await _open(tester);
+    fakes.beacon.turn(BluetoothAvailability.unauthorized);
+    await tester.pumpAndSettle();
+    expect(find.text('Open Settings'), findsOneWidget);
+  });
+
+  testWidgets('it says "calling out" only once the platform confirms', (
+    tester,
+  ) async {
+    final fakes = await _open(
+      tester,
+      fakes: BeaconFakes(beacon: FakeBeacon(confirms: false)),
+    );
+    expect(find.text('Starting the help signal…'), findsOneWidget);
+    fakes.beacon.confirm();
+    await tester.pumpAndSettle();
+    expect(find.text('Your phone is calling out to rescuers.'), findsOneWidget);
+  });
+
+  testWidgets(
+    'Bluetooth not ready yet (iOS prompt open): waits, then calls out',
+    (tester) async {
+      final fakes = await _open(
+        tester,
+        fakes: BeaconFakes(
+          beacon: FakeBeacon(availability: BluetoothAvailability.unknown),
+        ),
+      );
+      expect(fakes.beacon.sent, isEmpty);
+      expect(find.text('Starting the help signal…'), findsOneWidget);
+      fakes.beacon.turn(BluetoothAvailability.on);
+      await tester.pumpAndSettle();
+      expect(
+        find.text('Your phone is calling out to rescuers.'),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets('a start that fails is tried again by itself a minute later', (
+    tester,
+  ) async {
+    final beacon = FakeBeacon()..throwOnAdvertise = StateError('busy');
+    final fakes = await _open(tester, fakes: BeaconFakes(beacon: beacon));
+    expect(find.text('The help signal stopped.'), findsOneWidget);
+    beacon.throwOnAdvertise = null;
+    await _wait(tester, fakes, 1);
+    await tester.pumpAndSettle();
+    expect(find.text('Your phone is calling out to rescuers.'), findsOneWidget);
+  });
+
+  testWidgets(
+    'leaving while the start is still under way leaves no signal behind',
+    (tester) async {
+      final gate = Completer<void>();
+      final beacon = FakeBeacon()..gate = gate;
+      await pumpRouterApp(tester, beacon: BeaconFakes(beacon: beacon));
+      await tester.tap(find.text('I am trapped'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+      await tester.tap(find.byType(BackButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Stop'));
+      await tester.pumpAndSettle();
+      final stops = beacon.stopped;
+      gate.complete();
+      await tester.pumpAndSettle();
+      expect(
+        beacon.stopped,
+        greaterThan(stops),
+        reason: 'a late start is stopped',
+      );
+    },
+  );
 
   testWidgets('Turkish', (tester) async {
     await _open(tester, locale: const Locale('tr'));

@@ -36,9 +36,9 @@ class VictimStatus extends StatelessWidget with VictimMixin {
           ),
           const SizedBox(height: BeneathSpacing.m),
           Text(headline(l10n, state), style: text.headlineMedium),
-          if (state case final VictimCallingOut calling) ...[
+          if (state case final VictimCallingOut out) ...[
             const SizedBox(height: BeneathSpacing.m),
-            for (final line in details(l10n, calling))
+            for (final line in details(l10n, out))
               Text(line, style: text.titleMedium),
             const SizedBox(height: BeneathSpacing.m),
             Text(l10n.victimCalm, style: text.bodyLarge),

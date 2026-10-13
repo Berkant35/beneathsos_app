@@ -54,9 +54,17 @@ final class BeaconPayload {
   }
 }
 
-/// The tracking key of a victim beacon — `sos-1a2b` from its id (service data on Android, local name
-/// on iOS), `sos-unknown` when it carries none — or null when the advert is not a beacon. UUIDs are
+/// Whether an advert is a victim beacon (its UUID listed, or service data under it). UUIDs are
 /// compared in any case (Android reports lower case, iOS upper case).
+bool isBeacon({
+  required List<String> serviceUuids,
+  Map<String, Uint8List>? serviceData,
+}) =>
+    serviceUuids.any(_isBeacon) || (serviceData?.keys.any(_isBeacon) ?? false);
+
+/// The tracking key of a victim beacon — `sos-1a2b` from its id (service data on Android, local name
+/// on iOS) — or null when the advert carries no id or is not a beacon: then the platform key is used,
+/// so two victims never merge into one track.
 String? beaconKey({
   required List<String> serviceUuids,
   Map<String, Uint8List>? serviceData,
@@ -70,7 +78,7 @@ String? beaconKey({
   if (data != null) return 'sos-${_hex(data.id)}';
   if (!serviceUuids.any(_isBeacon)) return null;
   final name = RegExp(r'^SOS-([0-9A-F]{4})$').firstMatch(localName ?? '');
-  return name == null ? 'sos-unknown' : 'sos-${name[1]!.toLowerCase()}';
+  return name == null ? null : 'sos-${name[1]!.toLowerCase()}';
 }
 
 bool _isBeacon(String uuid) => uuid.toLowerCase() == beaconServiceUuid;
