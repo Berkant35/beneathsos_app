@@ -573,5 +573,53 @@
   "searchDeleteBody": "Its outline, points and readings are deleted from this phone. This cannot be undone — export it first if you need it.",
   "searchDeleteKeep": "Keep it",
   "searchDeleteConfirm": "Delete",
-  "sitesDeleteFailed": "Could not delete. Nothing was changed."
+  "sitesDeleteFailed": "Could not delete. Nothing was changed.",
+  "depthTitle": "Rubble height and level",
+  "depthIntro": "The signal cannot tell how deep the phone is. Tell the app what you know — the map and the signal circles use it.",
+  "depthHeight": "Height of the rubble (m)",
+  "depthFloors": "{floors, plural, =1{1 floor ≈ {metres} m} other{{floors} floors ≈ {metres} m}}",
+  "@depthFloors": {
+    "placeholders": {
+      "floors": {
+        "type": "int"
+      },
+      "metres": {
+        "type": "int"
+      }
+    }
+  },
+  "depthLevel": "Where was the person most likely?",
+  "depthSave": "Save",
+  "depthEnterNumber": "Enter the height in metres, for example 6.",
+  "depthRange": "Use a height between 0.5 and 100 m.",
+  "depthSaveFailed": "Could not save. Nothing was changed.",
+  "levelUpper": "Upper part",
+  "levelMiddle": "Middle",
+  "levelBottom": "Ground floor (bottom)",
+  "levelBasement": "Basement",
+  "levelUnknown": "Don't know",
+  "siteStepDepth": "Rubble height and level",
+  "siteDepthDone": "{height} · {level}",
+  "@siteDepthDone": {
+    "placeholders": {
+      "height": {
+        "type": "String"
+      },
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "probDepth": "Depth: {height} of rubble · {level}.",
+  "@probDepth": {
+    "placeholders": {
+      "height": {
+        "type": "String"
+      },
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "probDepthUnset": "Depth not given: the map assumes 4 m of rubble. Set it on the overview."
 }

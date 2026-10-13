@@ -978,4 +978,72 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sitesDeleteFailed => 'Could not delete. Nothing was changed.';
+
+  @override
+  String get depthTitle => 'Rubble height and level';
+
+  @override
+  String get depthIntro =>
+      'The signal cannot tell how deep the phone is. Tell the app what you know — the map and the signal circles use it.';
+
+  @override
+  String get depthHeight => 'Height of the rubble (m)';
+
+  @override
+  String depthFloors(int floors, int metres) {
+    String _temp0 = intl.Intl.pluralLogic(
+      floors,
+      locale: localeName,
+      other: '$floors floors ≈ $metres m',
+      one: '1 floor ≈ $metres m',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get depthLevel => 'Where was the person most likely?';
+
+  @override
+  String get depthSave => 'Save';
+
+  @override
+  String get depthEnterNumber => 'Enter the height in metres, for example 6.';
+
+  @override
+  String get depthRange => 'Use a height between 0.5 and 100 m.';
+
+  @override
+  String get depthSaveFailed => 'Could not save. Nothing was changed.';
+
+  @override
+  String get levelUpper => 'Upper part';
+
+  @override
+  String get levelMiddle => 'Middle';
+
+  @override
+  String get levelBottom => 'Ground floor (bottom)';
+
+  @override
+  String get levelBasement => 'Basement';
+
+  @override
+  String get levelUnknown => 'Don\'t know';
+
+  @override
+  String get siteStepDepth => 'Rubble height and level';
+
+  @override
+  String siteDepthDone(String height, String level) {
+    return '$height · $level';
+  }
+
+  @override
+  String probDepth(String height, String level) {
+    return 'Depth: $height of rubble · $level.';
+  }
+
+  @override
+  String get probDepthUnset =>
+      'Depth not given: the map assumes 4 m of rubble. Set it on the overview.';
 }

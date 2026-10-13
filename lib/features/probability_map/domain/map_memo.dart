@@ -42,6 +42,7 @@ final class MapMemo {
 
   static String _keyOf(MapRequest r) => [
     r.profileId,
+    '${r.depth?.height.value},${r.depth?.level.name}',
     for (final c in r.outline.corners) '${c.x.value},${c.y.value}',
     '|',
     for (final o in r.observations)

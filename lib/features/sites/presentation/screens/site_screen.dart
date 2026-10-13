@@ -74,6 +74,9 @@ class SiteScreen extends ConsumerWidget
                     SiteStepAction.draw => () => DrawOutlineRoute(
                       sessionId: sessionId,
                     ).go(context),
+                    SiteStepAction.depth => () => DepthRoute(
+                      sessionId: sessionId,
+                    ).go(context),
                     SiteStepAction.ambient => () => AmbientRoute(
                       sessionId: sessionId,
                     ).go(context),

@@ -129,6 +129,7 @@ class _MapScreenState extends ConsumerState<MapScreen>
                       map: result,
                       choosing: found is FoundChoosing,
                       circlesNote: overlay.note,
+                      depthNote: depthLine(l10n, search.depth),
                       onRecordFound: recorder.start,
                       onCancelFound: recorder.cancel,
                       note: foundNote(

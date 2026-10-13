@@ -19,6 +19,7 @@ class MapPanel extends StatelessWidget with MapMixin {
     required this.onCancelFound,
     this.note,
     this.circlesNote,
+    this.depthNote,
     super.key,
   });
 
@@ -43,6 +44,9 @@ class MapPanel extends StatelessWidget with MapMixin {
   /// Where the signal circles meet, or what is missing.
   final String? circlesNote;
 
+  /// The depth the map assumes.
+  final String? depthNote;
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -57,6 +61,7 @@ class MapPanel extends StatelessWidget with MapMixin {
         Text(spotLine(l10n, map.spot), style: text.bodyLarge),
         const SizedBox(height: BeneathSpacing.s),
         Text(l10n.probRule, style: text.bodyMedium),
+        if (depthNote case final note?) Text(note, style: text.bodyMedium),
         if (map.bunched) ...[
           const SizedBox(height: BeneathSpacing.sm),
           StatusBanner(kind: StatusKind.attention, message: l10n.probBunched),

@@ -1663,6 +1663,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not delete. Nothing was changed.'**
   String get sitesDeleteFailed;
+
+  /// No description provided for @depthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rubble height and level'**
+  String get depthTitle;
+
+  /// No description provided for @depthIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'The signal cannot tell how deep the phone is. Tell the app what you know — the map and the signal circles use it.'**
+  String get depthIntro;
+
+  /// No description provided for @depthHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Height of the rubble (m)'**
+  String get depthHeight;
+
+  /// No description provided for @depthFloors.
+  ///
+  /// In en, this message translates to:
+  /// **'{floors, plural, =1{1 floor ≈ {metres} m} other{{floors} floors ≈ {metres} m}}'**
+  String depthFloors(int floors, int metres);
+
+  /// No description provided for @depthLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Where was the person most likely?'**
+  String get depthLevel;
+
+  /// No description provided for @depthSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get depthSave;
+
+  /// No description provided for @depthEnterNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the height in metres, for example 6.'**
+  String get depthEnterNumber;
+
+  /// No description provided for @depthRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a height between 0.5 and 100 m.'**
+  String get depthRange;
+
+  /// No description provided for @depthSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save. Nothing was changed.'**
+  String get depthSaveFailed;
+
+  /// No description provided for @levelUpper.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper part'**
+  String get levelUpper;
+
+  /// No description provided for @levelMiddle.
+  ///
+  /// In en, this message translates to:
+  /// **'Middle'**
+  String get levelMiddle;
+
+  /// No description provided for @levelBottom.
+  ///
+  /// In en, this message translates to:
+  /// **'Ground floor (bottom)'**
+  String get levelBottom;
+
+  /// No description provided for @levelBasement.
+  ///
+  /// In en, this message translates to:
+  /// **'Basement'**
+  String get levelBasement;
+
+  /// No description provided for @levelUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t know'**
+  String get levelUnknown;
+
+  /// No description provided for @siteStepDepth.
+  ///
+  /// In en, this message translates to:
+  /// **'Rubble height and level'**
+  String get siteStepDepth;
+
+  /// No description provided for @siteDepthDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{height} · {level}'**
+  String siteDepthDone(String height, String level);
+
+  /// No description provided for @probDepth.
+  ///
+  /// In en, this message translates to:
+  /// **'Depth: {height} of rubble · {level}.'**
+  String probDepth(String height, String level);
+
+  /// No description provided for @probDepthUnset.
+  ///
+  /// In en, this message translates to:
+  /// **'Depth not given: the map assumes 4 m of rubble. Set it on the overview.'**
+  String get probDepthUnset;
 }
 
 class _AppLocalizationsDelegate

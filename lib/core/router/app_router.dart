@@ -10,6 +10,7 @@ import 'package:beneathsos_app/features/preview/presentation/screens/preview_sca
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_site_screen.dart';
 import 'package:beneathsos_app/features/preview/presentation/screens/preview_target_screen.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/screens/map_screen.dart';
+import 'package:beneathsos_app/features/site_depth/presentation/screens/depth_screen.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/screens/draw_outline_screen.dart';
 import 'package:beneathsos_app/features/site_drawing/presentation/screens/scale_screen.dart';
 import 'package:beneathsos_app/features/sites/presentation/screens/new_site_screen.dart';
@@ -47,6 +48,7 @@ part 'app_router.g.dart';
             TypedGoRoute<MeasureRoute>(path: 'measure'),
             TypedGoRoute<MapRoute>(path: 'map'),
             TypedGoRoute<ExportRoute>(path: 'export'),
+            TypedGoRoute<DepthRoute>(path: 'depth'),
           ],
         ),
       ],
@@ -235,6 +237,19 @@ class MapRoute extends GoRouteData with $MapRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       MapScreen(sessionId: sessionId);
+}
+
+/// Rubble height and the person's likely level (`/sites/:sessionId/depth`).
+class DepthRoute extends GoRouteData with $DepthRoute {
+  /// Route to the depth form of [sessionId].
+  const DepthRoute({required this.sessionId});
+
+  /// The search.
+  final String sessionId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      DepthScreen(sessionId: sessionId);
 }
 
 /// Export a search (`/sites/:sessionId/export`).

@@ -1,3 +1,4 @@
+import 'package:beneathsos_app/core/formatting/levels.dart';
 import 'package:beneathsos_app/core/formatting/measures.dart';
 import 'package:beneathsos_app/features/probability_map/domain/likely_spot.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
@@ -121,4 +122,14 @@ mixin MapMixin {
         metresLabel(l10n, spot.radius50),
         metresLabel(l10n, spot.fromEdge),
       );
+
+  /// "Depth: 6.0 m of rubble · Ground floor (bottom)." — or that none was given (4 m assumed).
+  String depthLine(AppLocalizations l10n, RubbleDepth? depth) =>
+      switch (depth) {
+        final depth? => l10n.probDepth(
+          metresLabel(l10n, depth.height),
+          levelLabel(l10n, depth.level),
+        ),
+        null => l10n.probDepthUnset,
+      };
 }

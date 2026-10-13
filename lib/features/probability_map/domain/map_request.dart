@@ -1,3 +1,4 @@
+import 'package:beneathsos_app/features/probability_map/domain/depth.dart';
 import 'package:locator_engine/locator_engine.dart';
 import 'package:rubble_core/rubble_core.dart';
 
@@ -32,6 +33,7 @@ typedef MapRequest = ({
   RubblePolygon outline,
   List<Observation> observations,
   String profileId,
+  RubbleDepth? depth,
 });
 
 /// Places closer than this (real metres) are one place: measuring again where you stand adds no
@@ -57,6 +59,7 @@ MapRequest? requestFor(SessionState search, TargetId target) {
     outline: outline,
     observations: _places(around),
     profileId: profileFor(search).id,
+    depth: search.depth,
   );
 }
 
@@ -151,8 +154,10 @@ typedef MapResult = ({ProbabilityMap map, SitePoint? next});
 
 /// Runs the engine for [request] (pure; heavy — the app runs it in an isolate).
 MapResult computeMap(MapRequest request) {
-  final profile =
-      EngineProfile.byId(request.profileId) ?? EngineProfile.voidedPancake;
+  final profile = withDepth(
+    EngineProfile.byId(request.profileId) ?? EngineProfile.voidedPancake,
+    request.depth,
+  );
   final map = estimate(
     outline: request.outline,
     observations: request.observations,

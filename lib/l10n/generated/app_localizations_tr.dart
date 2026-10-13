@@ -967,4 +967,71 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get sitesDeleteFailed => 'Silinemedi. Hiçbir şey değişmedi.';
+
+  @override
+  String get depthTitle => 'Enkaz yüksekliği ve seviye';
+
+  @override
+  String get depthIntro =>
+      'Sinyal, telefonun ne kadar derinde olduğunu söyleyemez. Bildiklerinizi girin — harita ve sinyal çemberleri bunu kullanır.';
+
+  @override
+  String get depthHeight => 'Enkazın yüksekliği (m)';
+
+  @override
+  String depthFloors(int floors, int metres) {
+    String _temp0 = intl.Intl.pluralLogic(
+      floors,
+      locale: localeName,
+      other: '$floors kat ≈ $metres m',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get depthLevel => 'Kişi büyük olasılıkla neredeydi?';
+
+  @override
+  String get depthSave => 'Kaydet';
+
+  @override
+  String get depthEnterNumber => 'Yüksekliği metre olarak girin, örneğin 6.';
+
+  @override
+  String get depthRange => '0,5 ile 100 m arasında bir yükseklik girin.';
+
+  @override
+  String get depthSaveFailed => 'Kaydedilemedi. Hiçbir şey değişmedi.';
+
+  @override
+  String get levelUpper => 'Üst kısım';
+
+  @override
+  String get levelMiddle => 'Orta';
+
+  @override
+  String get levelBottom => 'Zemin kat (alt)';
+
+  @override
+  String get levelBasement => 'Bodrum';
+
+  @override
+  String get levelUnknown => 'Bilmiyorum';
+
+  @override
+  String get siteStepDepth => 'Enkaz yüksekliği ve seviye';
+
+  @override
+  String siteDepthDone(String height, String level) {
+    return '$height · $level';
+  }
+
+  @override
+  String probDepth(String height, String level) {
+    return 'Derinlik: $height enkaz · $level.';
+  }
+
+  @override
+  String get probDepthUnset =>
+      'Derinlik girilmedi: harita 4 m enkaz varsayar. Genel bakıştan girin.';
 }

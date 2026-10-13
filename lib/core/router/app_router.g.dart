@@ -68,6 +68,11 @@ RouteBase get $homeRoute => GoRouteData.$route(
               hasOverriddenOnExit: false,
               factory: $ExportRoute._fromState,
             ),
+            GoRouteData.$route(
+              path: 'depth',
+              hasOverriddenOnExit: false,
+              factory: $DepthRoute._fromState,
+            ),
           ],
         ),
       ],
@@ -389,6 +394,31 @@ mixin $ExportRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
     '/sites/${Uri.encodeComponent(_self.sessionId)}/export',
+  );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $DepthRoute on GoRouteData {
+  static DepthRoute _fromState(GoRouterState state) =>
+      DepthRoute(sessionId: state.pathParameters['sessionId']!);
+
+  DepthRoute get _self => this as DepthRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/sites/${Uri.encodeComponent(_self.sessionId)}/depth',
   );
 
   @override

@@ -1,3 +1,4 @@
+import 'package:beneathsos_app/core/formatting/levels.dart';
 import 'package:beneathsos_app/core/formatting/measures.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:rubble_core/rubble_core.dart';
@@ -6,6 +7,9 @@ import 'package:rubble_core/rubble_core.dart';
 enum SiteStepAction {
   /// Draw the rubble outline.
   draw,
+
+  /// Rubble height and the person's likely level.
+  depth,
 
   /// The surface scan.
   ambient,
@@ -56,6 +60,18 @@ mixin SiteScreenMixin {
             : notDone(),
         done: outline != null,
         action: canOpen ? SiteStepAction.draw : null,
+      ),
+      (
+        label: l10n.siteStepDepth,
+        status: switch (state?.depth) {
+          final depth? => l10n.siteDepthDone(
+            metresLabel(l10n, depth.height),
+            levelLabel(l10n, depth.level),
+          ),
+          null => notDone(),
+        },
+        done: state?.depth != null,
+        action: canOpen ? SiteStepAction.depth : null,
       ),
       (
         label: l10n.siteStepAmbient,

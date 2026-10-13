@@ -1,5 +1,6 @@
 import 'package:beneathsos_app/core/canvas/canvas_style.dart';
 import 'package:beneathsos_app/core/formatting/measures.dart';
+import 'package:beneathsos_app/features/probability_map/domain/depth.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
 import 'package:beneathsos_app/features/probability_map/domain/signal_circles.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
@@ -34,7 +35,8 @@ mixin SignalOverlayMixin {
     );
     final outline = realOutline(search);
     if (!visible || target == null || outline == null) return none;
-    final profile = profileFor(search);
+    final profile = withDepth(profileFor(search), search.depth);
+    final height = phoneHeight(profile);
     final scale = search.scale;
     final heard = [
       for (final point in search.measuredPoints)
@@ -42,7 +44,11 @@ mixin SignalOverlayMixin {
           for (final reading in point.readings)
             if (reading case SignalHeard(target: final t, :final median)
                 when t == target)
-              (point.id, at, signalRadius(median, profile)),
+              (
+                point.id,
+                at,
+                horizontalRadius(signalRadius(median, profile), height),
+              ),
     ];
     if (heard.isEmpty) return none;
     final colors = {

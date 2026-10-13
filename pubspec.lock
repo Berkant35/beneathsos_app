@@ -617,7 +617,7 @@ packages:
       path: "../../packages/locator_engine"
       relative: true
     source: path
-    version: "0.1.1"
+    version: "0.1.2"
   logging:
     dependency: transitive
     description:
@@ -936,14 +936,14 @@ packages:
       path: "../../packages/rubble_canvas"
       relative: true
     source: path
-    version: "0.6.0"
+    version: "0.6.1"
   rubble_core:
     dependency: "direct main"
     description:
       path: "../../packages/rubble_core"
       relative: true
     source: path
-    version: "0.2.0"
+    version: "0.3.0"
   sensors_plus:
     dependency: "direct main"
     description:
