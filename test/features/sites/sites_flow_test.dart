@@ -34,6 +34,9 @@ final class _FailingStore implements SessionStore {
 
   @override
   Future<SearchRecord> record(SessionId session) => inner.record(session);
+
+  @override
+  Future<void> delete(SessionId session) => inner.delete(session);
   final bool failCreate;
   final bool failAppend;
   final bool failSummary;
@@ -272,6 +275,36 @@ void main() {
     await tester.pageBack();
     await _settle(tester);
     expect(find.text('Finished'), findsOneWidget);
+  });
+
+  testWidgets('a search can be deleted from the list, after asking', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final (db, _) = await _returning(
+      tester,
+      search: 'Atatürk Cad. 12',
+      measured: true,
+    );
+    await pumpRouterApp(tester, database: db);
+    await _settle(tester);
+    await _tap(tester, 'Start a search');
+    expect(find.text('Atatürk Cad. 12'), findsOneWidget);
+    await _tap(tester, 'Delete');
+    expect(find.text('Delete “Atatürk Cad. 12”?'), findsOneWidget);
+    await _tap(tester, 'Keep it');
+    expect(find.text('Atatürk Cad. 12'), findsOneWidget);
+    await _tap(tester, 'Delete');
+    await tester.tap(
+      find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.text('Delete'),
+      ),
+    );
+    await _settle(tester);
+    expect(find.text('Atatürk Cad. 12'), findsNothing);
+    final events = await tester.runAsync(() => db.select(db.events).get());
+    expect(events, isEmpty);
   });
 
   testWidgets('an unknown search shows a calm message and a way back', (

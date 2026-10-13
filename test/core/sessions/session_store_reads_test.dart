@@ -225,6 +225,32 @@ void main() {
     },
   );
 
+  test('deleting a search removes it with its events and readings, and nothing else', () async {
+    final s = store();
+    final gone = await create(s, 'Atatürk Cad. 12');
+    final kept = await create(s, 'İnönü Sok. 3');
+    for (final id in [gone, kept]) {
+      await measure(s, id, 'p-${id.value}');
+      await s.addSamples(id, PointId('p-${id.value}'), const [
+        BleSample(
+          key: 'apple-1',
+          rssi: -70,
+          serviceUuids: [],
+          monotonicNanos: 1,
+          wallClockMillis: 5001,
+        ),
+      ]);
+    }
+    await s.delete(gone);
+    final sessions = await db.select(db.sessions).get();
+    expect(sessions.map((r) => r.id), [kept.value]);
+    final events = await db.select(db.events).get();
+    expect(events.every((e) => e.sessionId == kept.value), isTrue);
+    expect(events, isNotEmpty);
+    final samples = await db.select(db.rssiSamples).get();
+    expect(samples.map((r) => r.sessionId), [kept.value]);
+  });
+
   test('a session survives closing and reopening the database file', () async {
     final dir = await Directory.systemTemp.createTemp('beneathsos_db');
     addTearDown(() => dir.delete(recursive: true));

@@ -254,5 +254,11 @@
   "circlesToggle": "Sinyal çemberleri (kaba tahmin)",
   "circlesMeet": "Çemberler en yakın ölçüm noktasından yaklaşık {distance} uzakta kesişiyor. Kaba tahmin: her çember sinyalin baştan sona enkazdan geçtiğini varsayar.",
   "circlesOne": "Çemberlerin nerede kesiştiğini görmek için sinyal alınan bir nokta daha ölçün.",
-  "mapNextLabel": "Sonraki ölçüm"
+  "mapNextLabel": "Sonraki ölçüm",
+  "searchDelete": "Sil",
+  "searchDeleteTitle": "“{title}” silinsin mi?",
+  "searchDeleteBody": "Çizimi, noktaları ve ölçümleri bu telefondan silinir. Geri alınamaz — gerekiyorsa önce dışa aktarın.",
+  "searchDeleteKeep": "Kalsın",
+  "searchDeleteConfirm": "Sil",
+  "sitesDeleteFailed": "Silinemedi. Hiçbir şey değişmedi."
 }

@@ -1627,6 +1627,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Measure next'**
   String get mapNextLabel;
+
+  /// No description provided for @searchDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get searchDelete;
+
+  /// No description provided for @searchDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete “{title}”?'**
+  String searchDeleteTitle(String title);
+
+  /// No description provided for @searchDeleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Its outline, points and readings are deleted from this phone. This cannot be undone — export it first if you need it.'**
+  String get searchDeleteBody;
+
+  /// No description provided for @searchDeleteKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it'**
+  String get searchDeleteKeep;
+
+  /// No description provided for @searchDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get searchDeleteConfirm;
+
+  /// No description provided for @sitesDeleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete. Nothing was changed.'**
+  String get sitesDeleteFailed;
 }
 
 class _AppLocalizationsDelegate

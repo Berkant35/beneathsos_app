@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:beneathsos_app/core/database/database_provider.dart';
 import 'package:beneathsos_app/core/services/clock.dart';
 import 'package:beneathsos_app/core/sessions/data/drift_session_store.dart';
+import 'package:beneathsos_app/core/sessions/domain/delete_search.dart';
 import 'package:beneathsos_app/core/sessions/domain/finish_search.dart';
 import 'package:beneathsos_app/core/sessions/domain/session_store.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -36,3 +37,8 @@ FinishSearch finishSearch(Ref ref) =>
 @riverpod
 Stream<SessionState> sessionState(Ref ref, String sessionId) =>
     ref.watch(sessionStoreProvider).watch(SessionId(sessionId));
+
+/// The delete-a-search use case.
+@Riverpod(keepAlive: true)
+DeleteSearch deleteSearch(Ref ref) =>
+    DeleteSearch(ref.watch(sessionStoreProvider));

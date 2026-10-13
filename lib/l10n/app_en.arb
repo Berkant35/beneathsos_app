@@ -560,5 +560,18 @@
     }
   },
   "circlesOne": "Measure one more point with a signal to see where the circles meet.",
-  "mapNextLabel": "Measure next"
+  "mapNextLabel": "Measure next",
+  "searchDelete": "Delete",
+  "searchDeleteTitle": "Delete “{title}”?",
+  "@searchDeleteTitle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "searchDeleteBody": "Its outline, points and readings are deleted from this phone. This cannot be undone — export it first if you need it.",
+  "searchDeleteKeep": "Keep it",
+  "searchDeleteConfirm": "Delete",
+  "sitesDeleteFailed": "Could not delete. Nothing was changed."
 }

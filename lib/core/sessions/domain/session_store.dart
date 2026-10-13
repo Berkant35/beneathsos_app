@@ -102,6 +102,10 @@ abstract interface class SessionStore {
   /// Every real (not practice) search: open ones first, then newest first; updated on every change.
   Stream<List<SessionSummary>> watchSearches();
 
+  /// Deletes [session] from this phone with its events and raw readings (the person's choice; nothing
+  /// else changes).
+  Future<void> delete(SessionId session);
+
   /// Everything stored for [session], for export: its row, every event as stored (also one that no
   /// longer decodes) and its raw readings.
   Future<SearchRecord> record(SessionId session);

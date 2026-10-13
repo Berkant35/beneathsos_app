@@ -957,4 +957,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mapNextLabel => 'Measure next';
+
+  @override
+  String get searchDelete => 'Delete';
+
+  @override
+  String searchDeleteTitle(String title) {
+    return 'Delete “$title”?';
+  }
+
+  @override
+  String get searchDeleteBody =>
+      'Its outline, points and readings are deleted from this phone. This cannot be undone — export it first if you need it.';
+
+  @override
+  String get searchDeleteKeep => 'Keep it';
+
+  @override
+  String get searchDeleteConfirm => 'Delete';
+
+  @override
+  String get sitesDeleteFailed => 'Could not delete. Nothing was changed.';
 }

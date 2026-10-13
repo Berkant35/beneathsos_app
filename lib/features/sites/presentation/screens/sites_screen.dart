@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:beneathsos_app/core/l10n_extension.dart';
 import 'package:beneathsos_app/core/router/app_router.dart';
+import 'package:beneathsos_app/features/sites/presentation/mixins/sites_screen_mixin.dart';
 import 'package:beneathsos_app/features/sites/presentation/providers/searches.dart';
 import 'package:beneathsos_app/features/sites/presentation/widgets/search_tile.dart';
 import 'package:beneathsos_ui/beneathsos_ui.dart';
@@ -7,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// The rescuer's searches: New search, then every real search (open ones first), and practice.
-class SitesScreen extends ConsumerWidget {
+class SitesScreen extends ConsumerWidget with SitesScreenMixin {
   /// Creates the screen.
   const SitesScreen({super.key});
 
@@ -33,7 +36,11 @@ class SitesScreen extends ConsumerWidget {
               ],
               AsyncData(:final value) => [
                 for (final search in value) ...[
-                  SearchTile(search: search),
+                  SearchTile(
+                    search: search,
+                    onDelete: () =>
+                        unawaited(deleteSearch(context, ref, search)),
+                  ),
                   const SizedBox(height: BeneathSpacing.sm),
                 ],
               ],

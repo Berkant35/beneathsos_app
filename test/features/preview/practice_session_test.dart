@@ -18,6 +18,9 @@ final class _FlakyStore implements SessionStore {
 
   @override
   Future<SearchRecord> record(SessionId session) => inner.record(session);
+
+  @override
+  Future<void> delete(SessionId session) => inner.delete(session);
   final Object error;
   int failures = 1;
 
@@ -69,6 +72,10 @@ final class _FlakyStore implements SessionStore {
 final class _BrokenStore implements SessionStore {
   @override
   Future<SearchRecord> record(SessionId session) =>
+      Future.error(const FormatException('disk full'));
+
+  @override
+  Future<void> delete(SessionId session) =>
       Future.error(const FormatException('disk full'));
 
   @override

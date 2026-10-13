@@ -946,4 +946,25 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get mapNextLabel => 'Sonraki ölçüm';
+
+  @override
+  String get searchDelete => 'Sil';
+
+  @override
+  String searchDeleteTitle(String title) {
+    return '“$title” silinsin mi?';
+  }
+
+  @override
+  String get searchDeleteBody =>
+      'Çizimi, noktaları ve ölçümleri bu telefondan silinir. Geri alınamaz — gerekiyorsa önce dışa aktarın.';
+
+  @override
+  String get searchDeleteKeep => 'Kalsın';
+
+  @override
+  String get searchDeleteConfirm => 'Sil';
+
+  @override
+  String get sitesDeleteFailed => 'Silinemedi. Hiçbir şey değişmedi.';
 }

@@ -232,3 +232,49 @@ final class SessionStateFamily extends $Family
   @override
   String toString() => r'sessionStateProvider';
 }
+
+/// The delete-a-search use case.
+
+@ProviderFor(deleteSearch)
+final deleteSearchProvider = DeleteSearchProvider._();
+
+/// The delete-a-search use case.
+
+final class DeleteSearchProvider
+    extends $FunctionalProvider<DeleteSearch, DeleteSearch, DeleteSearch>
+    with $Provider<DeleteSearch> {
+  /// The delete-a-search use case.
+  DeleteSearchProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'deleteSearchProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$deleteSearchHash();
+
+  @$internal
+  @override
+  $ProviderElement<DeleteSearch> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  DeleteSearch create(Ref ref) {
+    return deleteSearch(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DeleteSearch value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DeleteSearch>(value),
+    );
+  }
+}
+
+String _$deleteSearchHash() => r'496634ffa9e1a7befcdedcd39ce0b68b0aa5b737';

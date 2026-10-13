@@ -241,6 +241,14 @@ final class DriftSessionStore implements SessionStore {
     );
   }
 
+  /// Events and raw readings go with the session row (foreign keys cascade).
+  @override
+  Future<void> delete(SessionId session) => _db.transaction(() async {
+    await (_db.delete(
+      _db.sessions,
+    )..where((s) => s.id.equals(session.value))).go();
+  });
+
   @override
   Future<SearchRecord> record(SessionId session) => _db.transaction(() async {
     final row = await (_db.select(

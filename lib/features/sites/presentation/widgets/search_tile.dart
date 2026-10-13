@@ -5,13 +5,16 @@ import 'package:beneathsos_app/features/sites/presentation/mixins/search_tile_mi
 import 'package:beneathsos_ui/beneathsos_ui.dart';
 import 'package:flutter/material.dart';
 
-/// One search in the list; opens its overview.
+/// One search in the list; opens its overview, or deletes it.
 class SearchTile extends StatelessWidget with SearchTileMixin {
   /// Creates the tile.
-  const SearchTile({required this.search, super.key});
+  const SearchTile({required this.search, required this.onDelete, super.key});
 
   /// The search.
   final SessionSummary search;
+
+  /// Asks, then deletes it.
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,17 @@ class SearchTile extends StatelessWidget with SearchTileMixin {
               l10n.searchFinished,
               style: Theme.of(context).textTheme.labelLarge,
             ),
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: TextButton.icon(
+              onPressed: onDelete,
+              icon: const Icon(Icons.delete_outline_rounded),
+              label: Text(l10n.searchDelete),
+              style: TextButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.error,
+              ),
+            ),
+          ),
         ],
       ),
     );
