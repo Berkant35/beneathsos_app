@@ -885,4 +885,24 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get victimSosHint => 'Sesi sonuna kadar açın.';
+
+  @override
+  String get probRecordFound => 'Bulunduğu yeri kaydet';
+
+  @override
+  String get probTapFound => 'Haritada telefonun bulunduğu yere dokunun.';
+
+  @override
+  String get probFound50 => '%50 alanının içinde bulundu.';
+
+  @override
+  String get probFound90 => '%90 alanının içinde bulundu.';
+
+  @override
+  String probFoundOutside(String distance) {
+    return '%90 alanının dışında, ona $distance uzaklıkta bulundu.';
+  }
+
+  @override
+  String get probRecordFailed => 'Bulunduğu yer kaydedilemedi. Tekrar deneyin.';
 }

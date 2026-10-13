@@ -10,13 +10,25 @@ import 'package:flutter/material.dart';
 /// point.
 class MapPanel extends StatelessWidget with MapMixin {
   /// Creates the panel.
-  const MapPanel({required this.sessionId, required this.map, super.key});
+  const MapPanel({
+    required this.sessionId,
+    required this.map,
+    required this.onRecordFound,
+    this.note,
+    super.key,
+  });
 
   /// The search.
   final String sessionId;
 
   /// The map of the selected target.
   final TargetMap map;
+
+  /// Starts recording where the phone was found.
+  final VoidCallback onRecordFound;
+
+  /// The research line: how to record, how the map did, or a failure; null for none.
+  final String? note;
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +58,21 @@ class MapPanel extends StatelessWidget with MapMixin {
         ],
         const SizedBox(height: BeneathSpacing.sm),
         Text(l10n.probLegend, style: text.bodySmall),
+        if (note case final note?) ...[
+          const SizedBox(height: BeneathSpacing.sm),
+          StatusBanner(kind: StatusKind.ready, message: note),
+        ],
         const SizedBox(height: BeneathSpacing.m),
         PrimaryButton(
           label: l10n.probMeasureNext,
           icon: Icons.sensors_rounded,
           onPressed: () => MeasureRoute(sessionId: sessionId).go(context),
+        ),
+        const SizedBox(height: BeneathSpacing.s),
+        TextButton.icon(
+          onPressed: onRecordFound,
+          icon: const Icon(Icons.flag_rounded),
+          label: Text(l10n.probRecordFound),
         ),
       ],
     );

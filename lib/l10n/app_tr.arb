@@ -237,5 +237,11 @@
   "exportDone": "Paylaşıldı. Dosyalar bu aramayı kaydedildiği hâliyle içerir.",
   "exportFailed": "Dışa aktarılamadı. Hiçbir şey değişmedi.",
   "siteExport": "Bu aramayı dışa aktar",
-  "victimSosHint": "Sesi sonuna kadar açın."
+  "victimSosHint": "Sesi sonuna kadar açın.",
+  "probRecordFound": "Bulunduğu yeri kaydet",
+  "probTapFound": "Haritada telefonun bulunduğu yere dokunun.",
+  "probFound50": "%50 alanının içinde bulundu.",
+  "probFound90": "%90 alanının içinde bulundu.",
+  "probFoundOutside": "%90 alanının dışında, ona {distance} uzaklıkta bulundu.",
+  "probRecordFailed": "Bulunduğu yer kaydedilemedi. Tekrar deneyin."
 }

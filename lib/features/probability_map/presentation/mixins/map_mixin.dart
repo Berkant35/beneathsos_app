@@ -1,5 +1,6 @@
 import 'package:beneathsos_app/core/formatting/measures.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
+import 'package:beneathsos_app/features/research/domain/found_report.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:locator_engine/locator_engine.dart';
 import 'package:rubble_canvas/rubble_canvas.dart';
@@ -39,6 +40,8 @@ mixin MapMixin {
                   ? MapPointKind.heard
                   : MapPointKind.notHeard,
             ),
+    if (search.groundTruths[target] case final found?)
+      MapPoint(at: found, kind: MapPointKind.found),
     if (next != null)
       MapPoint(at: toDrawn(next, search.scale), kind: MapPointKind.suggested),
   ];
@@ -48,4 +51,27 @@ mixin MapMixin {
     squareMetresLabel(l10n, map.area50),
     squareMetresLabel(l10n, map.area90),
   );
+
+  /// How the map did for [target], once its phone was recorded as found; null before.
+  String? foundLine(
+    AppLocalizations l10n,
+    SessionState search,
+    TargetId target,
+    ProbabilityMap map,
+  ) {
+    final found = search.groundTruths[target];
+    if (found == null) return null;
+    final real = SitePoint(
+      Meters(found.x.value * search.scale),
+      Meters(found.y.value * search.scale),
+    );
+    final report = foundReport(map, real);
+    return switch (report.region) {
+      Region.likely50 => l10n.probFound50,
+      Region.likely90 => l10n.probFound90,
+      Region.outside => l10n.probFoundOutside(
+        metresLabel(l10n, report.outside90),
+      ),
+    };
+  }
 }

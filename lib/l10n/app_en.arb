@@ -519,5 +519,18 @@
   "exportDone": "Shared. The files hold this search as recorded.",
   "exportFailed": "Could not export. Nothing was changed.",
   "siteExport": "Export this search",
-  "victimSosHint": "Turn the volume all the way up."
+  "victimSosHint": "Turn the volume all the way up.",
+  "probRecordFound": "Record where it was found",
+  "probTapFound": "Tap the spot on the map where the phone was found.",
+  "probFound50": "Found inside the 50 % area.",
+  "probFound90": "Found inside the 90 % area.",
+  "probFoundOutside": "Found outside the 90 % area, {distance} from it.",
+  "@probFoundOutside": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "probRecordFailed": "Could not save where it was found. Try again."
 }

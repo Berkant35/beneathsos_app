@@ -895,4 +895,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get victimSosHint => 'Turn the volume all the way up.';
+
+  @override
+  String get probRecordFound => 'Record where it was found';
+
+  @override
+  String get probTapFound =>
+      'Tap the spot on the map where the phone was found.';
+
+  @override
+  String get probFound50 => 'Found inside the 50 % area.';
+
+  @override
+  String get probFound90 => 'Found inside the 90 % area.';
+
+  @override
+  String probFoundOutside(String distance) {
+    return 'Found outside the 90 % area, $distance from it.';
+  }
+
+  @override
+  String get probRecordFailed =>
+      'Could not save where it was found. Try again.';
 }

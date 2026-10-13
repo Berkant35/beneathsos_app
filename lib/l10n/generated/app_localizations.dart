@@ -1525,6 +1525,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Turn the volume all the way up.'**
   String get victimSosHint;
+
+  /// No description provided for @probRecordFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Record where it was found'**
+  String get probRecordFound;
+
+  /// No description provided for @probTapFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the spot on the map where the phone was found.'**
+  String get probTapFound;
+
+  /// No description provided for @probFound50.
+  ///
+  /// In en, this message translates to:
+  /// **'Found inside the 50 % area.'**
+  String get probFound50;
+
+  /// No description provided for @probFound90.
+  ///
+  /// In en, this message translates to:
+  /// **'Found inside the 90 % area.'**
+  String get probFound90;
+
+  /// No description provided for @probFoundOutside.
+  ///
+  /// In en, this message translates to:
+  /// **'Found outside the 90 % area, {distance} from it.'**
+  String probFoundOutside(String distance);
+
+  /// No description provided for @probRecordFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save where it was found. Try again.'**
+  String get probRecordFailed;
 }
 
 class _AppLocalizationsDelegate

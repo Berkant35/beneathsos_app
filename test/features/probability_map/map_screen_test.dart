@@ -280,4 +280,35 @@ void main() {
     await settleWithDatabase(tester);
     expect(runs, 1);
   });
+
+  testWidgets(
+    'recording where the phone was found marks it and reports how the map did',
+    (tester) async {
+      setPhoneSize(tester, 402, 874);
+      final db = await _search(tester);
+      await pumpRouterApp(tester, database: db);
+      await settleWithDatabase(tester);
+      await _openMap(tester);
+      await tester.ensureVisible(find.text('Record where it was found'));
+      await tester.tap(find.text('Record where it was found'));
+      await tester.pumpAndSettle();
+      expect(
+        find.text('Tap the spot on the map where the phone was found.'),
+        findsOneWidget,
+      );
+      await tester.tap(find.byType(SiteMap));
+      await settleWithDatabase(tester);
+      final events = await tester.runAsync(() => db.select(db.events).get());
+      expect(events!.last.type, 'GroundTruthRecorded');
+      final map = tester.widget<SiteMap>(find.byType(SiteMap));
+      expect(
+        map.points.where((m) => m.kind == MapPointKind.found),
+        hasLength(1),
+      );
+      expect(
+        find.textContaining(RegExp(r'^Found (inside|outside) the')),
+        findsOneWidget,
+      );
+    },
+  );
 }
