@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:beneathsos_app/core/beacon/domain/beacon_payload.dart';
 import 'package:beneathsos_app/core/beacon/domain/beacon_ports.dart';
 import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
+import 'package:beneathsos_app/core/sensors/domain/barometer_port.dart';
+import 'package:rubble_core/rubble_core.dart';
 
 import '../scanning/fakes.dart';
 
@@ -93,6 +95,15 @@ final class FakeSound implements SosSoundPort {
   Future<void> stop() async => playing = false;
 }
 
+/// A barometer the test feeds.
+final class FakeBarometer implements BarometerPort {
+  // ignore: close_sinks, a broadcast controller with nothing to flush; it ends with the test
+  final readings = StreamController<Hpa>.broadcast();
+
+  @override
+  Stream<Hpa> get pressures => readings.stream;
+}
+
 /// Everything victim mode talks to, with a clock the test moves.
 final class BeaconFakes {
   BeaconFakes({
@@ -110,6 +121,9 @@ final class BeaconFakes {
   final FakePermissions permissions;
   final FakeBattery battery;
   final FakeSound sound;
+
+  /// The phone's barometer (silent unless the test feeds it).
+  final FakeBarometer barometer = FakeBarometer();
 
   /// The wall clock victim mode reads.
   DateTime now = DateTime(2026, 10, 13, 3);

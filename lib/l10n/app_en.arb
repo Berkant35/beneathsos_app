@@ -621,5 +621,17 @@
       }
     }
   },
-  "probDepthUnset": "Depth not given: the map assumes 4 m of rubble. Set it on the overview."
+  "probDepthUnset": "Depth not given: the map assumes 4 m of rubble. Set it on the overview.",
+  "baroLine": "Its barometer: {where} (± 8 m).",
+  "@baroLine": {
+    "placeholders": {
+      "where": {
+        "type": "String"
+      }
+    }
+  },
+  "baroAbove": "above you",
+  "baroLevel": "about your level",
+  "baroBelow": "1–3 floors below you",
+  "baroDeep": "more than 3 floors below you"
 }

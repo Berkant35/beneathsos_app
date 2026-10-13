@@ -278,5 +278,10 @@
   "siteStepDepth": "Enkaz yüksekliği ve seviye",
   "siteDepthDone": "{height} · {level}",
   "probDepth": "Derinlik: {height} enkaz · {level}.",
-  "probDepthUnset": "Derinlik girilmedi: harita 4 m enkaz varsayar. Genel bakıştan girin."
+  "probDepthUnset": "Derinlik girilmedi: harita 4 m enkaz varsayar. Genel bakıştan girin.",
+  "baroLine": "Barometresi: {where} (± 8 m).",
+  "baroAbove": "sizden yukarıda",
+  "baroLevel": "aşağı yukarı sizinle aynı seviyede",
+  "baroBelow": "sizden 1–3 kat aşağıda",
+  "baroDeep": "sizden 3 kattan daha aşağıda"
 }

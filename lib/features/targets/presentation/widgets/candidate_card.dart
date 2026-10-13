@@ -16,11 +16,15 @@ class CandidateCard extends StatelessWidget with TargetsMixin {
     required this.onTrack,
     required this.onExclude,
     required this.enabled,
+    this.barometer,
     super.key,
   });
 
   /// False while another choice is being stored.
   final bool enabled;
+
+  /// What a trapped phone's barometer says about its depth, if anything.
+  final String? barometer;
 
   /// The device.
   final TargetCandidate candidate;
@@ -49,6 +53,7 @@ class CandidateCard extends StatelessWidget with TargetsMixin {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(reason(l10n, candidate, surfaceScanned: surfaceScanned)),
+          if (barometer case final line?) Text(line),
           Text(
             signal(l10n, candidate),
             style: Theme.of(context).textTheme.bodySmall,

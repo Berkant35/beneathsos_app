@@ -8,6 +8,7 @@ import 'package:beneathsos_app/core/logging/app_logger.dart';
 import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
 import 'package:beneathsos_app/core/scanning/presentation/providers/scanning_providers.dart';
 import 'package:beneathsos_app/core/services/app_lifecycle.dart';
+import 'package:beneathsos_app/core/services/barometer_service.dart';
 import 'package:beneathsos_app/core/services/battery_service.dart';
 import 'package:beneathsos_app/core/services/ble_service.dart';
 import 'package:beneathsos_app/core/services/clock.dart';
@@ -18,6 +19,7 @@ import 'package:beneathsos_app/features/victim/domain/liveness.dart';
 import 'package:beneathsos_app/features/victim/domain/victim_state.dart';
 import 'package:flutter/widgets.dart' show AppLifecycleState;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:rubble_core/rubble_core.dart' show Hpa;
 
 part 'victim_providers.g.dart';
 
@@ -49,6 +51,9 @@ class VictimController extends _$VictimController {
 
   /// The payload last handed to the radio, shown once the platform confirms it.
   BeaconPayload? _sending;
+
+  /// The latest air pressure, sent along for the rescuers' coarse depth (none without a barometer).
+  Hpa? _pressure;
 
   @override
   VictimState build() {
@@ -90,6 +95,7 @@ class VictimController extends _$VictimController {
         AppLogger.error('victim', 'Beacon stopped: $message');
         _fail();
       }),
+      ref.watch(barometerPortProvider).pressures.listen((p) => _pressure = p),
       ref
           .watch(motionPortProvider)
           .accelerations
@@ -177,9 +183,14 @@ class VictimController extends _$VictimController {
   Future<BeaconPayload> _payload() {
     final battery = ref.read(batteryProvider);
     final since = _liveness.since(ref.read(clockProvider)());
+    final pressure = _pressure;
     return battery.level().then(
-      (percent) =>
-          BeaconPayload(id: _id, batteryPercent: percent, sinceTouch: since),
+      (percent) => BeaconPayload(
+        id: _id,
+        batteryPercent: percent,
+        sinceTouch: since,
+        pressure: pressure,
+      ),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:beneathsos_app/core/scanning/presentation/providers/scan_control
 import 'package:beneathsos_app/core/scanning/presentation/providers/scan_state.dart';
 import 'package:beneathsos_app/core/scanning/presentation/providers/scan_while_open.dart';
 import 'package:beneathsos_app/core/scanning/presentation/widgets/scan_blocked_banner.dart';
+import 'package:beneathsos_app/core/services/barometer_service.dart';
 import 'package:beneathsos_app/core/services/clock.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
 import 'package:beneathsos_app/features/targets/domain/candidates.dart';
@@ -45,6 +46,7 @@ class _TargetsScreenState extends ConsumerState<TargetsScreen>
     ref.watch(scanWhileOpenProvider);
     final scan = ref.watch(scanControllerProvider);
     final heard = ref.watch(trackedDevicesProvider);
+    final rescuerPressure = ref.watch(rescuerPressureProvider).value;
     final search = ref.watch(sessionStateProvider(id)).value;
     final busy = ref.watch(targetChoiceProvider(id));
     final candidates = keepOrder(_shown, candidatesFor(heard, search));
@@ -101,6 +103,11 @@ class _TargetsScreenState extends ConsumerState<TargetsScreen>
                 candidate: candidate,
                 surfaceScanned: lastScan != null,
                 enabled: !busy,
+                barometer: barometerLine(
+                  l10n,
+                  candidate.device.pressure,
+                  rescuerPressure,
+                ),
                 onTrack: (label) =>
                     track(context, ref, id, candidate.device.key, label),
                 onExclude: (label) =>

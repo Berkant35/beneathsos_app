@@ -1,3 +1,4 @@
+import 'package:beneathsos_app/core/beacon/domain/barometric_depth.dart';
 import 'package:beneathsos_app/features/targets/domain/candidates.dart';
 import 'package:beneathsos_app/features/targets/domain/device_kind.dart';
 import 'package:beneathsos_app/features/targets/domain/tracker_snapshot.dart';
@@ -74,5 +75,17 @@ mixin TargetsMixin {
     final value =
         candidate.device.median?.value.round() ?? candidate.device.lastRssi;
     return l10n.targetSignal(value.toString().replaceFirst('-', '−'));
+  }
+
+  /// "Its barometer: 1–3 floors below you (± 8 m)." — a trapped phone's pressure against this phone's;
+  /// null unless both are known.
+  String? barometerLine(AppLocalizations l10n, Hpa? phone, Hpa? rescuer) {
+    if (phone == null || rescuer == null) return null;
+    return l10n.baroLine(switch (barometricDepth(phone, rescuer).depthClass) {
+      BarometricDepth.above => l10n.baroAbove,
+      BarometricDepth.level => l10n.baroLevel,
+      BarometricDepth.below => l10n.baroBelow,
+      BarometricDepth.deep => l10n.baroDeep,
+    });
   }
 }

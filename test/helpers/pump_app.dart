@@ -6,6 +6,7 @@ import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
 import 'package:beneathsos_app/core/scanning/presentation/providers/scanning_providers.dart';
 import 'package:beneathsos_app/core/sensors/domain/motion_port.dart';
 import 'package:beneathsos_app/core/services/app_lifecycle.dart';
+import 'package:beneathsos_app/core/services/barometer_service.dart';
 import 'package:beneathsos_app/core/services/battery_service.dart';
 import 'package:beneathsos_app/core/services/ble_service.dart';
 import 'package:beneathsos_app/core/services/clock.dart';
@@ -80,6 +81,7 @@ List<Override> beaconOverrides(BeaconFakes fakes, {required bool clock}) => [
   advertisePermissionProvider.overrideWithValue(fakes.permissions),
   batteryProvider.overrideWithValue(fakes.battery),
   sosSoundProvider.overrideWithValue(fakes.sound),
+  barometerPortProvider.overrideWithValue(fakes.barometer),
   beaconIdSourceProvider.overrideWithValue(() => 0x1a2b),
   if (clock) clockProvider.overrideWithValue(() => fakes.now),
 ];

@@ -17,6 +17,7 @@ final class DeviceSummary {
     this.spread,
     this.recentCount = 0,
     this.beacon,
+    this.pressure,
   });
 
   /// Platform identity (rotates on phones).
@@ -49,6 +50,9 @@ final class DeviceSummary {
 
   /// What a trapped phone last said about itself (battery, last touch); null for other devices.
   final BeaconPayload? beacon;
+
+  /// The air pressure a trapped phone last sent (Android service data or iOS name); null without.
+  final Hpa? pressure;
 }
 
 /// Immutable view of everything the tracker knows.

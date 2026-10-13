@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:beneathsos_app/core/beacon/domain/beacon_payload.dart';
 import 'package:beneathsos_app/core/database/app_database.dart';
 import 'package:beneathsos_app/core/models/ble_sample.dart';
 import 'package:beneathsos_app/core/scanning/domain/scan_types.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rubble_core/rubble_core.dart';
 
+import '../../../core/beacon/fakes.dart';
 import '../../../core/scanning/fakes.dart';
 import '../../../helpers/pump_app.dart';
 
@@ -206,6 +208,46 @@ void main() {
         'BlacklistEdited',
         'TargetSelected',
       ]);
+    },
+  );
+
+  testWidgets(
+    'a trapped phone with a barometer: its card says how deep, coarsely',
+    (tester) async {
+      setPhoneSize(tester, 402, 874);
+      final (db, _) = await _search(tester, surface: ['team']);
+      final samples = StreamController<List<BleSample>>.broadcast();
+      addTearDown(() => unawaited(samples.close()));
+      final fakes = BeaconFakes();
+      await pumpRouterApp(
+        tester,
+        database: db,
+        samples: samples.stream,
+        beacon: fakes,
+      );
+      await settleWithDatabase(tester);
+      await _tap(tester, 'Start a search');
+      await _tap(tester, 'Atatürk Cad. 12');
+      await _tap(tester, 'Choose the phone to search for');
+      // The rescuer's own barometer, then an iOS victim naming its pressure (0.9 hPa higher: ~7.5 m).
+      fakes.barometer.readings.add(const Hpa(1012.3));
+      samples.add([
+        for (var i = 0; i < 6; i++)
+          BleSample(
+            key: 'AA-BB',
+            rssi: -85,
+            serviceUuids: const [beaconServiceUuid],
+            localName: 'SOS-1A2B-10132',
+            monotonicNanos: _clock,
+            wallClockMillis: DateTime.now().millisecondsSinceEpoch + _clock++,
+          ),
+      ]);
+      await tester.pump();
+      await tester.pump();
+      expect(
+        find.text('Its barometer: 1–3 floors below you (± 8 m).'),
+        findsOneWidget,
+      );
     },
   );
 

@@ -30,6 +30,8 @@
 		<true/>
 		<key>NSBluetoothAlwaysUsageDescription</key>
 		<string>BeneathSOS measures the Bluetooth signal strength of nearby phones to estimate where a trapped person may be, and in "I am trapped" mode sends a Bluetooth help signal rescuers can find.</string>
+		<key>NSMotionUsageDescription</key>
+		<string>BeneathSOS reads the air pressure so rescuers can tell roughly how deep a trapped phone is, and notices when the phone is moved.</string>
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>bluetooth-peripheral</string>

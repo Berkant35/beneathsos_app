@@ -1,4 +1,6 @@
+import 'package:beneathsos_app/core/beacon/domain/beacon_payload.dart';
 import 'package:beneathsos_app/core/models/ble_sample.dart';
+import 'package:beneathsos_app/features/targets/domain/device_kind.dart';
 import 'package:beneathsos_app/features/targets/domain/device_track.dart';
 import 'package:beneathsos_app/features/targets/domain/presence_event.dart';
 import 'package:beneathsos_app/features/targets/domain/tracker_policy.dart';
@@ -109,6 +111,9 @@ final class DeviceTracker {
       spread: spread == null ? null : Decibels(spread),
       recentCount: t.valuesWithin(summaryWindow, t.lastSeenMillis).length,
       beacon: t.beacon,
+      pressure: t.kind == DeviceKind.trappedBeacon
+          ? t.beacon?.pressure ?? pressureFromName(t.localName)
+          : null,
     );
   }
 }

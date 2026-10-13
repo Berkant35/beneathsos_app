@@ -1034,4 +1034,21 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get probDepthUnset =>
       'Derinlik girilmedi: harita 4 m enkaz varsayar. Genel bakıştan girin.';
+
+  @override
+  String baroLine(String where) {
+    return 'Barometresi: $where (± 8 m).';
+  }
+
+  @override
+  String get baroAbove => 'sizden yukarıda';
+
+  @override
+  String get baroLevel => 'aşağı yukarı sizinle aynı seviyede';
+
+  @override
+  String get baroBelow => 'sizden 1–3 kat aşağıda';
+
+  @override
+  String get baroDeep => 'sizden 3 kattan daha aşağıda';
 }

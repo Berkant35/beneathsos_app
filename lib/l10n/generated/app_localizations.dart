@@ -1771,6 +1771,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Depth not given: the map assumes 4 m of rubble. Set it on the overview.'**
   String get probDepthUnset;
+
+  /// No description provided for @baroLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Its barometer: {where} (± 8 m).'**
+  String baroLine(String where);
+
+  /// No description provided for @baroAbove.
+  ///
+  /// In en, this message translates to:
+  /// **'above you'**
+  String get baroAbove;
+
+  /// No description provided for @baroLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'about your level'**
+  String get baroLevel;
+
+  /// No description provided for @baroBelow.
+  ///
+  /// In en, this message translates to:
+  /// **'1–3 floors below you'**
+  String get baroBelow;
+
+  /// No description provided for @baroDeep.
+  ///
+  /// In en, this message translates to:
+  /// **'more than 3 floors below you'**
+  String get baroDeep;
 }
 
 class _AppLocalizationsDelegate

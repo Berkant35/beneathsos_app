@@ -1046,4 +1046,21 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get probDepthUnset =>
       'Depth not given: the map assumes 4 m of rubble. Set it on the overview.';
+
+  @override
+  String baroLine(String where) {
+    return 'Its barometer: $where (± 8 m).';
+  }
+
+  @override
+  String get baroAbove => 'above you';
+
+  @override
+  String get baroLevel => 'about your level';
+
+  @override
+  String get baroBelow => '1–3 floors below you';
+
+  @override
+  String get baroDeep => 'more than 3 floors below you';
 }

@@ -5,6 +5,7 @@ import 'package:beneathsos_app/features/home/presentation/screens/home_screen.da
 import 'package:beneathsos_app/features/victim/presentation/screens/victim_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:rubble_core/rubble_core.dart';
 
 import '../../core/beacon/fakes.dart';
 import '../../core/scanning/fakes.dart';
@@ -268,6 +269,16 @@ void main() {
       );
     },
   );
+
+  testWidgets('the phone\'s air pressure rides along for the rescuers', (
+    tester,
+  ) async {
+    final fakes = await _open(tester);
+    fakes.barometer.readings.add(const Hpa(1013.24));
+    await tester.pump();
+    await _wait(tester, fakes, 1);
+    expect(fakes.beacon.sent.last.pressure!.value, closeTo(1013.24, 1e-9));
+  });
 
   testWidgets('Turkish', (tester) async {
     await _open(tester, locale: const Locale('tr'));

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:beneathsos_app/core/beacon/domain/beacon_payload.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:rubble_core/rubble_core.dart';
 
 void main() {
   test(
@@ -88,5 +89,57 @@ void main() {
       expect(beaconKey(serviceUuids: const [], localName: 'SOS-1A2B'), isNull);
       expect(beaconKey(serviceUuids: const ['180d']), isNull);
     });
+  });
+
+  group('barometer', () {
+    test(
+      'the pressure rides along: 2 more bytes on Android, in the name on iOS',
+      () {
+        const payload = BeaconPayload(
+          id: 0x1a2b,
+          batteryPercent: 80,
+          sinceTouch: Duration(minutes: 3),
+          pressure: Hpa(1013.24),
+        );
+        expect(payload.encode(), [1, 0x1a, 0x2b, 80, 3, 0x27, 0x94]);
+        expect(payload.localName, 'SOS-1A2B-10132');
+        expect(
+          BeaconPayload.decode(payload.encode())!.pressure!.value,
+          closeTo(1013.2, 1e-9),
+        );
+      },
+    );
+
+    test(
+      'without a barometer nothing extra is sent, and older beacons still read',
+      () {
+        const payload = BeaconPayload(id: 7, sinceTouch: Duration.zero);
+        expect(payload.encode(), hasLength(5));
+        expect(payload.localName, 'SOS-0007');
+        expect(
+          BeaconPayload.decode(Uint8List.fromList([1, 0, 7, 55, 12]))!.pressure,
+          isNull,
+        );
+      },
+    );
+
+    test(
+      'an iOS beacon keeps its key and gives its pressure from the name',
+      () {
+        expect(
+          beaconKey(
+            serviceUuids: const [beaconServiceUuid],
+            localName: 'SOS-1A2B-10132',
+          ),
+          'sos-1a2b',
+        );
+        expect(
+          pressureFromName('SOS-1A2B-10132')!.value,
+          closeTo(1013.2, 1e-9),
+        );
+        expect(pressureFromName('SOS-1A2B'), isNull);
+        expect(pressureFromName('iPhone'), isNull);
+      },
+    );
   });
 }

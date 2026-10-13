@@ -145,7 +145,7 @@ final class VictimControllerProvider
   }
 }
 
-String _$victimControllerHash() => r'2fa66e5b286b20a865e21f80b959b1e9f9870f39';
+String _$victimControllerHash() => r'cbce5f3421d4c03079037da22b96823e55c5b8b4';
 
 /// Victim mode: calls out as long as the screen is open — "calling out" only once the platform
 /// confirms — with the battery and the time since the phone was last touched or moved refreshed every
