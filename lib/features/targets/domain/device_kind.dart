@@ -1,7 +1,11 @@
+import 'package:beneathsos_app/core/beacon/domain/beacon_payload.dart';
 import 'package:beneathsos_app/core/models/ble_sample.dart';
 
-/// Coarse advertiser category derived from manufacturer data.
+/// Coarse advertiser category derived from the advertisement.
 enum DeviceKind {
+  /// A phone in BeneathSOS victim mode: it says it is trapped.
+  trappedBeacon,
+
   /// Apple offline-finding beacon: an iPhone without internet, or an AirTag.
   appleFindMy,
 
@@ -45,8 +49,14 @@ abstract final class _AppleType {
   static const nearbyInfo = 0x10;
 }
 
-/// Classifies a sample by its manufacturer data. Pure function.
+/// Classifies a sample: a BeneathSOS victim beacon first, then by manufacturer data. Pure function.
 DeviceKind classify(BleSample sample) {
+  final beacon = beaconKey(
+    serviceUuids: sample.serviceUuids,
+    serviceData: sample.serviceData,
+    localName: sample.localName,
+  );
+  if (beacon != null) return DeviceKind.trappedBeacon;
   final payload = sample.payload;
   return switch (sample.companyId) {
     null => DeviceKind.unknown,

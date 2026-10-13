@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
+import 'package:beneathsos_app/core/beacon/domain/beacon_payload.dart';
 import 'package:beneathsos_app/core/models/ble_sample.dart';
 import 'package:beneathsos_app/features/targets/domain/device_kind.dart';
 import 'package:beneathsos_app/features/targets/domain/rssi_point.dart';
@@ -41,6 +42,9 @@ class DeviceTrack {
   /// Latest advertised name.
   String? localName;
 
+  /// Latest victim-beacon payload (Android victims send one).
+  BeaconPayload? beacon;
+
   /// Total readings received.
   int sampleCount = 0;
 
@@ -59,7 +63,18 @@ class DeviceTrack {
     companyId = sample.companyId ?? companyId;
     lastPayload = sample.payload ?? lastPayload;
     localName = sample.localName ?? localName;
-    if (sample.companyId != null) kind = classify(sample);
+    final now = classify(sample);
+    // A trapped beacon stays one; otherwise only an advert that tells something reclassifies.
+    if (kind != DeviceKind.trappedBeacon && now != DeviceKind.unknown) {
+      kind = now;
+    }
+    beacon =
+        sample.serviceData?.entries
+            .where((e) => e.key.toLowerCase() == beaconServiceUuid)
+            .map((e) => BeaconPayload.decode(e.value))
+            .nonNulls
+            .firstOrNull ??
+        beacon;
     _window.addLast((atMillis: sample.wallClockMillis, rssi: sample.rssi));
     if (_window.length > capacity) _window.removeFirst();
   }

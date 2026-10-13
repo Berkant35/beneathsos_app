@@ -836,4 +836,29 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get victimStop => 'Durdur';
+
+  @override
+  String get kindTrapped => 'BeneathSOS: “Enkaz altındayım”';
+
+  @override
+  String get reasonTrapped => 'Bu telefon enkaz altında olduğunu bildiriyor';
+
+  @override
+  String reasonBattery(int percent) {
+    return 'pil %$percent';
+  }
+
+  @override
+  String reasonTouched(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes dk önce dokunuldu',
+      zero: 'son bir dakikada dokunuldu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reasonUntouched => '4 saatten uzun süredir dokunulmadı';
 }

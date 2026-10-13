@@ -1,3 +1,4 @@
+import 'package:beneathsos_app/core/beacon/domain/beacon_payload.dart';
 import 'package:beneathsos_app/features/targets/domain/device_kind.dart';
 import 'package:beneathsos_app/features/targets/domain/presence_event.dart';
 import 'package:rubble_core/rubble_core.dart';
@@ -15,6 +16,7 @@ final class DeviceSummary {
     this.median,
     this.spread,
     this.recentCount = 0,
+    this.beacon,
   });
 
   /// Platform identity (rotates on phones).
@@ -44,6 +46,9 @@ final class DeviceSummary {
 
   /// Readings within the same 30 s window ([sampleCount] counts all of them).
   final int recentCount;
+
+  /// What a trapped phone last said about itself (battery, last touch); null for other devices.
+  final BeaconPayload? beacon;
 }
 
 /// Immutable view of everything the tracker knows.

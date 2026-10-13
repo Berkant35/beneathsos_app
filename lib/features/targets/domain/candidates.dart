@@ -18,7 +18,9 @@ abstract final class AmbientPolicy {
 /// Keys of the surface phones among [heard].
 List<String> surfacePhones(Iterable<DeviceSummary> heard) => [
   for (final d in heard)
-    if (d.sampleCount >= AmbientPolicy.minSamples &&
+    // A phone that says it is trapped is never a surface phone.
+    if (d.kind != DeviceKind.trappedBeacon &&
+        d.sampleCount >= AmbientPolicy.minSamples &&
         d.median != null &&
         d.median!.value >= AmbientPolicy.surfaceMedian.value)
       d.key,
@@ -82,7 +84,11 @@ final class TargetCandidate {
   final SignalStrength strength;
 
   int get _score =>
-      (device.kind == DeviceKind.appleFindMy ? 3 : 0) +
+      switch (device.kind) {
+        DeviceKind.trappedBeacon => 10, // it says so itself: always first
+        DeviceKind.appleFindMy => 3,
+        _ => 0,
+      } +
       switch (movement) {
         Movement.still => 2,
         Movement.notKnownYet => 1, // a faint phone heard rarely must not sink

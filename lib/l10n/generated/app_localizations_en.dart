@@ -847,4 +847,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get victimStop => 'Stop';
+
+  @override
+  String get kindTrapped => 'BeneathSOS: “I am trapped”';
+
+  @override
+  String get reasonTrapped => 'This phone says it is trapped';
+
+  @override
+  String reasonBattery(int percent) {
+    return 'battery $percent %';
+  }
+
+  @override
+  String reasonTouched(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: 'touched $minutes min ago',
+      one: 'touched 1 min ago',
+      zero: 'touched in the last minute',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reasonUntouched => 'not touched for over 4 hours';
 }

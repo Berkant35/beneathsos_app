@@ -493,5 +493,24 @@
   "victimStopTitle": "Stop calling out?",
   "victimStopBody": "Rescuers will no longer find this phone by its signal.",
   "victimKeep": "Keep calling out",
-  "victimStop": "Stop"
+  "victimStop": "Stop",
+  "kindTrapped": "BeneathSOS: “I am trapped”",
+  "reasonTrapped": "This phone says it is trapped",
+  "reasonBattery": "battery {percent} %",
+  "@reasonBattery": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "reasonTouched": "{minutes, plural, =0{touched in the last minute} =1{touched 1 min ago} other{touched {minutes} min ago}}",
+  "@reasonTouched": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "reasonUntouched": "not touched for over 4 hours"
 }

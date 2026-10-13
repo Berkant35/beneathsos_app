@@ -225,5 +225,10 @@
   "victimStopTitle": "Sinyal durdurulsun mu?",
   "victimStopBody": "Kurtarıcılar bu telefonu artık sinyalinden bulamaz.",
   "victimKeep": "Sinyale devam et",
-  "victimStop": "Durdur"
+  "victimStop": "Durdur",
+  "kindTrapped": "BeneathSOS: “Enkaz altındayım”",
+  "reasonTrapped": "Bu telefon enkaz altında olduğunu bildiriyor",
+  "reasonBattery": "pil %{percent}",
+  "reasonTouched": "{minutes, plural, =0{son bir dakikada dokunuldu} other{{minutes} dk önce dokunuldu}}",
+  "reasonUntouched": "4 saatten uzun süredir dokunulmadı"
 }

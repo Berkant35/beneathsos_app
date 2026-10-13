@@ -60,6 +60,41 @@ void main() {
   });
 
   group('candidates', () {
+    test(
+      'a phone that says it is trapped comes first, even strong and moving',
+      () {
+        final ranked = rankCandidates(
+          [
+            device(
+              'findmy',
+              kind: DeviceKind.appleFindMy,
+              median: -85,
+              spread: 2,
+            ),
+            device(
+              'sos-0007',
+              kind: DeviceKind.trappedBeacon,
+              median: -50,
+              spread: 9,
+            ),
+          ],
+          surface: const {},
+          targets: const {},
+        );
+        expect(ranked.first.device.key, 'sos-0007');
+      },
+    );
+
+    test('a trapped beacon is never set aside as a surface phone', () {
+      expect(
+        surfacePhones([
+          device('sos-0007', kind: DeviceKind.trappedBeacon, median: -60),
+          device('rescuer', median: -60),
+        ]),
+        ['rescuer'],
+      );
+    });
+
     test('Find My, still and weak come first; strong and surface phones last or out', () {
       final ranked = rankCandidates(
         [

@@ -22,6 +22,7 @@ mixin TargetsMixin {
 
   /// What the device is, as far as its advertisement tells.
   String kindLabel(AppLocalizations l10n, DeviceKind kind) => switch (kind) {
+    DeviceKind.trappedBeacon => l10n.kindTrapped,
     DeviceKind.appleFindMy => l10n.kindFindMy,
     DeviceKind.appleNearby || DeviceKind.appleOther => l10n.kindApple,
     DeviceKind.samsung => l10n.targetSamsung,
@@ -39,10 +40,22 @@ mixin TargetsMixin {
     TargetCandidate candidate, {
     required bool surfaceScanned,
   }) {
+    final trapped = [
+      if (candidate.device.kind == DeviceKind.trappedBeacon) l10n.reasonTrapped,
+      if (candidate.device.beacon case final beacon?) ...[
+        if (beacon.batteryPercent case final percent?)
+          l10n.reasonBattery(percent),
+        if (beacon.sinceTouch.inMinutes >= 255)
+          l10n.reasonUntouched
+        else
+          l10n.reasonTouched(beacon.sinceTouch.inMinutes),
+      ],
+    ];
     if (candidate.strength == SignalStrength.veryStrong) {
-      return l10n.reasonVeryStrong;
+      return [...trapped, l10n.reasonVeryStrong].join(' · ');
     }
     return [
+      ...trapped,
       switch (candidate.movement) {
         Movement.still => l10n.reasonNotMoving,
         Movement.changing => l10n.reasonChanging,

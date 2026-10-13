@@ -1453,6 +1453,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stop'**
   String get victimStop;
+
+  /// No description provided for @kindTrapped.
+  ///
+  /// In en, this message translates to:
+  /// **'BeneathSOS: “I am trapped”'**
+  String get kindTrapped;
+
+  /// No description provided for @reasonTrapped.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone says it is trapped'**
+  String get reasonTrapped;
+
+  /// No description provided for @reasonBattery.
+  ///
+  /// In en, this message translates to:
+  /// **'battery {percent} %'**
+  String reasonBattery(int percent);
+
+  /// No description provided for @reasonTouched.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes, plural, =0{touched in the last minute} =1{touched 1 min ago} other{touched {minutes} min ago}}'**
+  String reasonTouched(int minutes);
+
+  /// No description provided for @reasonUntouched.
+  ///
+  /// In en, this message translates to:
+  /// **'not touched for over 4 hours'**
+  String get reasonUntouched;
 }
 
 class _AppLocalizationsDelegate

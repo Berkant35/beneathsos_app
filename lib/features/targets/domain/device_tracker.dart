@@ -108,6 +108,7 @@ final class DeviceTracker {
       median: median == null ? null : Dbm(median),
       spread: spread == null ? null : Decibels(spread),
       recentCount: t.valuesWithin(summaryWindow, t.lastSeenMillis).length,
+      beacon: t.beacon,
     );
   }
 }
