@@ -861,4 +861,24 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get reasonUntouched => '4 saatten uzun süredir dokunulmadı';
+
+  @override
+  String get exportTitle => 'Bu aramayı dışa aktar';
+
+  @override
+  String get exportContents =>
+      'İki dosya: kaydedildiği hâliyle arama (her adım, nokta ve ölçüm ile bu uyarı) ve ham sinyal ölçümleri. Hedef olmayan telefonlar yalnızca geri izlenemeyen kodlarla görünür. Dosyaların nereye gideceğini siz seçersiniz.';
+
+  @override
+  String get exportShare => 'Dışa aktar ve paylaş';
+
+  @override
+  String get exportDone =>
+      'Paylaşıldı. Dosyalar bu aramayı kaydedildiği hâliyle içerir.';
+
+  @override
+  String get exportFailed => 'Dışa aktarılamadı. Hiçbir şey değişmedi.';
+
+  @override
+  String get siteExport => 'Bu aramayı dışa aktar';
 }

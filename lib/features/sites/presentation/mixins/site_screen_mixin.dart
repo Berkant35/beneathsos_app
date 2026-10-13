@@ -79,4 +79,10 @@ mixin SiteScreenMixin {
       ),
     ];
   }
+
+  /// Whether the probability map has something to show: a target and a measured point.
+  bool canOpenMap(SessionState? search) =>
+      search != null &&
+      search.measuredPoints.isNotEmpty &&
+      search.targets.isNotEmpty;
 }

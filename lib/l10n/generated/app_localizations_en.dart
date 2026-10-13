@@ -873,4 +873,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reasonUntouched => 'not touched for over 4 hours';
+
+  @override
+  String get exportTitle => 'Export this search';
+
+  @override
+  String get exportContents =>
+      'Two files: the search as recorded (every step, point and reading, and this notice) and the raw signal readings. Phones that are not targets appear only as codes that cannot be traced back. You choose where the files go.';
+
+  @override
+  String get exportShare => 'Export and share';
+
+  @override
+  String get exportDone => 'Shared. The files hold this search as recorded.';
+
+  @override
+  String get exportFailed => 'Could not export. Nothing was changed.';
+
+  @override
+  String get siteExport => 'Export this search';
 }

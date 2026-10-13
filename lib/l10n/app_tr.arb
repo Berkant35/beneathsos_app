@@ -230,5 +230,11 @@
   "reasonTrapped": "Bu telefon enkaz altında olduğunu bildiriyor",
   "reasonBattery": "pil %{percent}",
   "reasonTouched": "{minutes, plural, =0{son bir dakikada dokunuldu} other{{minutes} dk önce dokunuldu}}",
-  "reasonUntouched": "4 saatten uzun süredir dokunulmadı"
+  "reasonUntouched": "4 saatten uzun süredir dokunulmadı",
+  "exportTitle": "Bu aramayı dışa aktar",
+  "exportContents": "İki dosya: kaydedildiği hâliyle arama (her adım, nokta ve ölçüm ile bu uyarı) ve ham sinyal ölçümleri. Hedef olmayan telefonlar yalnızca geri izlenemeyen kodlarla görünür. Dosyaların nereye gideceğini siz seçersiniz.",
+  "exportShare": "Dışa aktar ve paylaş",
+  "exportDone": "Paylaşıldı. Dosyalar bu aramayı kaydedildiği hâliyle içerir.",
+  "exportFailed": "Dışa aktarılamadı. Hiçbir şey değişmedi.",
+  "siteExport": "Bu aramayı dışa aktar"
 }

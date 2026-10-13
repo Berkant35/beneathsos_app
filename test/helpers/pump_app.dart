@@ -11,6 +11,7 @@ import 'package:beneathsos_app/core/services/ble_service.dart';
 import 'package:beneathsos_app/core/services/clock.dart';
 import 'package:beneathsos_app/core/services/motion_service.dart';
 import 'package:beneathsos_app/core/services/permission_service.dart';
+import 'package:beneathsos_app/core/services/share_service.dart';
 import 'package:beneathsos_app/core/services/sos_sound_service.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
 import 'package:beneathsos_app/features/probability_map/presentation/providers/map_providers.dart';
@@ -28,6 +29,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/beacon/fakes.dart';
 import '../core/scanning/fakes.dart';
+import '../core/sharing/fake_share.dart';
 
 /// An in-memory database for widget tests. Streams close synchronously, so no drift timer is left
 /// pending when the widget tree is disposed.
@@ -47,7 +49,9 @@ List<Override> fakePortOverrides({
   Stream<double>? motion,
   MapEngine? engine,
   BeaconFakes? beacon,
+  FakeShare? share,
 }) => [
+  shareProvider.overrideWithValue(share ?? FakeShare()),
   ...beaconOverrides(beacon ?? BeaconFakes(), clock: beacon != null),
   mapEngineProvider.overrideWithValue(
     engine ?? (request) async => computeMap(request),
@@ -136,6 +140,7 @@ Future<void> pumpRouterApp(
   Stream<double>? motion,
   MapEngine? engine,
   BeaconFakes? beacon,
+  FakeShare? share,
   List<Override> overrides = const [],
 }) async {
   final router = GoRouter(routes: $appRoutes);
@@ -152,6 +157,7 @@ Future<void> pumpRouterApp(
           motion: motion,
           engine: engine,
           beacon: beacon,
+          share: share,
         ),
         ...overrides,
       ],

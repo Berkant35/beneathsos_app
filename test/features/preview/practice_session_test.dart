@@ -1,6 +1,7 @@
 import 'package:beneathsos_app/core/database/app_database.dart';
 import 'package:beneathsos_app/core/database/database_provider.dart';
 import 'package:beneathsos_app/core/models/ble_sample.dart';
+import 'package:beneathsos_app/core/sessions/domain/search_record.dart';
 import 'package:beneathsos_app/core/sessions/domain/session_store.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
 import 'package:beneathsos_app/features/preview/presentation/providers/practice_session.dart';
@@ -14,6 +15,9 @@ final class _FlakyStore implements SessionStore {
   _FlakyStore(this.inner, this.error);
 
   final SessionStore inner;
+
+  @override
+  Future<SearchRecord> record(SessionId session) => inner.record(session);
   final Object error;
   int failures = 1;
 
@@ -63,6 +67,10 @@ final class _FlakyStore implements SessionStore {
 
 /// A store whose every write fails, as a full disk would.
 final class _BrokenStore implements SessionStore {
+  @override
+  Future<SearchRecord> record(SessionId session) =>
+      Future.error(const FormatException('disk full'));
+
   @override
   Future<SessionId> create({
     required String title,

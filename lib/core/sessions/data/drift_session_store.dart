@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:beneathsos_app/core/database/app_database.dart';
 import 'package:beneathsos_app/core/models/ble_sample.dart';
+import 'package:beneathsos_app/core/sessions/domain/search_record.dart';
 import 'package:beneathsos_app/core/sessions/domain/session_store.dart';
 import 'package:drift/drift.dart';
 import 'package:rubble_core/rubble_core.dart';
@@ -238,6 +239,65 @@ final class DriftSessionStore implements SessionStore {
           ? null
           : DateTime.fromMillisecondsSinceEpoch(session.closedAt!),
     );
+  }
+
+  @override
+  Future<SearchRecord> record(SessionId session) => _db.transaction(() async {
+    final row = await (_db.select(
+      _db.sessions,
+    )..where((s) => s.id.equals(session.value))).getSingle();
+    final events =
+        await (_db.select(_db.events)
+              ..where((e) => e.sessionId.equals(session.value))
+              ..orderBy([(e) => OrderingTerm(expression: e.rowId)]))
+            .get();
+    final samples =
+        await (_db.select(_db.rssiSamples)
+              ..where((r) => r.sessionId.equals(session.value))
+              ..orderBy([(r) => OrderingTerm(expression: r.id)]))
+            .get();
+    return SearchRecord(
+      id: row.id,
+      title: row.title,
+      engineProfile: row.engineProfile,
+      practice: row.practice,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(row.createdAt),
+      closedAt: row.closedAt == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(row.closedAt!),
+      events: [for (final e in events) _stored(e)],
+      samples: [
+        for (final r in samples)
+          (
+            point: r.pointId,
+            key: r.peripheralKey,
+            rssi: r.rssi,
+            txPower: r.txPower,
+            companyId: r.companyId,
+            tMonoNs: r.tMonoNs,
+            tWall: r.tWall,
+          ),
+      ],
+    );
+  });
+
+  /// A stored row as an envelope map; a payload that no longer decodes stays its stored text.
+  static Map<String, Object?> _stored(EventRow row) {
+    Object? payload;
+    try {
+      payload = jsonDecode(row.payload);
+    } on FormatException {
+      payload = row.payload;
+    }
+    return {
+      'schema': row.schema,
+      'id': row.id,
+      'session': row.sessionId,
+      'seq': row.seq,
+      'hlc': row.hlc,
+      'type': row.type,
+      'payload': payload,
+    };
   }
 
   /// Rebuilds the envelope of a stored row; a row that no longer decodes is an [UnreadableEvent].

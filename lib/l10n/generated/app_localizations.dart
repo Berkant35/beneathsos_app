@@ -1483,6 +1483,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'not touched for over 4 hours'**
   String get reasonUntouched;
+
+  /// No description provided for @exportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export this search'**
+  String get exportTitle;
+
+  /// No description provided for @exportContents.
+  ///
+  /// In en, this message translates to:
+  /// **'Two files: the search as recorded (every step, point and reading, and this notice) and the raw signal readings. Phones that are not targets appear only as codes that cannot be traced back. You choose where the files go.'**
+  String get exportContents;
+
+  /// No description provided for @exportShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Export and share'**
+  String get exportShare;
+
+  /// No description provided for @exportDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared. The files hold this search as recorded.'**
+  String get exportDone;
+
+  /// No description provided for @exportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not export. Nothing was changed.'**
+  String get exportFailed;
+
+  /// No description provided for @siteExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export this search'**
+  String get siteExport;
 }
 
 class _AppLocalizationsDelegate

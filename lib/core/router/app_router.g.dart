@@ -63,6 +63,11 @@ RouteBase get $homeRoute => GoRouteData.$route(
               hasOverriddenOnExit: false,
               factory: $MapRoute._fromState,
             ),
+            GoRouteData.$route(
+              path: 'export',
+              hasOverriddenOnExit: false,
+              factory: $ExportRoute._fromState,
+            ),
           ],
         ),
       ],
@@ -359,6 +364,31 @@ mixin $MapRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
     '/sites/${Uri.encodeComponent(_self.sessionId)}/map',
+  );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $ExportRoute on GoRouteData {
+  static ExportRoute _fromState(GoRouterState state) =>
+      ExportRoute(sessionId: state.pathParameters['sessionId']!);
+
+  ExportRoute get _self => this as ExportRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/sites/${Uri.encodeComponent(_self.sessionId)}/export',
   );
 
   @override

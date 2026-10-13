@@ -1,4 +1,5 @@
 import 'package:beneathsos_app/core/models/ble_sample.dart';
+import 'package:beneathsos_app/core/sessions/domain/search_record.dart';
 import 'package:meta/meta.dart';
 import 'package:rubble_core/rubble_core.dart';
 
@@ -100,6 +101,10 @@ abstract interface class SessionStore {
 
   /// Every real (not practice) search: open ones first, then newest first; updated on every change.
   Stream<List<SessionSummary>> watchSearches();
+
+  /// Everything stored for [session], for export: its row, every event as stored (also one that no
+  /// longer decodes) and its raw readings.
+  Future<SearchRecord> record(SessionId session);
 
   /// Stores raw samples heard during [session] (at [point], when measuring one) in one batch.
   Future<void> addSamples(

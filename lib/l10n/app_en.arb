@@ -512,5 +512,11 @@
       }
     }
   },
-  "reasonUntouched": "not touched for over 4 hours"
+  "reasonUntouched": "not touched for over 4 hours",
+  "exportTitle": "Export this search",
+  "exportContents": "Two files: the search as recorded (every step, point and reading, and this notice) and the raw signal readings. Phones that are not targets appear only as codes that cannot be traced back. You choose where the files go.",
+  "exportShare": "Export and share",
+  "exportDone": "Shared. The files hold this search as recorded.",
+  "exportFailed": "Could not export. Nothing was changed.",
+  "siteExport": "Export this search"
 }

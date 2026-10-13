@@ -1,4 +1,5 @@
 import 'package:beneathsos_app/core/disclaimer/disclaimer.dart';
+import 'package:beneathsos_app/features/export/presentation/screens/export_screen.dart';
 import 'package:beneathsos_app/features/home/presentation/screens/home_screen.dart';
 import 'package:beneathsos_app/features/measurement/presentation/screens/measure_screen.dart';
 import 'package:beneathsos_app/features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -45,6 +46,7 @@ part 'app_router.g.dart';
             TypedGoRoute<TargetsRoute>(path: 'targets'),
             TypedGoRoute<MeasureRoute>(path: 'measure'),
             TypedGoRoute<MapRoute>(path: 'map'),
+            TypedGoRoute<ExportRoute>(path: 'export'),
           ],
         ),
       ],
@@ -233,6 +235,19 @@ class MapRoute extends GoRouteData with $MapRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       MapScreen(sessionId: sessionId);
+}
+
+/// Export a search (`/sites/:sessionId/export`).
+class ExportRoute extends GoRouteData with $ExportRoute {
+  /// Route to the export of [sessionId].
+  const ExportRoute({required this.sessionId});
+
+  /// The search.
+  final String sessionId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      ExportScreen(sessionId: sessionId);
 }
 
 /// Preview 1 (`/preview`): first-run notice.

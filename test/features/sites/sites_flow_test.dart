@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:beneathsos_app/core/database/app_database.dart';
 import 'package:beneathsos_app/core/models/ble_sample.dart';
 import 'package:beneathsos_app/core/sessions/data/drift_session_store.dart';
+import 'package:beneathsos_app/core/sessions/domain/search_record.dart';
 import 'package:beneathsos_app/core/sessions/domain/session_store.dart';
 import 'package:beneathsos_app/core/sessions/presentation/providers/session_providers.dart';
 import 'package:beneathsos_app/core/settings/data/drift_settings_store.dart';
@@ -30,6 +31,9 @@ final class _FailingStore implements SessionStore {
   });
 
   final SessionStore inner;
+
+  @override
+  Future<SearchRecord> record(SessionId session) => inner.record(session);
   final bool failCreate;
   final bool failAppend;
   final bool failSummary;

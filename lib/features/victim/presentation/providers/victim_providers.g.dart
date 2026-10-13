@@ -139,7 +139,7 @@ final class VictimControllerProvider
   }
 }
 
-String _$victimControllerHash() => r'b7838ccccf56e7a2c4ffd11419df83c2cac2fd8d';
+String _$victimControllerHash() => r'25af7d9e35a6744a1bb7d6b1142e7a0d77088970';
 
 /// Victim mode: calls out as long as the screen is open, with the battery and the time since the
 /// phone was last touched or moved refreshed every [refreshEvery]; stops when the screen closes.

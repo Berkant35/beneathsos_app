@@ -86,8 +86,7 @@ class SiteScreen extends ConsumerWidget
                     null => null,
                   },
                 ),
-              if ((state.value?.measuredPoints.isNotEmpty ?? false) &&
-                  (state.value?.targets.isNotEmpty ?? false)) ...[
+              if (canOpenMap(state.value)) ...[
                 const SizedBox(height: BeneathSpacing.m),
                 PrimaryButton(
                   label: l10n.siteOpenMap,
@@ -95,6 +94,12 @@ class SiteScreen extends ConsumerWidget
                   onPressed: () => MapRoute(sessionId: sessionId).go(context),
                 ),
               ],
+              const SizedBox(height: BeneathSpacing.m),
+              SecondaryButton(
+                label: l10n.siteExport,
+                icon: Icons.ios_share_rounded,
+                onPressed: () => ExportRoute(sessionId: sessionId).go(context),
+              ),
               if (search.closedAt == null) ...[
                 const SizedBox(height: BeneathSpacing.xl),
                 SecondaryButton(

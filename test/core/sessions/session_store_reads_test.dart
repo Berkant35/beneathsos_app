@@ -169,6 +169,62 @@ void main() {
     expect((rows.first.companyId, rows.first.txPower), (0x004c, -12));
   });
 
+  test(
+    'the record for export holds every event as stored and the raw samples',
+    () async {
+      final s = store();
+      final id = await create(s, 'Atatürk Cad. 12');
+      await measure(s, id, 'p1');
+      await s.addSamples(id, const PointId('p1'), [
+        const BleSample(
+          key: 'apple-1',
+          rssi: -70,
+          serviceUuids: [],
+          monotonicNanos: 1,
+          wallClockMillis: 5001,
+        ),
+      ]);
+      await db
+          .into(db.events)
+          .insert(
+            EventsCompanion.insert(
+              id: 'broken',
+              sessionId: id.value,
+              seq: 99,
+              deviceId: 'device-x',
+              hlc: '000000000009000-00000000-device-x',
+              schema: 1,
+              type: 'ScaleSet',
+              payload: '{"factor": ',
+              createdAt: 9000,
+            ),
+          );
+      final record = await s.record(id);
+      expect(record.title, 'Atatürk Cad. 12');
+      expect(record.engineProfile, 'voided_pancake@1');
+      expect(record.events.map((e) => e['type']), [
+        'SiteCreated',
+        'MeasurementPointPlaced',
+        'MeasurementCompleted',
+        'ScaleSet',
+      ]);
+      expect(
+        EventEnvelope.fromJson(record.events[1]).event,
+        isA<MeasurementPointPlaced>(),
+      );
+      expect(record.events.last['payload'], '{"factor": ');
+      expect(record.samples.single, (
+        point: 'p1',
+        key: 'apple-1',
+        rssi: -70,
+        txPower: null,
+        companyId: null,
+        tMonoNs: 1,
+        tWall: 5001,
+      ));
+    },
+  );
+
   test('a session survives closing and reopening the database file', () async {
     final dir = await Directory.systemTemp.createTemp('beneathsos_db');
     addTearDown(() => dir.delete(recursive: true));
