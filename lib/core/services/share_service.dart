@@ -9,8 +9,8 @@ part 'share_service.g.dart';
 /// The share sheet through `share_plus`. Implements [SharePort].
 class ShareService implements SharePort {
   @override
-  Future<void> share(List<SharedFile> files, {required String subject}) async {
-    await SharePlus.instance.share(
+  Future<bool> share(List<SharedFile> files, {required String subject}) async {
+    final result = await SharePlus.instance.share(
       ShareParams(
         subject: subject,
         files: [
@@ -20,6 +20,7 @@ class ShareService implements SharePort {
         fileNameOverrides: [for (final f in files) f.name],
       ),
     );
+    return result.status != ShareResultStatus.dismissed;
   }
 }
 

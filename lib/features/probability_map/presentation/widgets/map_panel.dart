@@ -13,7 +13,9 @@ class MapPanel extends StatelessWidget with MapMixin {
   const MapPanel({
     required this.sessionId,
     required this.map,
+    required this.choosing,
     required this.onRecordFound,
+    required this.onCancelFound,
     this.note,
     super.key,
   });
@@ -24,8 +26,14 @@ class MapPanel extends StatelessWidget with MapMixin {
   /// The map of the selected target.
   final TargetMap map;
 
+  /// Waiting for the tap on the found spot.
+  final bool choosing;
+
   /// Starts recording where the phone was found.
   final VoidCallback onRecordFound;
+
+  /// Stops waiting for the tap.
+  final VoidCallback onCancelFound;
 
   /// The research line: how to record, how the map did, or a failure; null for none.
   final String? note;
@@ -69,11 +77,18 @@ class MapPanel extends StatelessWidget with MapMixin {
           onPressed: () => MeasureRoute(sessionId: sessionId).go(context),
         ),
         const SizedBox(height: BeneathSpacing.s),
-        TextButton.icon(
-          onPressed: onRecordFound,
-          icon: const Icon(Icons.flag_rounded),
-          label: Text(l10n.probRecordFound),
-        ),
+        if (choosing)
+          TextButton.icon(
+            onPressed: onCancelFound,
+            icon: const Icon(Icons.close_rounded),
+            label: Text(l10n.probCancel),
+          )
+        else
+          TextButton.icon(
+            onPressed: onRecordFound,
+            icon: const Icon(Icons.flag_rounded),
+            label: Text(l10n.probRecordFound),
+          ),
       ],
     );
   }

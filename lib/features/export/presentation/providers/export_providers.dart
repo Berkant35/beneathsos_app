@@ -65,12 +65,13 @@ class ExportController extends _$ExportController {
     if (state is Exporting) return;
     state = const Exporting();
     try {
-      await ref.read(exportSearchProvider)(
+      final shared = await ref.read(exportSearchProvider)(
         SessionId(sessionId),
         disclaimer: disclaimer,
         subject: subject,
       );
-      if (ref.mounted) state = const Exported();
+      // Closed without sharing: nothing happened, offer it again.
+      if (ref.mounted) state = shared ? const Exported() : const ExportReady();
     } on Object catch (error, stack) {
       AppLogger.error('export', 'Export failed', error, stack);
       if (ref.mounted) state = const ExportFailed();

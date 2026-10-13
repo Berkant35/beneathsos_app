@@ -95,6 +95,20 @@ void main() {
     expect(share.shared, hasLength(1));
   });
 
+  testWidgets('closing the share sheet without sharing does not say "Shared"', (
+    tester,
+  ) async {
+    setPhoneSize(tester, 402, 874);
+    final db = await _search(tester);
+    final share = FakeShare()..dismiss = true;
+    await pumpRouterApp(tester, database: db, share: share);
+    await settleWithDatabase(tester);
+    await _openExport(tester);
+    await _tap(tester, 'Export and share');
+    expect(find.textContaining('Shared.'), findsNothing);
+    expect(find.textContaining('Could not export'), findsNothing);
+  });
+
   testWidgets('Turkish at 200 %: the export button stays readable', (
     tester,
   ) async {

@@ -37,8 +37,16 @@ void main() {
         'from': 'apple-1',
         'to': 'apple-2',
       }),
-      // A row that no longer decodes is exported as stored, never dropped.
-      {..._event(3, 'Mystery', {}), 'payload': '{broken'},
+      _event(3, 'AmbientScanCompleted', {
+        'blacklisted': ['bystander', 'AA:BB:CC:DD:EE:FF'],
+        'durationMs': 30000,
+      }),
+      _event(4, 'BlacklistEdited', {
+        'added': ['AA:BB:CC:DD:EE:FF'],
+        'removed': ['apple-1'],
+      }),
+      // A row that no longer decodes may hold keys too: kept as a row, its text redacted.
+      {..._event(5, 'Mystery', {}), 'payload': '{"key": "AA:BB:CC:DD:EE:FF"'},
     ],
     samples: const [
       (
@@ -96,19 +104,23 @@ void main() {
       expect(json['exportedAt'], '2026-10-13T09:00:00.000Z');
       expect((json['search']! as Map)['engineProfile'], 'voided_pancake@1');
       final events = json['events']! as List;
-      expect(events, hasLength(3));
+      expect(events, hasLength(5));
       expect(
         EventEnvelope.fromJson(events.first! as Map<String, Object?>).event,
         isA<TargetSelected>(),
       );
-      expect((events.last! as Map)['payload'], '{broken');
+      expect((events.last! as Map)['payload'], isNull);
+      expect((events.last! as Map)['unreadable'], isTrue);
     },
   );
 
   test(
     'target keys stay; other phones are hashed, stable within one export',
     () {
-      final rows = const LineSplitter().convert(build().csv);
+      final rows = const LineSplitter()
+          .convert(build().csv)
+          .where((r) => !r.startsWith('#'))
+          .toList();
       expect(
         rows.first,
         'point_id,device,rssi,tx_power,company_id,t_mono_ns,t_wall',
@@ -124,12 +136,36 @@ void main() {
   );
 
   test('a new export draws a new salt: the same phone is not linkable across files', () {
-    String hashed(ExportBundle b) =>
-        const LineSplitter().convert(b.csv)[3].split(',')[1];
+    String hashed(ExportBundle b) => const LineSplitter()
+        .convert(b.csv)
+        .firstWhere((r) => r.startsWith('p1,other-'))
+        .split(',')[1];
     expect(hashed(build(salt: [9, 9, 9])), isNot(hashed(build())));
   });
 
   test('file names: date and a safe title', () {
     expect(build().baseName, 'beneathsos-2026-10-13-ataturk-cad-12-b-blok');
+  });
+
+  test('the JSON holds no key of a phone that is not a target (bystanders, the team)', () {
+    final bundle = build();
+    expect(bundle.json, isNot(contains('bystander')));
+    expect(bundle.json, isNot(contains('AA:BB:CC:DD:EE:FF')));
+    final events = (jsonDecode(bundle.json) as Map)['events']! as List;
+    final surface = (events[2]! as Map)['payload']! as Map;
+    final rows = const LineSplitter().convert(bundle.csv);
+    final bystander = rows
+        .firstWhere((r) => r.startsWith('p1,other-'))
+        .split(',')[1];
+    // The same code in the events and the readings, so they still join within one file.
+    expect(surface['blacklisted'], contains(bystander));
+    // A target set aside and back keeps its key.
+    expect(((events[3]! as Map)['payload']! as Map)['removed'], ['apple-1']);
+  });
+
+  test('the readings file carries the disclaimer too', () {
+    final csv = build().csv;
+    expect(csv, startsWith('# '));
+    expect(csv, contains('never replaces'));
   });
 }

@@ -18,8 +18,9 @@ final class ExportSearch {
   final DateTime Function() _now;
   final List<int> Function() _salt;
 
-  /// Exports [session] with [disclaimer] in the file; [subject] names it in the share sheet.
-  Future<void> call(
+  /// Exports [session] with [disclaimer] in the files; [subject] names it in the share sheet. False
+  /// when the person closed the sheet without sharing.
+  Future<bool> call(
     SessionId session, {
     required String disclaimer,
     required String subject,
@@ -30,7 +31,7 @@ final class ExportSearch {
       disclaimer: disclaimer,
       salt: _salt(),
     );
-    await _share.share([
+    return _share.share([
       (
         name: '${bundle.baseName}.json',
         mimeType: 'application/json',

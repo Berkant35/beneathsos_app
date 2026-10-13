@@ -35,4 +35,12 @@ void main() {
     // Off the grid altogether.
     expect(foundReport(map, p(-3, 0.5)).outside90.value, closeTo(3, 1e-9));
   });
+
+  test('a spot on the edge between two cells counts in the better region', () {
+    // Map taps snap to 0.5 m, so found spots often lie exactly on cell edges.
+    expect(foundReport(map, p(2, 0.5)).region, Region.likely90);
+    expect(foundReport(map, p(1, 0.5)).region, Region.likely50);
+    expect(foundReport(map, p(2, 1)).region, Region.likely90);
+    expect(foundReport(map, p(2, 1)).outside90, Meters.zero);
+  });
 }

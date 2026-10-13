@@ -1561,6 +1561,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not save where it was found. Try again.'**
   String get probRecordFailed;
+
+  /// No description provided for @probConfirmFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Record the phone as found here?'**
+  String get probConfirmFoundTitle;
+
+  /// No description provided for @probConfirmFoundBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone on this search will see it as found here. Record it only once the phone is in hand.'**
+  String get probConfirmFoundBody;
+
+  /// No description provided for @probConfirmFoundYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get probConfirmFoundYes;
+
+  /// No description provided for @probConfirmFoundNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Not here'**
+  String get probConfirmFoundNo;
+
+  /// No description provided for @probCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get probCancel;
 }
 
 class _AppLocalizationsDelegate

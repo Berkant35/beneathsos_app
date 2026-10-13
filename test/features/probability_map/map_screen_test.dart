@@ -296,10 +296,24 @@ void main() {
         find.text('Tap the spot on the map where the phone was found.'),
         findsOneWidget,
       );
+      // A tap asks first: a mistaken "found" on a live search would mislead the team.
       await tester.tap(find.byType(SiteMap));
+      await tester.pumpAndSettle();
+      expect(find.text('Record the phone as found here?'), findsOneWidget);
+      await tester.tap(find.text('Not here'));
       await settleWithDatabase(tester);
-      final events = await tester.runAsync(() => db.select(db.events).get());
+      var events = await tester.runAsync(() => db.select(db.events).get());
+      expect(events!.last.type, isNot('GroundTruthRecorded'));
+      await tester.tap(find.byType(SiteMap));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Record'));
+      await settleWithDatabase(tester);
+      events = await tester.runAsync(() => db.select(db.events).get());
       expect(events!.last.type, 'GroundTruthRecorded');
+      expect(
+        events.where((e) => e.type == 'GroundTruthRecorded'),
+        hasLength(1),
+      );
       final map = tester.widget<SiteMap>(find.byType(SiteMap));
       expect(
         map.points.where((m) => m.kind == MapPointKind.found),
@@ -311,4 +325,25 @@ void main() {
       );
     },
   );
+
+  testWidgets('recording can be cancelled before the tap', (tester) async {
+    setPhoneSize(tester, 402, 874);
+    final db = await _search(tester);
+    await pumpRouterApp(tester, database: db);
+    await settleWithDatabase(tester);
+    await _openMap(tester);
+    await tester.ensureVisible(find.text('Record where it was found'));
+    await tester.tap(find.text('Record where it was found'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Cancel'));
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Tap the spot on the map where the phone was found.'),
+      findsNothing,
+    );
+    await tester.tap(find.byType(SiteMap));
+    await tester.pumpAndSettle();
+    expect(find.text('Record the phone as found here?'), findsNothing);
+  });
 }

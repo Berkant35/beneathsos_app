@@ -900,9 +900,26 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String probFoundOutside(String distance) {
-    return '%90 alanının dışında, ona $distance uzaklıkta bulundu.';
+    return '%90 alanının dışında, ondan $distance uzakta bulundu.';
   }
 
   @override
   String get probRecordFailed => 'Bulunduğu yer kaydedilemedi. Tekrar deneyin.';
+
+  @override
+  String get probConfirmFoundTitle =>
+      'Telefon burada bulundu olarak kaydedilsin mi?';
+
+  @override
+  String get probConfirmFoundBody =>
+      'Bu aramadaki herkes onu burada bulunmuş görür. Yalnızca telefon elinizdeyken kaydedin.';
+
+  @override
+  String get probConfirmFoundYes => 'Kaydet';
+
+  @override
+  String get probConfirmFoundNo => 'Burada değil';
+
+  @override
+  String get probCancel => 'Vazgeç';
 }

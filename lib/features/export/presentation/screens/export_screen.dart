@@ -34,12 +34,7 @@ class ExportScreen extends ConsumerWidget with ExportMixin {
             Text(l10n.exportContents, style: text.bodyLarge),
             if (result != null) ...[
               const SizedBox(height: BeneathSpacing.m),
-              StatusBanner(
-                kind: state is ExportFailed
-                    ? StatusKind.attention
-                    : StatusKind.ready,
-                message: result,
-              ),
+              StatusBanner(kind: outcomeKind(state), message: result),
             ],
             const SizedBox(height: BeneathSpacing.l),
             PrimaryButton(

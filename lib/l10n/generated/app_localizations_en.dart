@@ -917,4 +917,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get probRecordFailed =>
       'Could not save where it was found. Try again.';
+
+  @override
+  String get probConfirmFoundTitle => 'Record the phone as found here?';
+
+  @override
+  String get probConfirmFoundBody =>
+      'Everyone on this search will see it as found here. Record it only once the phone is in hand.';
+
+  @override
+  String get probConfirmFoundYes => 'Record';
+
+  @override
+  String get probConfirmFoundNo => 'Not here';
+
+  @override
+  String get probCancel => 'Cancel';
 }

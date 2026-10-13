@@ -532,5 +532,10 @@
       }
     }
   },
-  "probRecordFailed": "Could not save where it was found. Try again."
+  "probRecordFailed": "Could not save where it was found. Try again.",
+  "probConfirmFoundTitle": "Record the phone as found here?",
+  "probConfirmFoundBody": "Everyone on this search will see it as found here. Record it only once the phone is in hand.",
+  "probConfirmFoundYes": "Record",
+  "probConfirmFoundNo": "Not here",
+  "probCancel": "Cancel"
 }

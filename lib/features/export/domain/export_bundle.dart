@@ -4,8 +4,9 @@ import 'package:beneathsos_app/core/sessions/domain/search_record.dart';
 import 'package:crypto/crypto.dart';
 import 'package:meta/meta.dart';
 
-/// The two export files of a search. Nothing is dropped; only the identities of phones that are not
-/// targets are replaced by salted hashes (bystanders, the rescue team — `docs/architecture.md` §8).
+/// The two export files of a search, each carrying the disclaimer (rule 5). Nothing is dropped; the
+/// identities of phones that are not targets are replaced by salted hashes in both files (bystanders,
+/// the rescue team — `docs/architecture.md` §8).
 @immutable
 final class ExportBundle {
   const ExportBundle._(this.baseName, this.json, this.csv);
@@ -19,9 +20,14 @@ final class ExportBundle {
     required List<int> salt,
   }) {
     final targets = _targetKeys(record.events);
+    final codes = <String, String>{};
     String device(String key) => targets.contains(key)
         ? key
-        : 'other-${sha256.convert([...salt, ...utf8.encode(key)]).toString().substring(0, 12)}';
+        : codes.putIfAbsent(
+            key,
+            () =>
+                'other-${sha256.convert([...salt, ...utf8.encode(key)]).toString().substring(0, 12)}',
+          );
     final json = const JsonEncoder.withIndent(' ').convert({
       'schema': 1,
       'generator': 'BeneathSOS',
@@ -35,11 +41,11 @@ final class ExportBundle {
         'createdAt': record.createdAt.toUtc().toIso8601String(),
         'closedAt': record.closedAt?.toUtc().toIso8601String(),
       },
-      'events': record.events,
+      'events': [for (final e in record.events) _private(e, device)],
     });
-    final csv = StringBuffer(
-      'point_id,device,rssi,tx_power,company_id,t_mono_ns,t_wall\n',
-    );
+    final csv = StringBuffer()
+      ..writeAll([for (final line in disclaimer.split('\n')) '# $line\n'])
+      ..write('point_id,device,rssi,tx_power,company_id,t_mono_ns,t_wall\n');
     for (final s in record.samples) {
       csv.writeln(
         [
@@ -70,6 +76,35 @@ final class ExportBundle {
 
   /// The raw readings (`-samples.csv`).
   final String csv;
+}
+
+/// [event] with every key of a phone that is not a target replaced by its [device] code: the surface
+/// scan and blacklist edits list them. A row that no longer decodes may hold keys too: its text is
+/// left out and the row marked `unreadable` (type, id, order and time stay).
+Map<String, Object?> _private(
+  Map<String, Object?> event,
+  String Function(String key) device,
+) {
+  List<Object?> coded(Object? keys) => [
+    for (final k in keys is List ? keys : const <Object?>[])
+      k is String ? device(k) : k,
+  ];
+  return switch ((event['type'], event['payload'])) {
+    (_, String()) => {...event, 'payload': null, 'unreadable': true},
+    ('AmbientScanCompleted', final Map<String, Object?> p) => {
+      ...event,
+      'payload': {...p, 'blacklisted': coded(p['blacklisted'])},
+    },
+    ('BlacklistEdited', final Map<String, Object?> p) => {
+      ...event,
+      'payload': {
+        ...p,
+        'added': coded(p['added']),
+        'removed': coded(p['removed']),
+      },
+    },
+    _ => event,
+  };
 }
 
 /// Every peripheral key a target had (selected, or relinked from and to).

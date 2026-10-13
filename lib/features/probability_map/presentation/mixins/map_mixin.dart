@@ -1,6 +1,7 @@
 import 'package:beneathsos_app/core/formatting/measures.dart';
 import 'package:beneathsos_app/features/probability_map/domain/map_request.dart';
 import 'package:beneathsos_app/features/research/domain/found_report.dart';
+import 'package:beneathsos_app/features/research/presentation/providers/research_providers.dart';
 import 'package:beneathsos_app/l10n/generated/app_localizations.dart';
 import 'package:locator_engine/locator_engine.dart';
 import 'package:rubble_canvas/rubble_canvas.dart';
@@ -66,12 +67,31 @@ mixin MapMixin {
       Meters(found.y.value * search.scale),
     );
     final report = foundReport(map, real);
-    return switch (report.region) {
+    final measured = search.measuredPoints;
+    final basis = l10n.pointSummary(
+      measured.length,
+      measured.where((p) => p.readings.any((r) => r is SignalHeard)).length,
+    );
+    final verdict = switch (report.region) {
       Region.likely50 => l10n.probFound50,
       Region.likely90 => l10n.probFound90,
       Region.outside => l10n.probFoundOutside(
         metresLabel(l10n, report.outside90),
       ),
     };
+    return '$verdict $basis';
   }
+
+  /// The research line under the map: how to record, a failure, or how the map did.
+  String? foundNote(
+    AppLocalizations l10n,
+    FoundStep step,
+    SessionState search,
+    TargetId target,
+    ProbabilityMap map,
+  ) => switch (step) {
+    FoundChoosing() => l10n.probTapFound,
+    FoundFailed() => l10n.probRecordFailed,
+    FoundIdle() || FoundSaving() => foundLine(l10n, search, target, map),
+  };
 }
