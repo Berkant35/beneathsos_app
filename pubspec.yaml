@@ -35,7 +35,7 @@ dependencies:
   package_info_plus: ^10.2.2
   # Pinned: 13.x pulls permission_handler_android 14.x (compileSdk 37). AGP 9.1.0 looks for
   # platform 'android-37' but the SDK installs it as 'android-37.0'. See hub tasks/todo.md backlog.
-  permission_handler: ^12.0.3
+  permission_handler: ^13.0.2
   riverpod_annotation: ^4.0.7
   rubble_core:
     git:
