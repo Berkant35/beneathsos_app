@@ -31,7 +31,7 @@ dependencies:
     git:
       url: https://github.com/Berkant35/locator_engine.git
       ref: v0.1.2
-  meta: ^1.17.0
+  meta: ^1.19.0
   package_info_plus: ^10.2.2
   # Pinned: 13.x pulls permission_handler_android 14.x (compileSdk 37). AGP 9.1.0 looks for
   # platform 'android-37' but the SDK installs it as 'android-37.0'. See hub tasks/todo.md backlog.
