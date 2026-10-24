@@ -58,7 +58,7 @@ dev_dependencies:
   flutter_native_splash: ^2.4.8
   flutter_test:
     sdk: flutter
-  go_router_builder: ^4.5.0
+  go_router_builder: ^4.5.2
   mocktail: ^1.0.5
   riverpod_generator: ^4.0.9
 
