@@ -132,16 +132,20 @@ packages:
   beneathsos_ui:
     dependency: "direct main"
     description:
-      path: "../../packages/beneathsos_ui"
-      relative: true
-    source: path
+      path: "."
+      ref: "v0.3.1"
+      resolved-ref: fcc716d492ae5c785bd5e46dc8d1e5c7c4a0b348
+      url: "https://github.com/Berkant35/beneathsos_ui.git"
+    source: git
     version: "0.3.1"
   ble_scanner:
     dependency: "direct main"
     description:
-      path: "../../packages/ble_scanner"
-      relative: true
-    source: path
+      path: "."
+      ref: "v0.2.1"
+      resolved-ref: "169eb3fc3e21cc7fcb33c22713fec04229fc6029"
+      url: "https://github.com/Berkant35/ble_scanner.git"
+    source: git
     version: "0.2.1"
   boolean_selector:
     dependency: transitive
@@ -179,10 +183,10 @@ packages:
     dependency: "direct dev"
     description:
       name: build_runner
-      sha256: "894c243f6bc32015fec466ce30a6925bd537a77a426ee5bf481120477eb3de67"
+      sha256: "6feadd32d90a68253c1f7b4fcff76adb4b41ad32a53f8bad835dc65f01ac9dc5"
       url: "https://pub.dev"
     source: hosted
-    version: "2.16.1"
+    version: "2.16.2"
   built_collection:
     dependency: transitive
     description:
@@ -614,9 +618,11 @@ packages:
   locator_engine:
     dependency: "direct main"
     description:
-      path: "../../packages/locator_engine"
-      relative: true
-    source: path
+      path: "."
+      ref: "v0.1.2"
+      resolved-ref: a1eaf11af3740154169ab507bccb9f4c7f795cb6
+      url: "https://github.com/Berkant35/locator_engine.git"
+    source: git
     version: "0.1.2"
   logging:
     dependency: transitive
@@ -933,16 +939,20 @@ packages:
   rubble_canvas:
     dependency: "direct main"
     description:
-      path: "../../packages/rubble_canvas"
-      relative: true
-    source: path
+      path: "."
+      ref: "v0.6.1"
+      resolved-ref: "85de5d638c439ff6833c086f4b421cb70a530634"
+      url: "https://github.com/Berkant35/rubble_canvas.git"
+    source: git
     version: "0.6.1"
   rubble_core:
     dependency: "direct main"
     description:
-      path: "../../packages/rubble_core"
-      relative: true
-    source: path
+      path: "."
+      ref: "v0.3.0"
+      resolved-ref: ecacc6ba3ac3497fb6648d5c74b750b24e7b9fda
+      url: "https://github.com/Berkant35/rubble_core.git"
+    source: git
     version: "0.3.0"
   sensors_plus:
     dependency: "direct main"
